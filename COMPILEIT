@@ -1,0 +1,5 @@
+#First line creates the dictionary and links files.
+rootcling -f FTAna_d.cxx -rml libFTAna.so -rmf libFTAna.rootmap FTAna.h LinkDef.h
+#Second line calls gcc to compile our program. Output is called ana
+g++ ana.C FTAna_d.cxx FTAna.C `root-config --cflags --libs` -o ana
+#g++ ana.C FTAna_d.cxx FTAna.C `root-config --cflags` -L/home/sreelakshmi/hep/root-6.12.04/lib -lCore -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lTreePlayer -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -lMultiProc -pthread -lm -ldl -rdynamic -o ana

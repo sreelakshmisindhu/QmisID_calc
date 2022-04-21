@@ -1,0 +1,68 @@
+#include <TROOT.h>
+#include <TChain.h>
+#include <TFile.h>
+#include "FTAna.h"
+
+//This is the driver script, which becomes our main program
+//Here we set the options which we wish to use, which files
+//we want to run over and so on.
+
+//the argument decides what input sample we want to run over.
+//we give separate names of output files for each set of
+//input files.
+void ana(int sample=1)
+{
+  const char *hstfilename, *sumfilename1, *sumfilename2;
+
+  TChain *chain = new TChain("nominal_Loose");
+  FTAna m_selec;//declared an instance of our class.
+
+  std::cout<<"Declared chains"<<std::endl;
+  
+    
+  if(sample==1){
+     chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data15.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data16.root");
+     // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data17.root");
+     // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data18.root");
+     // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/QmisID_mc16a.root");
+    //  chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/data16.root");
+    // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/data15.root");
+    // chain->Add("/home/sreelakshmi/Work/DYJetsToLL_M50/resultsMC_2.root");
+    //    chain->Add("/afs/cern.ch/work/s/ssindhu/private/QmisID_new/data16.slim.root");
+    //chain->Add("DY50_test.root");
+    //can have more chain->Add() lines here.
+    hstfilename = "ECIDS/data_15_16_nobg.root";//output histogram file
+
+    sumfilename1 = "ECIDS/ss.data_15_16_nobg.txt"; //output text file
+    sumfilename2 = "ECIDS/os.data_15_16_nobg.txt"; //output text file
+  }
+
+  std::cout<<"Output files are "<<hstfilename<<" and "<<sumfilename1<<" and "<<sumfilename2<<std::endl;
+  m_selec.SetHstFileName(hstfilename);
+  m_selec.SetSumFileName1(sumfilename1);
+  m_selec.SetSumFileName2(sumfilename2);
+  m_selec.SetVerbose(200);//set verbosity level for output.
+  m_selec.SetData(1);//0 is MC, 1 data, 2 ata with BG subtraction, 3 QmisID reweighting
+
+  //this calls the Process function for each event in the chain
+  //and runs the m_selec code over it.
+  chain->Process(&m_selec);
+  
+
+}
+
+
+int main(int argc, char *argv[])
+{
+
+  if(argc<2){
+    std::cout<<" Please give one integer argument "<<std::endl;
+    return 0;
+  }
+  int sample_id = atoi(argv[1]);
+
+  ana(sample_id);
+  return 0;
+}
+
