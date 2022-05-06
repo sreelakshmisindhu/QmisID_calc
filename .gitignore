@@ -1,2 +1,7 @@
 FTAna_d_rdict.pcm
 libFTAna.rootmap
+FTAna_d.cxx
+ana
+ECIDS/
+no_*
+closure*

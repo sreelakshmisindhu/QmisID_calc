@@ -13,6 +13,7 @@
 void ana(int sample=1)
 {
   const char *hstfilename, *sumfilename1, *sumfilename2;
+  string name = "data_15_16";
 
   TChain *chain = new TChain("nominal_Loose");
   FTAna m_selec;//declared an instance of our class.
@@ -20,11 +21,11 @@ void ana(int sample=1)
   std::cout<<"Declared chains"<<std::endl;
   
     
-  if(sample==1){
+  // if(sample==1){
      chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data15.root");
      chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data16.root");
-     // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data17.root");
-     // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data18.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data17.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data18.root");
      // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/QmisID_mc16a.root");
     //  chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/data16.root");
     // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/data15.root");
@@ -32,11 +33,13 @@ void ana(int sample=1)
     //    chain->Add("/afs/cern.ch/work/s/ssindhu/private/QmisID_new/data16.slim.root");
     //chain->Add("DY50_test.root");
     //can have more chain->Add() lines here.
-    hstfilename = "ECIDS/data_15_16_nobg.root";//output histogram file
+     
 
-    sumfilename1 = "ECIDS/ss.data_15_16_nobg.txt"; //output text file
-    sumfilename2 = "ECIDS/os.data_15_16_nobg.txt"; //output text file
-  }
+     hstfilename="no_bg_no_cuts/data_new_all.root";//output histogram file
+
+     sumfilename1="no_bg_no_cuts/ss.data_all.txt"; //output text file
+     sumfilename2="no_bg_no_cuts/os.data_all.txt"; //output text file
+  // }
 
   std::cout<<"Output files are "<<hstfilename<<" and "<<sumfilename1<<" and "<<sumfilename2<<std::endl;
   m_selec.SetHstFileName(hstfilename);

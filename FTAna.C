@@ -56,7 +56,7 @@ void FTAna::SlaveTerminate()
     for(int b=0;b<6;b++){
       for(int c=0;c<4;c++){
         for(int d=0;d<6;d++){
-          fout<<h_OS[a][b][c][d]<<endl;
+          fout2<<h_OS[a][b][c][d]<<endl;
         }
       }
     }
@@ -106,31 +106,49 @@ Bool_t FTAna::Process(Long64_t entry)
   Lepton lep2; lep2.v.SetPtEtaPhiE(lep_2_pt/1000, lep_2_eta, lep_2_phi, lep_2_e/1000);
   Mll = (lep0.v+lep1.v).M();
   // std::cout<<lep_0_pt<<"  "<<lep_1_pt<<" Mll "<<Mll<<" OSee "<< OSee<<" SSee "<<loose_SSee<<" nJets "<<nJets<<" tight "<<(lep_0_isTight==1)<<(lep_1_isTight==1)<<" n "<<nEvtTotal<<std::endl;
-  if(OSee==1 or loose_SSee ==1){                            
+   // if(OSee==1 or loose_SSee ==1){                            
 
-    if(lep_0_isTight==1 and lep_1_isTight==1){ // remove loose lepton         
+   //  if(lep_0_isTight==1 and lep_1_isTight==1){ // remove loose lepton         
 
-      if(Mll>(91-2*massWindow) and Mll<(91+2*massWindow) ){
+   //    if(Mll>(91-2*massWindow) and Mll<(91+2*massWindow) ){
 
-	if( nJets>0 ){
+   //  	if( nJets>0 ){
 
-	  if(el_ECIDSResult_float->at(0)>-0.337671 and el_ECIDSResult_float->at(1)>-0.337671){
+    	  // if(el_ECIDSResult_float->at(0)>-0.337671 and el_ECIDSResult_float->at(1)>-0.337671){
 	  // std::cout<<" IN "<<lep_0_pt<<"  "<<lep_1_pt<<" Mll "<<Mll<<" OSee "<< OSee<<" SSee "<<loose_SSee<<" nJets "<<nJets<<" tight "<<(lep_0_isTight==1)<<(lep_1_isTight==1)<<" n "<<nEvtTotal<<std::endl;
-
-	    if (_data == 0){
-	      lumi =36207.7*(runNumber==284500)+44307.4*(runNumber==300000)+(runNumber==310000)*58450.1;
-
-	      weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;
-	    }
+	    if (_data == 0){ 
+	      if ( Mll>(91 - massWindow) and Mll < (91+massWindow)) {
+		  lumi =36207.7*(runNumber==284500)+44307.4*(runNumber==300000)+(runNumber==310000)*58450.1;
+		  weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}
 	    else if (_data == 1){
-	      weights = 1;}
+	      // if ( Mll>(91 - massWindow) and Mll < (91+massWindow)) {
+		weights = 1;}
 	    else if (_data == 2){
-	      if(Mll>(91-massWindow) && Mll<(91+massWindow) ){
+	      if(Mll>(91-massWindow) and Mll<(91+massWindow) ){
 		weights = 1;}
 	      else{weights = -0.5;}}
+	    // else if (_data == 3){
+	    //   if(OSee==1){
+	    //   // if ( Mll>(91 - massWindow) and Mll < (91+massWindow)) {
+	    // 	weights = weight_closure(lep0.v, lep1.v);}
+	    //   // else{weights = -0.5*weight_closure(lep0.v, lep1.v);}}
+	    //   else if (loose_SSee == 1){
+	    // 	// if ( Mll>(91 - massWindow) and Mll < (91+massWindow)) {
+	    // 	  weights =1;}
+	    // // else {weights = -0.5;}}}
 	    else if (_data == 3){
-	      weights = weight_closure(lep0.v, lep1.v);}
-	    if(_verbosity>0 && nEvtTotal%50000==0)cout<<"lumi"<<lumi<<" weights "<<weights<<" mll "<<Mll<<" OSee " << OSee<<" lep_1_isTight "<<lep_1_isTight<<std::endl;
+	      if(OSee == 1){
+	    	weights = weight_closure(lep0.v, lep1.v);
+	      }
+	      else if (loose_SSee == 1){
+		// if(Mll>(91-massWindow) and Mll<(91+massWindow) ){
+		  weights = 1;}
+		// else{weights = -0.5;}
+
+	    }
+
+	    
+	    if(_verbosity>0 && nEvtTotal%5000==0)cout<<"lumi"<<lumi<<" weights "<<weights<<" mll "<<Mll<<" OSee " << OSee<<" SSee" <<loose_SSee<<" lep_1_isTight "<<lep_1_isTight<<std::endl;
 	  
 
  int i=0,j=0,k=0,l=0;
@@ -169,8 +187,6 @@ Bool_t FTAna::Process(Long64_t entry)
   h.os_Electrons->Fill(nElectrons,weights);
   h.os_HT->Fill(HT_all/1000,weights);
   h.os_HT_Jets->Fill(HT_jets/1000,weights);
-  h.os_M_ll[0]->Fill(Mll,weights);
-  h.os_M_ll[1]->Fill(Mll,weights);
   h.os_met->Fill(met_met/1000,weights);
   h.os_lep_pt[0]->Fill(lep0.v.Pt(),weights); 
   h.os_lep_pt[1]->Fill(lep1.v.Pt(),weights); 
@@ -186,7 +202,11 @@ Bool_t FTAna::Process(Long64_t entry)
   h.os_n_Btags->Fill(nBTags_DL1r_77,weights);
   h.os_OSee->Fill(OSee,weights);
   h.os_loose_SSee->Fill(loose_SSee,weights);
+  if(Mll>(91-massWindow) and Mll<(91+massWindow) ){
 
+    h.os_M_ll[0]->Fill(Mll,weights);
+    h.os_M_ll[1]->Fill(Mll,weights);
+  }
 
     // std::cout<<" OSee "<<lep_0_charge<<" pdgid "<<lep_0_pdgid<<" 1" << lep_1_charge<<" pdgid "<<lep_1_pdgid<<std::endl;
 }
@@ -198,8 +218,6 @@ Bool_t FTAna::Process(Long64_t entry)
   h.ss_Electrons->Fill(nElectrons,weights);
   h.ss_HT->Fill(HT_all/1000,weights);
   h.ss_HT_Jets->Fill(HT_jets/1000,weights);
-  h.ss_M_ll[0]->Fill(Mll,weights);
-  h.ss_M_ll[1]->Fill(Mll,weights);
   h.ss_met->Fill(met_met/1000,weights);
   h.ss_lep_pt[0]->Fill(lep0.v.Pt(),weights); 
   h.ss_lep_pt[1]->Fill(lep1.v.Pt(),weights); 
@@ -215,11 +233,16 @@ Bool_t FTAna::Process(Long64_t entry)
   h.ss_n_Btags->Fill(nBTags_DL1r_77,weights);
   h.ss_OSee->Fill(OSee,weights);
   h.ss_loose_SSee->Fill(loose_SSee,weights);
+  // if(Mll>(91-massWindow) and Mll<(91+massWindow) ){
 
+  h.ss_M_ll[0]->Fill(Mll,weights);
+  h.ss_M_ll[1]->Fill(Mll,weights);
+  // }
+  
 
     // std::cout<<" SSee "<<lep_0_charge<<" pdgid "<<lep_0_pdgid<<" 1" << lep_1_charge<<" pdgid "<<lep_1_pdgid<<std::endl;
-
-  } }}}}}
+  }
+  // }}}}}}
     // if(drawSS){
     // } else {
     //   for(int a=0;a<NpTBin;a++){
@@ -243,7 +266,9 @@ double FTAna::weight_closure(TLorentzVector l1,TLorentzVector l2)
 {
   Float_t etaBins[7] = {0,0.6,1.1,1.52,1.7,2.3,2.5};
   Float_t pTBins[5] = {28,60,90,130,1000};
-  Float_t pt_eta_w[24] = {1.44690e-04, 2.99957e-04,8.53123e-04, 2.11835e-03, 4.10669e-04, 1.00980e-03, 2.04606e-03, 5.03071e-03, 1.07257e-03, 2.73275e-03, 4.66572e-03, 1.10720e-02, 2.66948e-03, 7.29937e-03, 1.30736e-02, 2.50479e-02, 5.41416e-03, 1.55881e-02, 2.63075e-02, 4.58553e-02, 1.46556e-02, 4.03585e-02, 6.09825e-02, 9.03881e-02};
+  Float_t pt_eta_w[24] = {2.77956E-05, 9.18632E-05, 0.000293832, 0.00122626, 6.23563E-05, 0.000266847, 0.000719646, 0.00257103, 0.000145766, 0.000593666, 0.00190437, 0.00597857, 0.000279288, 0.000928315, 0.00305011, 0.0106833, 0.000512649, 0.00144844, 0.00487751, 0.0156174, 0.0010072, 0.00568093, 0.0161041, 0.0400924};
+
+  // Float_t pt_eta_w[24] = {1.44690e-04, 2.99957e-04,8.53123e-04, 2.11835e-03, 4.10669e-04, 1.00980e-03, 2.04606e-03, 5.03071e-03, 1.07257e-03, 2.73275e-03, 4.66572e-03, 1.10720e-02, 2.66948e-03, 7.29937e-03, 1.30736e-02, 2.50479e-02, 5.41416e-03, 1.55881e-02, 2.63075e-02, 4.58553e-02, 1.46556e-02, 4.03585e-02, 6.09825e-02, 9.03881e-02};
    double weight1 = 0;
    double weight2 = 0;
 
@@ -252,7 +277,8 @@ double FTAna::weight_closure(TLorentzVector l1,TLorentzVector l2)
 	if (pTBins[pt1] <l1.Pt() and l1.Pt() < pTBins[pt1+1] and etaBins[eta1]< abs(l1.Eta()) and abs(l1.Eta())< etaBins[eta1+1]){
 	  
 	  weight1 = pt_eta_w[pt1+4*eta1]; 
-	  std::cout<<"pt1 "<<pTBins[pt1]<<" pt "<<l1.Pt()<<" pt2 "<< pTBins[pt1+1]<<" eta1 "<<etaBins[eta1]<<" eta "<<abs(l1.Eta())<<" eta2 "<<etaBins[eta1+1]<<"  "<<pt_eta_w[pt1+4*eta1]<<" "<<weight1<<std::endl;                                                                                                               
+	  // std::cout<<"pt1 "<<pTBins[pt1]<<" pt "<<l1.Pt()<<" pt2 "<< pTBins[pt1+1]<<" eta1 "<<etaBins[eta1]<<" eta "<<abs(l1.Eta())<<" eta2 "<<etaBins[eta1+1]<<"  "<<pt_eta_w[pt1+4*eta1]<<" "<<weight1<<std::endl;                         
+	  
                                                
       }}}
     for (int eta2 =0; eta2<6; eta2++){
@@ -260,13 +286,15 @@ double FTAna::weight_closure(TLorentzVector l1,TLorentzVector l2)
 	if (pTBins[pt2] <l2.Pt() and l2.Pt() < pTBins[pt2+1] and etaBins[eta2]< abs(l2.Eta()) and abs(l2.Eta())< etaBins[eta2+1]){
 	  
 	  weight2 = pt_eta_w[pt2+4*eta2]; 
-	  std::cout<<"pt2 "<<pTBins[pt2]<<" pt "<<l2.Pt()<<" pt2 "<< pTBins[pt2+1]<<" eta2 "<<etaBins[eta2]<<" eta "<<abs(l2.Eta())<<" eta2 "<<etaBins[eta2+1]<<"  "<<pt_eta_w[pt2+4*eta2]<<" "<<weight2<<std::endl;                                                                                                               
+	  // std::cout<<"pt2 "<<pTBins[pt2]<<" pt "<<l2.Pt()<<" pt2 "<< pTBins[pt2+1]<<" eta2 "<<etaBins[eta2]<<" eta "<<abs(l2.Eta())<<" eta2 "<<etaBins[eta2+1]<<"  "<<pt_eta_w[pt2+4*eta2]<<" "<<weight2<<std::endl;                            
+	  
                                                
       }}}
 
   // weights = (weight1 +weight2 -2*weight1*weight2)/((1-weight1-weight2)+2*weight2*weight1);                                                                                                                                              
-  std::cout<<weight2<<weight1<<std::endl;
-  return weight1*( 1-weight2 )+weight2*(1-weight2); 
+  // std::cout<<weight2<<weight1<<std::endl;
+  // return weight1*( 1-weight2 )+weight2*(1-weight2); 
+  return (weight1 + weight2 -2*weight1*weight2)/(1-weight1 -weight2 +2*weight1*weight2); 
  }
   
 
