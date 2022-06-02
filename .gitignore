@@ -5,3 +5,6 @@ ana
 ECIDS/
 no_*
 closure*
+all_cuts
+*~
+fit/*.txt

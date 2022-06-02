@@ -407,8 +407,11 @@ public :
    int _data;
    float _sumWeights;
    float Sum;
-   float h_OS[4][6][4][6]= {.0};
-   float h_SS[4][6][4][6] ={.0};
+   float MW_high;
+   float MW_low;
+
+   float h_OS[5][6][5][6]= {.0};
+   float h_SS[5][6][5][6] ={.0};
 
    /* vector<Lepton> goodMu;//,goodEle, goodPho,goodTau,goodJet, goodLep; */
    /* vector<Lepton> goodEle;//(sl) */
@@ -670,34 +673,34 @@ int FTAna::ReadLimited(int level, Long64_t entry)
     //Muon Variables
     b_lep_0_pt->GetEntry(entry);
     b_lep_1_pt->GetEntry(entry);
-    /* b_lep_2_pt->GetEntry(entry); */
+    /* /\* b_lep_2_pt->GetEntry(entry); *\/ */
     b_lep_0_e->GetEntry(entry);
     b_lep_1_e->GetEntry(entry);
-    /* b_lep_2_e->GetEntry(entry); */
+    /* /\* b_lep_2_e->GetEntry(entry); *\/ */
     b_lep_0_eta->GetEntry(entry);
     b_lep_1_eta->GetEntry(entry);
-    /* b_lep_2_eta->GetEntry(entry); */
+    /* /\* b_lep_2_eta->GetEntry(entry); *\/ */
     b_lep_0_phi->GetEntry(entry);
     b_lep_1_phi->GetEntry(entry);
-    /* b_lep_2_phi->GetEntry(entry); */
+    /* /\* b_lep_2_phi->GetEntry(entry); *\/ */
     b_HT_all->GetEntry(entry);
     b_HT_jets->GetEntry(entry);
-    /* b_lep_0_charge->GetEntry(entry); */
-    /* b_lep_1_charge->GetEntry(entry); */
-    /* b_lep_2_charge->GetEntry(entry); */
+    /* /\* b_lep_0_charge->GetEntry(entry); *\/ */
+    /* /\* b_lep_1_charge->GetEntry(entry); *\/ */
+    /* /\* b_lep_2_charge->GetEntry(entry); *\/ */
     b_nMuons->GetEntry(entry);
     b_nElectrons->GetEntry(entry);
     b_nJets->GetEntry(entry);
     b_runNumber->GetEntry(entry);
     b_OSee->GetEntry(entry);
     b_loose_SSee->GetEntry(entry);
-    /* b_el_isTight->GetEntry(entry); */
+    /* /\* b_el_isTight->GetEntry(entry); *\/ */
     b_lep_0_isTight->GetEntry(entry);
     b_lep_1_isTight->GetEntry(entry);
-    /* b_nBTags_DL1r_70->GetEntry(entry); */
+    b_nBTags_DL1r_70->GetEntry(entry);
     b_nBTags_DL1r_77->GetEntry(entry);
-    /* b_nBTags_DL1r_60->GetEntry(entry); */
-    /* b_nBTags_DL1r_85->GetEntry(entry); */
+    b_nBTags_DL1r_60->GetEntry(entry);
+    b_nBTags_DL1r_85->GetEntry(entry);
     b_met_met->GetEntry(entry);
     b_el_ECIDSResult_float->GetEntry(entry);
     if(_data==0){
