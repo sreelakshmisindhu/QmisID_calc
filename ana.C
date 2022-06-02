@@ -22,10 +22,17 @@ void ana(int sample=1)
   
     
   // if(sample==1){
-     chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data15.root");
-     chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data16.root");
-     chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data17.root");
-     chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data18.root");
+     // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data15.root");
+     // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data16.root");
+     // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data17.root");
+     // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data18.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/data/test/data15.root");
+     chain->Add("/afs/cern.ch/work/s/ssindhu/private/4tops_may22/common-framework/job_data16_data_SM4top-LooseLep_SSML_nominal/data16.root");
+     // chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/data/test/data16.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/data/test/data17.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/data/test/data18.root");
+     // chain->Add("/eos/atlas/atlascerngroupdisk/phys-top/topplusx/4tops2021/common-fw_tag212120/HBSM4t-212120_HBSM4tops_syst_off_v7.1/SSML/QmisID/data18.root");
+     
      // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/QmisID_mc16a.root");
     //  chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/data16.root");
     // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/data15.root");
@@ -34,11 +41,10 @@ void ana(int sample=1)
     //chain->Add("DY50_test.root");
     //can have more chain->Add() lines here.
      
+     hstfilename="test/data_all_5ptbins.root";//output histogram file
 
-     hstfilename="no_bg_no_cuts/data_new_all.root";//output histogram file
-
-     sumfilename1="no_bg_no_cuts/ss.data_all.txt"; //output text file
-     sumfilename2="no_bg_no_cuts/os.data_all.txt"; //output text file
+     sumfilename1="test/ss.data_all_5ptbins.txt"; //output text file
+     sumfilename2="test/os.data_all_5ptbins.txt"; //output text file
   // }
 
   std::cout<<"Output files are "<<hstfilename<<" and "<<sumfilename1<<" and "<<sumfilename2<<std::endl;
@@ -46,7 +52,7 @@ void ana(int sample=1)
   m_selec.SetSumFileName1(sumfilename1);
   m_selec.SetSumFileName2(sumfilename2);
   m_selec.SetVerbose(200);//set verbosity level for output.
-  m_selec.SetData(1);//0 is MC, 1 data, 2 ata with BG subtraction, 3 QmisID reweighting
+  m_selec.SetData(2);//0 is MC, 1 data, 2 ata with BG subtraction, 3 QmisID reweighting
 
   //this calls the Process function for each event in the chain
   //and runs the m_selec code over it.

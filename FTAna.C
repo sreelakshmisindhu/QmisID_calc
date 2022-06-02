@@ -90,50 +90,55 @@ Bool_t FTAna::Process(Long64_t entry)
   //Your CODE starts here
   // if (nEvtTotal < 100000) Terminate();
   // std::cout<<"before loop"<<nEvtTotal<<std::endl;
-  double massWindow = 10;
   double weights = 0;
   // float eventweight = 0;
   // eventweight = 1/_sumWeights;
   // double cs = 0;
   double Mll = 0;
   double lumi = 0;
+  double Zmass =0;                                                                                                                                                        
+  double massWindow=0;                                                                                                                                                   
+
   Float_t etaBins[7] = {0,0.6,1.1,1.52,1.7,2.3,2.5};
-  Float_t pTBins[5] = {28,60,90,130,1000};
+  Float_t pTBins[5] = {15,60,90,130,1000};
   // cs = 55.5413852*(mcChannelNumber==700320)+286.392209*(mcChannelNumber==700321)+1879.375291*(mcChannelNumber==700322);
- 
+
   Lepton lep0; lep0.v.SetPtEtaPhiE(lep_0_pt/1000, lep_0_eta, lep_0_phi, lep_0_e/1000);
   Lepton lep1; lep1.v.SetPtEtaPhiE(lep_1_pt/1000, lep_1_eta, lep_1_phi, lep_1_e/1000);
   Lepton lep2; lep2.v.SetPtEtaPhiE(lep_2_pt/1000, lep_2_eta, lep_2_phi, lep_2_e/1000);
   Mll = (lep0.v+lep1.v).M();
+ 
   // std::cout<<lep_0_pt<<"  "<<lep_1_pt<<" Mll "<<Mll<<" OSee "<< OSee<<" SSee "<<loose_SSee<<" nJets "<<nJets<<" tight "<<(lep_0_isTight==1)<<(lep_1_isTight==1)<<" n "<<nEvtTotal<<std::endl;
-   // if(OSee==1 or loose_SSee ==1){                            
+  // if(lep_0_isTight!=1 or lep_1_isTight!=1){std::cout<<nEvtTotal<<" "<<lep_1_isTight<<"  "<<lep_0_isTight<<std::endl;}          
+  
+   if(OSee==1 or loose_SSee ==1){               
+     if (OSee == 1){Zmass = 90.64; massWindow = 4.67*3;}      // mass window from gauss fit {Zmass = 90.61; massWindow = 3.337*3.5;}
+     else if (loose_SSee == 1){Zmass = 89.56; massWindow = 5.63*3; MW_low = 89.56 - 5.63*3; MW_high = 89.56 + 5.63*3;}// mass windoe from gauss fit {Zmass = 89.48; massWindow = 3.843*3.5; MW_low = 89.48 - 3.843*3.5; MW_high = 89.48 + 3.843*3.5;}
+    if(lep_0_isTight==1 and lep_1_isTight==1){ // remove loose lepton         
+      // std::cout<<"pass cuts"<<nEvtTotal<<" "<<lep_1_isTight<<"  "<<lep_0_isTight<<std::endl;
+      if(Mll>(Zmass-2*massWindow) and Mll<(Zmass+2*massWindow) ){
+    	if( nJets>0 ){
 
-   //  if(lep_0_isTight==1 and lep_1_isTight==1){ // remove loose lepton         
-
-   //    if(Mll>(91-2*massWindow) and Mll<(91+2*massWindow) ){
-
-   //  	if( nJets>0 ){
-
-    	  // if(el_ECIDSResult_float->at(0)>-0.337671 and el_ECIDSResult_float->at(1)>-0.337671){
+    	  if(el_ECIDSResult_float->at(0)>-0.337671 and el_ECIDSResult_float->at(1)>-0.337671){
 	  // std::cout<<" IN "<<lep_0_pt<<"  "<<lep_1_pt<<" Mll "<<Mll<<" OSee "<< OSee<<" SSee "<<loose_SSee<<" nJets "<<nJets<<" tight "<<(lep_0_isTight==1)<<(lep_1_isTight==1)<<" n "<<nEvtTotal<<std::endl;
 	    if (_data == 0){ 
-	      if ( Mll>(91 - massWindow) and Mll < (91+massWindow)) {
+	      if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
 		  lumi =36207.7*(runNumber==284500)+44307.4*(runNumber==300000)+(runNumber==310000)*58450.1;
 		  weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}
 	    else if (_data == 1){
-	      // if ( Mll>(91 - massWindow) and Mll < (91+massWindow)) {
+	      // if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
 		weights = 1;}
 	    else if (_data == 2){
-	      if(Mll>(91-massWindow) and Mll<(91+massWindow) ){
+	      if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
 		weights = 1;}
 	      else{weights = -0.5;}}
 	    // else if (_data == 3){
 	    //   if(OSee==1){
-	    //   // if ( Mll>(91 - massWindow) and Mll < (91+massWindow)) {
+	    //   // if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
 	    // 	weights = weight_closure(lep0.v, lep1.v);}
 	    //   // else{weights = -0.5*weight_closure(lep0.v, lep1.v);}}
 	    //   else if (loose_SSee == 1){
-	    // 	// if ( Mll>(91 - massWindow) and Mll < (91+massWindow)) {
+	    // 	// if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
 	    // 	  weights =1;}
 	    // // else {weights = -0.5;}}}
 	    else if (_data == 3){
@@ -141,17 +146,17 @@ Bool_t FTAna::Process(Long64_t entry)
 	    	weights = weight_closure(lep0.v, lep1.v);
 	      }
 	      else if (loose_SSee == 1){
-		// if(Mll>(91-massWindow) and Mll<(91+massWindow) ){
+		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
 		  weights = 1;}
-		// else{weights = -0.5;}
+		else{weights = -0.5;}
 
-	    }
+	      }}
 
 	    
-	    if(_verbosity>0 && nEvtTotal%5000==0)cout<<"lumi"<<lumi<<" weights "<<weights<<" mll "<<Mll<<" OSee " << OSee<<" SSee" <<loose_SSee<<" lep_1_isTight "<<lep_1_isTight<<std::endl;
+	    if(_verbosity>0 && nEvtTotal%50000==0)cout<<"lumi"<<lumi<<" weights "<<weights<<" mll "<<Mll<<" OSee " << OSee<<" SSee" <<loose_SSee<<std::endl;
 	  
 
- int i=0,j=0,k=0,l=0;
+   int i=0,j=0,k=0,l=0, m=0;
 
  if(lep_0_pt<60000) i=0;
  else if(lep_0_pt<90000) i=1;
@@ -202,10 +207,10 @@ Bool_t FTAna::Process(Long64_t entry)
   h.os_n_Btags->Fill(nBTags_DL1r_77,weights);
   h.os_OSee->Fill(OSee,weights);
   h.os_loose_SSee->Fill(loose_SSee,weights);
-  if(Mll>(91-massWindow) and Mll<(91+massWindow) ){
+  if(Mll>MW_low and Mll<MW_high ){
 
-    h.os_M_ll[0]->Fill(Mll,weights);
-    h.os_M_ll[1]->Fill(Mll,weights);
+  h.os_M_ll[0]->Fill(Mll,weights);
+  h.os_M_ll[1]->Fill(Mll,weights);
   }
 
     // std::cout<<" OSee "<<lep_0_charge<<" pdgid "<<lep_0_pdgid<<" 1" << lep_1_charge<<" pdgid "<<lep_1_pdgid<<std::endl;
@@ -233,29 +238,15 @@ Bool_t FTAna::Process(Long64_t entry)
   h.ss_n_Btags->Fill(nBTags_DL1r_77,weights);
   h.ss_OSee->Fill(OSee,weights);
   h.ss_loose_SSee->Fill(loose_SSee,weights);
-  // if(Mll>(91-massWindow) and Mll<(91+massWindow) ){
-
+  if(Mll>MW_low and Mll<MW_high ){
+  
   h.ss_M_ll[0]->Fill(Mll,weights);
   h.ss_M_ll[1]->Fill(Mll,weights);
-  // }
+  }}
   
 
-    // std::cout<<" SSee "<<lep_0_charge<<" pdgid "<<lep_0_pdgid<<" 1" << lep_1_charge<<" pdgid "<<lep_1_pdgid<<std::endl;
-  }
-  // }}}}}}
-    // if(drawSS){
-    // } else {
-    //   for(int a=0;a<NpTBin;a++){
-    // 	for(int b=0;b<NetaBin;b++){
-    // 	  for(int c=0;c<NpTBin;c++){
-    // 	    for(int d=0;d<NetaBin;d++){
-    // 	      cout<<h_OS[a][b][c][d]<<endl;
-    // 	    }
-    // 	  }
-    // 	}
-    //   }
-    // }
-
+      //std::cout<<" SSee "<<lep_0_charge<<" pdgid "<<lep_0_pdgid<<" 1" << lep_1_charge<<" pdgid "<<lep_1_pdgid<<std::endl;
+	  }}}}}
 
   return 0;
 
@@ -265,10 +256,21 @@ Bool_t FTAna::Process(Long64_t entry)
 double FTAna::weight_closure(TLorentzVector l1,TLorentzVector l2)
 {
   Float_t etaBins[7] = {0,0.6,1.1,1.52,1.7,2.3,2.5};
-  Float_t pTBins[5] = {28,60,90,130,1000};
-  Float_t pt_eta_w[24] = {2.77956E-05, 9.18632E-05, 0.000293832, 0.00122626, 6.23563E-05, 0.000266847, 0.000719646, 0.00257103, 0.000145766, 0.000593666, 0.00190437, 0.00597857, 0.000279288, 0.000928315, 0.00305011, 0.0106833, 0.000512649, 0.00144844, 0.00487751, 0.0156174, 0.0010072, 0.00568093, 0.0161041, 0.0400924};
+  Float_t pTBins[5] = {15,60,90,130,1000};
+  // Float_t pt_eta_w[24] = {2.77956E-05, 9.18632E-05, 0.000293832, 0.00122626, 6.23563E-05, 0.000266847, 0.000719646, 0.00257103, 0.000145766, 0.000593666, 0.00190437, 0.00597857, 0.000279288, 0.000928315, 0.00305011, 0.0106833, 0.000512649, 0.00144844, 0.00487751, 0.0156174, 0.0010072, 0.00568093, 0.0161041, 0.0400924};//intial 91+10
 
-  // Float_t pt_eta_w[24] = {1.44690e-04, 2.99957e-04,8.53123e-04, 2.11835e-03, 4.10669e-04, 1.00980e-03, 2.04606e-03, 5.03071e-03, 1.07257e-03, 2.73275e-03, 4.66572e-03, 1.10720e-02, 2.66948e-03, 7.29937e-03, 1.30736e-02, 2.50479e-02, 5.41416e-03, 1.55881e-02, 2.63075e-02, 4.58553e-02, 1.46556e-02, 4.03585e-02, 6.09825e-02, 9.03881e-02};
+  // Float_t pt_eta_w[24] = {3.69267E-05, 0.000121321, 0.000340163, 0.00134184, 7.68468E-05, 0.0002751, 0.000753798, 0.00273213, 0.000151832, 0.000618405, 0.00191832, 0.00609876, 0.000299502, 0.00096763, 0.00303735, 0.0103543, 0.000548696, 0.00153442, 0.00496281, 0.0157161, 0.00104143, 0.00566937, 0.0155961, 0.0406812}; // 4sigma
+
+  //  Float_t pt_eta_w[24] = {3.36064E-05, 0.000105937, 0.000299397, 0.00126576, 7.10368E-05, 0.00027268, 0.000737339, 0.00272032, 0.00014522, 0.000602727, 0.00193299, 0.00606077, 0.000286898, 0.000947173, 0.003027, 0.010872, 0.000545306, 0.00148787, 0.00495277, 0.0157645, 0.00103669, 0.00582632, 0.0162814, 0.0402141}; // 3sigma
+
+  // Float_t pt_eta_w[24] = {3.51309E-05, 0.000114036, 0.000332657, 0.00130865, 7.43972E-05, 0.000275719, 0.000746133, 0.00271474, 0.00014993, 0.000618752, 0.00195181, 0.00608874, 0.000293516, 0.000959826, 0.00298587, 0.0105984, 0.000542453, 0.00152041, 0.00489787, 0.0158322, 0.001054, 0.00571437, 0.0157655, 0.0403971}; //3.5 sigma
+
+  // Float_t pt_eta_w[24] = {3.3394E-05, 0.000108867, 0.000336047, 0.00131354, 7.41609E-05, 0.00027203, 0.00073821, 0.00271954, 0.000147556, 0.000620488, 0.00192221, 0.0061127, 0.000298625, 0.000946508, 0.00299467, 0.0106709, 0.000543555, 0.00151675, 0.00491541, 0.0158704, 0.0010614, 0.0057325, 0.0158172, 0.0402676}; // 3.4 sigma
+
+  Float_t pt_eta_w[24] = {4.02612E-05, 0.000120388, 0.000347194, 0.00132347, 7.3542E-05, 0.000282824, 0.000778923, 0.00281347, 0.000154639, 0.000625872, 0.00192782, 0.00603786, 0.000311132, 0.00100242, 0.00309482, 0.0102888, 0.000543691, 0.00155772, 0.00497516, 0.0158106, 0.0010541, 0.00569056, 0.015626, 0.0413519}; //3 sigma BW
+
+
+  // Float_t pt_eta_w[24] = {1.44690e-04, 2.99957e-04,8.53123e-04, 2.11835e-03, 4.10669e-04, 1.00980e-03, 2.04606e-03, 5.03071e-03, 1.07257e-03, 2.73275e-03, 4.66572e-03, 1.10720e-02, 2.66948e-03, 7.29937e-03, 1.30736e-02, 2.50479e-02, 5.41416e-03, 1.55881e-02, 2.63075e-02, 4.58553e-02, 1.46556e-02, 4.03585e-02, 6.09825e-02, 9.03881e-02}; //initial without ECIDS
    double weight1 = 0;
    double weight2 = 0;
 
@@ -340,8 +342,8 @@ void FTAna::BookHistograms()
   h.ss_loose_SSee = new TH1F("ss_loose_SSee", "", 4, -0.5, 3.5);
   h.ss_HT = new TH1D("ss_HT_all", "", 20, 200, 800);
   h.ss_HT_Jets = new TH1D("ss_HT_jets", "", 16, 200, 800);
-  h.ss_M_ll[0] = new TH1D("ss_Mll", "", 30, 60, 120);
-  h.ss_M_ll[1] = new TH1D("ss_Mll_small", "", 100, 60, 120);
+  h.ss_M_ll[0] = new TH1D("ss_Mll", "", 150, 60, 120);
+  h.ss_M_ll[1] = new TH1D("ss_Mll_small", "", 200, 60, 120);
   h.ss_lep_pt[0] = new TH1D("ss_lep_0_pt","",10, 15, 150);
   h.ss_lep_pt[1] = new TH1D("ss_lep_1_pt","",10, 15, 150);
   h.ss_lep_pt[2] = new TH1D("ss_lep_2_pt","",10, 15, 150);
@@ -364,8 +366,8 @@ void FTAna::BookHistograms()
   h.os_loose_SSee = new TH1F("os_loose_SSee", "", 4, -0.5, 3.5);
   h.os_HT = new TH1D("os_HT_all", "", 20, 200, 800);
   h.os_HT_Jets = new TH1D("os_HT_jets", "", 16, 200, 800);
-  h.os_M_ll[0] = new TH1D("os_Mll", "", 30, 60, 120);
-  h.os_M_ll[1] = new TH1D("os_Mll_small", "", 100, 60, 120);
+  h.os_M_ll[0] = new TH1D("os_Mll", "", 150, 60, 120);
+  h.os_M_ll[1] = new TH1D("os_Mll_small", "", 200, 60, 120);
   h.os_lep_pt[0] = new TH1D("os_lep_0_pt","",10, 15, 150);
   h.os_lep_pt[1] = new TH1D("os_lep_1_pt","",10, 15, 150);
   h.os_lep_pt[2] = new TH1D("os_lep_2_pt","",10, 15, 150);
