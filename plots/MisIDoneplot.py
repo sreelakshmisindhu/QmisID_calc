@@ -15,6 +15,15 @@ def uncs(outPath):
 
     s3_err_bw = [4.72247E-06, 1.25356E-05, 2.82976E-05, 8.83283E-05, 5.90073E-06, 1.74598E-05, 7.08379E-05, 0.000163445, 1.05191E-05, 4.70753E-05, 0.000127092, 0.000468457, 1.99548E-05, 7.09369E-05, 0.000241699, 0.000608859, 4.15377E-06, 5.65753E-05, 0.000140252, 0.000588034, 4.1028E-05, 0.000188804, 0.000805984, 0.00267722] #3 sigma bw error
 
+
+    sigma2_bw =[3.3447E-05, 0.000102218, 0.000302609, 0.00128252, 6.94749E-05, 0.000275807, 0.000738401, 0.00271407, 0.000146621, 0.000607518, 0.00194558, 0.00612981, 0.000295325, 0.000951644, 0.00305973, 0.010952, 0.000546632, 0.00147883, 0.00501401, 0.0161612, 0.00104932, 0.00586099, 0.0165123, 0.0391828]
+
+    s2_err_bw = [2.11207E-07, 8.14423E-07, 2.46321E-06, 6.46642E-06, 3.69794E-07, 1.77276E-06, 5.03471E-06, 1.08291E-05, 1.4E-06, 3.67117E-06, 1.02005E-05, 2.70881E-05, 1.60507E-06, 4.03686E-061, .76246E-05, 3.71283E-05, 1.69689E-06, 1.03172E-05, 8.46863E-06, 0.00010648, 1.9889E-06, 0.000260639, 5.51562E-05, 0.000164472]
+
+    sigma4_bw = [4.40728E-05, 0.000119373, 0.000360996, 0.0013677, 8.6988E-05, 0.000283872, 0.0007929, 0.00282845, 0.000172512, 0.000646759, 0.00194257, 0.00612243, 0.000348031, 0.00102347, 0.00323065, 0.0104057, 0.000557384, 0.0016087, 0.00498309, 0.0160015, 0.00110113, 0.00558765, 0.0153383, 0.0411622]
+
+    s4_err_bw = [3.80526E-06, 1.19148E-05, 4.04042E-05, 9.20568E-05, 4.60477E-06, 1.80728E-05, 5.53099E-05, 0.000197717, 9.5801E-06, 5.08874E-05, 0.000128907, 0.000307564, 2.54054E-05, 8.26319E-05, 0.000454215, 0.00076925, 2.98529E-05, 4.77966E-05, 0.000219887, 0.000459219, 4.27844E-05, 0.000385815, 0.000955765, 0.00274624]
+
     sigma3 = [3.36064E-05, 0.000105937, 0.000299397, 0.00126576, 7.10368E-05, 0.00027268, 0.000737339, 0.00272032, 0.00014522, 0.000602727, 0.00193299, 0.00606077, 0.000286898, 0.000947173, 0.003027, 0.010872, 0.000545306, 0.00148787, 0.00495277, 0.0157645, 0.00103669, 0.00582632, 0.0162814, 0.0402141]# 3sigma
 
     s3_err = [2.94609E-06, 1.20319E-05, 4.30008E-05, 0.000135398, 4.76697E-06, 2.11696E-05, 7.36807E-05, 0.000219806, 1.03773E-05, 4.90007E-05, 0.000189031, 0.000529546, 2.08968E-05, 8.67882E-05, 0.000332658, 0.00107426, 1.55579E-05, 7.37667E-05, 0.000255507, 0.000788004, 5.17013E-05, 0.000341017, 0.00107094, 0.00322004]# 3 sigma error
@@ -30,15 +39,19 @@ def uncs(outPath):
     h1 = root.TH1D("h1","",24,-0.5,23.5)
     h2 = root.TH1D("h2","",24,-0.5,23.5)
     h3 = root.TH1D("h2","",24,-0.5,23.5)
+    ratio_hist1 = root.TH1D("h2","",24,-0.5,23.5)
     print(sigma3)
     ax1.set_yscale("log")
 
     for i in range(1,25):
         print(i,sigma3_bw[i-1],sigma3[i-1])
-        h1.SetBinContent(i,initial[i-1])
-        h3.SetBinContent(i,sigma3_bw[i-1])
-        h2.SetBinContent(i,sigma3[i-1])
-        h1.SetBinError(i,initial_err[i-1])
+        # h1.SetBinContent(i,initial[i-1])
+        h1.SetBinContent(i,sigma3_bw[i-1])
+        h3.SetBinContent(i,sigma4_bw[i-1])
+        h2.SetBinContent(i,sigma2_bw[i-1])
+        h1.SetBinError(i,s3_err_bw[i-1])
+        ratio_hist1.SetBinContent(i, abs(h2.GetBinContent(i) - h3.GetBinContent(i)))
+        
         # h3.SetBinError(i,s3_err_bw[i-1])
         # h2.SetBinError(i,s3_err[i-1])
 
@@ -50,8 +63,9 @@ def uncs(outPath):
     # ax1.plot(h1_dummy, "E1 Same", markerstyle =1)
 
     # ax1.plot(h1, "E1", markerstyle =1, label="No fit 91[81, 101]", labelfmt="L")
-    ax1.plot(h3, "HIST", markerstyle =1 , linecolor=root.kBlue+1, label="3#sigma BW", labelfmt="L")
-    ax1.plot(h2, "HIST", markerstyle =1 ,linecolor=root.kRed+1, label="3#sigma Gauss", labelfmt="L")
+    ax1.plot(h1, "HIST", markerstyle =1 , linecolor=root.kBlack, label="3#sigma BW", labelfmt="L")
+    ax1.plot(h3, "HIST", markerstyle =1 , linecolor=root.kBlue+1, label="4#sigma BW", labelfmt="L")
+    ax1.plot(h2, "HIST", markerstyle =1 ,linecolor=root.kRed+1, label="2#sigma BW", labelfmt="L")
     line = root.TLine(ax1.get_xlim()[0], 0, ax1.get_xlim()[1], 0)
     
     line1 = root.TLine(3.5, 0.00001,3.5, ax1.get_ylim()[1])
@@ -71,9 +85,8 @@ def uncs(outPath):
     # ax1.plot(line5)
 
     # Calculate and draw the ratio                                                                                                                                                                                                            
-    ratio_hist1 = h2 - h3
-    ratio_hist1.Divide(h3)
-    # ax2.plot(ratio_hist1,"E1")
+    # ratio_hist1 = h2 - h3
+    ratio_hist1.Divide(h1)
     ax2.plot(ratio_hist1,"HIST")
 
     # Add extra space at top of plot to make room for labels                                                                                                                                                                                  
@@ -105,12 +118,12 @@ def uncs(outPath):
     
     # Add legend
     ax1.legend(loc=(0.2, 0.68, 0.4, 0.84))
-    fig.savefig(outPath+"3sigma_gauss_bw_one.png")
+    fig.savefig(outPath+"bw_2_3_4_sigma.png")
 
 
 if __name__ == '__main__':
     root.gROOT.SetBatch()
-    outPath = "/eos/home-s/ssindhu/4tops/plots/uncs/"
+    outPath = "/eos/home-s/ssindhu/4tops/plots/final_uncs/"
     uncs(outPath)
 
 

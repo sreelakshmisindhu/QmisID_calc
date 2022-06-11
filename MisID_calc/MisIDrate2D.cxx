@@ -98,7 +98,7 @@ void MisIDrate2D(std::string sample, std::string path) {
   double stp[24]={0};
   double bmin[24]={0};
   double bmax[24]={0};
-  for(int i=0;i<24;i++){vstrt[i]=0.001;stp[i]=0.0001;bmin[i]=0.;bmax[i]=1.0;}
+  for(int i=0;i<24;i++){vstrt[i]=0.01;stp[i]=0.001;bmin[i]=0.;bmax[i]=1.0;}
 
 
   double arglist[10];

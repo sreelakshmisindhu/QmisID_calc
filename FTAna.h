@@ -178,7 +178,38 @@ public :
    Float_t         weight_normalise;
    vector<string>  *weight_mcweight_name;
    vector<float>   *weight_mcweight_normalise;
-   
+   Int_t           lepton_1_ID;
+   Int_t           Tlepton_0_DFCommonAddAmbiguity;
+   Int_t           nTight;
+   Int_t           loose_eee;
+   Int_t           Tlepton_0_charge;
+   Int_t           SSem_passEtaCut;
+   Int_t           SSee_passECIDS;
+   Int_t           SSem_passECIDS;
+   Int_t           OSem_passECIDS;
+   Int_t           OSem_passEtaCut;
+   Int_t           OSee_passECIDS;
+   Int_t           lepton_0_truthClassificationSM4t_bkgFlag;
+   Int_t           lepton_1_DFCommonAddAmbiguity;
+   Int_t           lepton_1_truthClassificationSM4t_bkgFlag;
+   Int_t           lepton_2_truthClassificationSM4t_bkgFlag;
+   Int_t           Evt_Channel;
+   Int_t           lepton_2_ID;
+   Int_t           lepton_0_ID;
+   Int_t           lepton_0_ambiguityType;
+   Int_t           ttW_CRFlag;
+   Int_t           loose_SSem;
+   Int_t           Tlepton_2_ambiguityType;
+   Int_t           lepton_0_DFCommonAddAmbiguity;
+   Int_t           lepton_2_DFCommonAddAmbiguity;
+   Int_t           lepton_1_ambiguityType;
+   Int_t           lepton_2_ambiguityType;
+   Int_t           OSee_passEtaCut;
+   Int_t           Tlepton_1_ID;
+   Int_t           Tlepton_2_ID;
+   Int_t           Tlepton_1_DFCommonAddAmbiguity;
+   Int_t           Tlepton_2_DFCommonAddAmbiguity;
+     
    //List of branches
    TBranch        *b_boostedRecoHiggsPt;
    TBranch        *b_lep_2_pt;
@@ -328,6 +359,38 @@ public :
    TBranch        *b_weight_normalise;
    TBranch        *b_weight_mcweight_name;
    TBranch        *b_weight_mcweight_normalise;
+   TBranch        *b_lepton_1_ID;   
+   TBranch        *b_Tlepton_0_DFCommonAddAmbiguity;   
+   TBranch        *b_nTight;   
+   TBranch        *b_loose_eee;   
+   TBranch        *b_Tlepton_0_charge;   
+   TBranch        *b_SSem_passEtaCut;   
+   TBranch        *b_SSee_passECIDS;   
+   TBranch        *b_SSem_passECIDS;   
+   TBranch        *b_OSem_passECIDS;   
+   TBranch        *b_OSem_passEtaCut;   
+   TBranch        *b_OSee_passECIDS;   
+   TBranch        *b_lepton_0_truthClassificationSM4t_bkgFlag;   
+   TBranch        *b_lepton_1_DFCommonAddAmbiguity;   
+   TBranch        *b_lepton_1_truthClassificationSM4t_bkgFlag;   
+   TBranch        *b_lepton_2_truthClassificationSM4t_bkgFlag;   
+   TBranch        *b_Evt_Channel;   
+   TBranch        *b_lepton_2_ID;   
+   TBranch        *b_lepton_0_ID;   
+   TBranch        *b_lepton_0_ambiguityType;   
+   TBranch        *b_ttW_CRFlag;   
+   TBranch        *b_loose_SSem;   
+   TBranch        *b_Tlepton_2_ambiguityType;   
+   TBranch        *b_lepton_0_DFCommonAddAmbiguity;   
+   TBranch        *b_lepton_2_DFCommonAddAmbiguity;   
+   TBranch        *b_lepton_1_ambiguityType;   
+   TBranch        *b_lepton_2_ambiguityType;   
+   TBranch        *b_OSee_passEtaCut;   
+   TBranch        *b_Tlepton_1_ID;   
+   TBranch        *b_Tlepton_2_ID;   
+   TBranch        *b_Tlepton_1_DFCommonAddAmbiguity;   
+   TBranch        *b_Tlepton_2_DFCommonAddAmbiguity;   
+
 
    FTAna(TTree * /*tree*/ =0) : fChain(0) { }
    virtual ~FTAna() { }
@@ -652,6 +715,38 @@ void FTAna::Init(TTree *tree)
    fChain->SetBranchAddress("weight_normalise", &weight_normalise, &b_weight_normalise);
    fChain->SetBranchAddress("weight_mcweight_name", &weight_mcweight_name, &b_weight_mcweight_name);
    fChain->SetBranchAddress("weight_mcweight_normalise", &weight_mcweight_normalise, &b_weight_mcweight_normalise);
+   fChain->SetBranchAddress("lepton_1_ID", &lepton_1_ID, &b_lepton_1_ID);
+   fChain->SetBranchAddress("Tlepton_0_DFCommonAddAmbiguity", &Tlepton_0_DFCommonAddAmbiguity, &b_Tlepton_0_DFCommonAddAmbiguity);
+   fChain->SetBranchAddress("nTight", &nTight, &b_nTight);
+   fChain->SetBranchAddress("loose_eee", &loose_eee, &b_loose_eee);
+   fChain->SetBranchAddress("Tlepton_0_charge", &Tlepton_0_charge, &b_Tlepton_0_charge);
+   fChain->SetBranchAddress("SSem_passEtaCut", &SSem_passEtaCut, &b_SSem_passEtaCut);
+   fChain->SetBranchAddress("SSee_passECIDS", &SSee_passECIDS, &b_SSee_passECIDS);
+   fChain->SetBranchAddress("SSem_passECIDS", &SSem_passECIDS, &b_SSem_passECIDS);
+   fChain->SetBranchAddress("OSem_passECIDS", &OSem_passECIDS, &b_OSem_passECIDS);
+   fChain->SetBranchAddress("OSem_passEtaCut", &OSem_passEtaCut, &b_OSem_passEtaCut);
+   fChain->SetBranchAddress("OSee_passECIDS", &OSee_passECIDS, &b_OSee_passECIDS);
+   fChain->SetBranchAddress("lepton_0_truthClassificationSM4t_bkgFlag", &lepton_0_truthClassificationSM4t_bkgFlag, &b_lepton_0_truthClassificationSM4t_bkgFlag);
+   fChain->SetBranchAddress("lepton_1_DFCommonAddAmbiguity", &lepton_1_DFCommonAddAmbiguity, &b_lepton_1_DFCommonAddAmbiguity);
+   fChain->SetBranchAddress("lepton_1_truthClassificationSM4t_bkgFlag", &lepton_1_truthClassificationSM4t_bkgFlag, &b_lepton_1_truthClassificationSM4t_bkgFlag);
+   fChain->SetBranchAddress("lepton_2_truthClassificationSM4t_bkgFlag", &lepton_2_truthClassificationSM4t_bkgFlag, &b_lepton_2_truthClassificationSM4t_bkgFlag);
+   fChain->SetBranchAddress("Evt_Channel", &Evt_Channel, &b_Evt_Channel);
+   fChain->SetBranchAddress("lepton_2_ID", &lepton_2_ID, &b_lepton_2_ID);
+   fChain->SetBranchAddress("lepton_0_ID", &lepton_0_ID, &b_lepton_0_ID);
+   fChain->SetBranchAddress("lepton_0_ambiguityType", &lepton_0_ambiguityType, &b_lepton_0_ambiguityType);
+   fChain->SetBranchAddress("ttW_CRFlag", &ttW_CRFlag, &b_ttW_CRFlag);
+   fChain->SetBranchAddress("loose_SSem", &loose_SSem, &b_loose_SSem);
+   fChain->SetBranchAddress("Tlepton_2_ambiguityType", &Tlepton_2_ambiguityType, &b_Tlepton_2_ambiguityType);
+   fChain->SetBranchAddress("lepton_0_DFCommonAddAmbiguity", &lepton_0_DFCommonAddAmbiguity, &b_lepton_0_DFCommonAddAmbiguity);
+   fChain->SetBranchAddress("lepton_2_DFCommonAddAmbiguity", &lepton_2_DFCommonAddAmbiguity, &b_lepton_2_DFCommonAddAmbiguity);
+   fChain->SetBranchAddress("lepton_1_ambiguityType", &lepton_1_ambiguityType, &b_lepton_1_ambiguityType);
+   fChain->SetBranchAddress("lepton_2_ambiguityType", &lepton_2_ambiguityType, &b_lepton_2_ambiguityType);
+   fChain->SetBranchAddress("OSee_passEtaCut", &OSee_passEtaCut, &b_OSee_passEtaCut);
+   fChain->SetBranchAddress("Tlepton_1_ID", &Tlepton_1_ID, &b_Tlepton_1_ID);
+   fChain->SetBranchAddress("Tlepton_2_ID", &Tlepton_2_ID, &b_Tlepton_2_ID);
+   fChain->SetBranchAddress("Tlepton_1_DFCommonAddAmbiguity", &Tlepton_1_DFCommonAddAmbiguity, &b_Tlepton_1_DFCommonAddAmbiguity);
+   fChain->SetBranchAddress("Tlepton_2_DFCommonAddAmbiguity", &Tlepton_2_DFCommonAddAmbiguity, &b_Tlepton_2_DFCommonAddAmbiguity);
+
    Notify();
  }
 
@@ -703,6 +798,10 @@ int FTAna::ReadLimited(int level, Long64_t entry)
     b_nBTags_DL1r_85->GetEntry(entry);
     b_met_met->GetEntry(entry);
     b_el_ECIDSResult_float->GetEntry(entry);
+    b_SSee_passECIDS->GetEntry(entry);
+    b_SSem_passECIDS->GetEntry(entry);
+    b_Tlepton_1_DFCommonAddAmbiguity->GetEntry(entry);
+    b_Tlepton_0_DFCommonAddAmbiguity->GetEntry(entry);
     if(_data==0){
     b_mcChannelNumber->GetEntry(entry);
     b_weight_mc->GetEntry(entry);
