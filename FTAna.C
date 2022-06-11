@@ -120,7 +120,7 @@ Bool_t FTAna::Process(Long64_t entry)
     	if( nJets>0 ){
 
     	  if(el_ECIDSResult_float->at(0)>-0.337671 and el_ECIDSResult_float->at(1)>-0.337671){
-	  // std::cout<<" IN "<<lep_0_pt<<"  "<<lep_1_pt<<" Mll "<<Mll<<" OSee "<< OSee<<" SSee "<<loose_SSee<<" nJets "<<nJets<<" tight "<<(lep_0_isTight==1)<<(lep_1_isTight==1)<<" n "<<nEvtTotal<<std::endl;
+
 	    if (_data == 0){ 
 	      if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
 		  lumi =36207.7*(runNumber==284500)+44307.4*(runNumber==300000)+(runNumber==310000)*58450.1;
@@ -151,8 +151,38 @@ Bool_t FTAna::Process(Long64_t entry)
 		else{weights = -0.5;}
 
 	      }}
+	    else if (_data ==4){
+	      if ((Tlepton_1_DFCommonAddAmbiguity==1||Tlepton_0_DFCommonAddAmbiguity==1)&& !(Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2)){	    
+		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+		  weights = 1;}
+		else{weights = -0.5;}
+		_sumWeights = _sumWeights+1;
 
-	    
+		  std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
+		std::cout<<"Ecids "<<SSee_passECIDS<<SSem_passECIDS<<" ambiguity "<<Tlepton_1_DFCommonAddAmbiguity<<Tlepton_0_DFCommonAddAmbiguity<<" Btags " <<nBTags_DL1r_77<<" nJets "<<nJets<<" n "<<nEvtTotal<<std::endl;
+	      }}
+	    else if (_data ==6){
+	      if (Tlepton_1_DFCommonAddAmbiguity<0&&Tlepton_0_DFCommonAddAmbiguity<0){	    
+		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+		  weights = 1;}
+		else{weights = -0.5;}
+		_sumWeights = _sumWeights+1;
+
+		  std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
+		std::cout<<"Ecids "<<SSee_passECIDS<<SSem_passECIDS<<" ambiguity "<<Tlepton_1_DFCommonAddAmbiguity<<Tlepton_0_DFCommonAddAmbiguity<<" Btags " <<nBTags_DL1r_77<<" nJets "<<nJets<<" n "<<nEvtTotal<<std::endl;
+	      }}
+	    else if (_data ==5){
+	      if (Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2){	    
+		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+		  weights = 1;}
+		else{weights = -0.5;}
+		_sumWeights = _sumWeights+1;
+
+		  std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
+		std::cout<<"Ecids "<<SSee_passECIDS<<SSem_passECIDS<<" ambiguity "<<Tlepton_1_DFCommonAddAmbiguity<<Tlepton_0_DFCommonAddAmbiguity<<" Btags " <<nBTags_DL1r_77<<" nJets "<<nJets<<" n "<<nEvtTotal<<std::endl;
+	      }}
+	   
+
 	    if(_verbosity>0 && nEvtTotal%50000==0)cout<<"lumi"<<lumi<<" weights "<<weights<<" mll "<<Mll<<" OSee " << OSee<<" SSee" <<loose_SSee<<std::endl;
 	  
 
@@ -267,7 +297,10 @@ double FTAna::weight_closure(TLorentzVector l1,TLorentzVector l2)
 
   // Float_t pt_eta_w[24] = {3.3394E-05, 0.000108867, 0.000336047, 0.00131354, 7.41609E-05, 0.00027203, 0.00073821, 0.00271954, 0.000147556, 0.000620488, 0.00192221, 0.0061127, 0.000298625, 0.000946508, 0.00299467, 0.0106709, 0.000543555, 0.00151675, 0.00491541, 0.0158704, 0.0010614, 0.0057325, 0.0158172, 0.0402676}; // 3.4 sigma
 
-  Float_t pt_eta_w[24] = {4.02612E-05, 0.000120388, 0.000347194, 0.00132347, 7.3542E-05, 0.000282824, 0.000778923, 0.00281347, 0.000154639, 0.000625872, 0.00192782, 0.00603786, 0.000311132, 0.00100242, 0.00309482, 0.0102888, 0.000543691, 0.00155772, 0.00497516, 0.0158106, 0.0010541, 0.00569056, 0.015626, 0.0413519}; //3 sigma BW
+  //  Float_t pt_eta_w[24] = {4.02612E-05, 0.000120388, 0.000347194, 0.00132347, 7.3542E-05, 0.000282824, 0.000778923, 0.00281347, 0.000154639, 0.000625872, 0.00192782, 0.00603786, 0.000311132, 0.00100242, 0.00309482, 0.0102888, 0.000543691, 0.00155772, 0.00497516, 0.0158106, 0.0010541, 0.00569056, 0.015626, 0.0413519}; //3 sigma BW
+  //  Float_t pt_eta_w[24] = {4.40728E-05, 0.000119373, 0.000360996, 0.0013677,8.6988E-05, 0.000283872, 0.0007929, 0.00282845, 0.000172512, 0.000646759, 0.00194257, 0.00612243, 0.000348031, 0.00102347, 0.00323065, 0.0104057, 0.000557384, 0.0016087, 0.00498309, 0.0160015, 0.00110113, 0.00558765, 0.0153383, 0.0411622};//4 sigma BW
+  
+  Float_t pt_eta_w[24] = {3.3447E-05, 0.000102218, 0.000302609, 0.00128252, 6.94749E-05, 0.000275807, 0.000738401, 0.00271407, 0.000146621, 0.000607518, 0.00194558, 0.00612981, 0.000295325, 0.000951644, 0.00305973, 0.010952, 0.000546632, 0.00147883, 0.00501401, 0.0161612, 0.00104932, 0.00586099, 0.0165123, 0.0391828}; //2sigma BW
 
 
   // Float_t pt_eta_w[24] = {1.44690e-04, 2.99957e-04,8.53123e-04, 2.11835e-03, 4.10669e-04, 1.00980e-03, 2.04606e-03, 5.03071e-03, 1.07257e-03, 2.73275e-03, 4.66572e-03, 1.10720e-02, 2.66948e-03, 7.29937e-03, 1.30736e-02, 2.50479e-02, 5.41416e-03, 1.55881e-02, 2.63075e-02, 4.58553e-02, 1.46556e-02, 4.03585e-02, 6.09825e-02, 9.03881e-02}; //initial without ECIDS
