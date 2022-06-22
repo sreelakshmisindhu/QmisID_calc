@@ -41,10 +41,10 @@ void FTAna::SlaveTerminate()
   ofstream fout(_SumFileName1);
   //Put text output in the summary file.
 
-  for(int a=0;a<4;a++){
-    for(int b=0;b<6;b++){
-      for(int c=0;c<4;c++){
-        for(int d=0;d<6;d++){
+  for(int a=0;a<pt_bins;a++){
+    for(int b=0;b<eta_bins;b++){
+      for(int c=0;c<pt_bins;c++){
+        for(int d=0;d<eta_bins;d++){
           fout<<h_SS[a][b][c][d]<<endl;
         }
       }
@@ -52,10 +52,10 @@ void FTAna::SlaveTerminate()
   }
   ofstream fout2(_SumFileName2);
 
-  for(int a=0;a<4;a++){
-    for(int b=0;b<6;b++){
-      for(int c=0;c<4;c++){
-        for(int d=0;d<6;d++){
+  for(int a=0;a<pt_bins;a++){
+    for(int b=0;b<eta_bins;b++){
+      for(int c=0;c<pt_bins;c++){
+        for(int d=0;d<eta_bins;d++){
           fout2<<h_OS[a][b][c][d]<<endl;
         }
       }
@@ -99,8 +99,6 @@ Bool_t FTAna::Process(Long64_t entry)
   double Zmass =0;                                                                                                                                                        
   double massWindow=0;                                                                                                                                                   
 
-  Float_t etaBins[7] = {0,0.6,1.1,1.52,1.7,2.3,2.5};
-  Float_t pTBins[5] = {15,60,90,130,1000};
   // cs = 55.5413852*(mcChannelNumber==700320)+286.392209*(mcChannelNumber==700321)+1879.375291*(mcChannelNumber==700322);
 
   Lepton lep0; lep0.v.SetPtEtaPhiE(lep_0_pt/1000, lep_0_eta, lep_0_phi, lep_0_e/1000);
@@ -188,29 +186,48 @@ Bool_t FTAna::Process(Long64_t entry)
 
    int i=0,j=0,k=0,l=0, m=0;
 
- if(lep_0_pt<60000) i=0;
- else if(lep_0_pt<90000) i=1;
- else if(lep_0_pt<130000) i=2;
- else i=3;
+   for (int bini =0; bini<pt_bins; bini++){
+     if (pTBins[bini]<lep0.v.Pt() and lep0.v.Pt()<pTBins[bini+1]){i=bini; break;}
+     else{i=pt_bins - 1;}}
+     // std::cout<<pTBins[bini]<<" "<<lep0.v.Pt()<<" "<<i<<" "<<pTBins[bini+1]<<std::endl;}
 
- if(lep_1_pt<60000) k=0;
- else if(lep_1_pt<90000) k=1;
- else if(lep_1_pt<130000) k=2;
- else k=3;
+   for (int bink =0; bink<pt_bins; bink++){
+     if (pTBins[bink]<lep1.v.Pt() and lep1.v.Pt()<pTBins[bink+1]){k=bink; break;}
+     else{k=pt_bins - 1;}}
 
- if(fabs(lep_0_eta)<0.6) j=0;
- else if(fabs(lep_0_eta)<1.1) j=1;
- else if(fabs(lep_0_eta)<1.52) j=2;
- else if(fabs(lep_0_eta)<1.7) j=3;
- else if(fabs(lep_0_eta)<2.3) j=4;
- else j=5;
+   for (int binj =0; binj<eta_bins; binj++){
+     if (etaBins[binj]<fabs(lep0.v.Eta())and fabs(lep0.v.Eta())<etaBins[binj+1]){j=binj; break;}
+     else{j=eta_bins - 1;}}
 
- if(fabs(lep_1_eta)<0.6) l=0;
- else if(fabs(lep_1_eta)<1.1) l=1;
- else if(fabs(lep_1_eta)<1.52) l=2;
- else if(fabs(lep_1_eta)<1.7) l=3;
- else if(fabs(lep_1_eta)<2.3) l=4;
- else l=5;
+
+   for (int binl =0; binl<eta_bins; binl++){
+     if (etaBins[binl]<fabs(lep1.v.Eta()) and fabs(lep1.v.Eta())<etaBins[binl+1]){l=binl; break;}
+     else{l=eta_bins - 1;}}
+   // std::cout<<lep0.v.Pt()<<" "<<i<<" "<<lep1.v.Pt()<<" "<<k<<" "<<lep0.v.Eta()<<" "<<j<<" "<<lep1.v.Eta()<<" "<<l<<" "<<std::endl;     
+
+ // if(lep_0_pt<60000) i=0;
+ // else if(lep_0_pt<90000) i=1;
+ // else if(lep_0_pt<130000) i=2;
+ // else i=3;
+
+ // if(lep_1_pt<60000) k=0;
+ // else if(lep_1_pt<90000) k=1;
+ // else if(lep_1_pt<130000) k=2;
+ // else k=3;
+
+ // if(fabs(lep_0_eta)<0.6) j=0;
+ // else if(fabs(lep_0_eta)<1.1) j=1;
+ // else if(fabs(lep_0_eta)<1.52) j=2;
+ // else if(fabs(lep_0_eta)<1.7) j=3;
+ // else if(fabs(lep_0_eta)<2.3) j=4;
+ // else j=5;
+
+ // if(fabs(lep_1_eta)<0.6) l=0;
+ // else if(fabs(lep_1_eta)<1.1) l=1;
+ // else if(fabs(lep_1_eta)<1.52) l=2;
+ // else if(fabs(lep_1_eta)<1.7) l=3;
+ // else if(fabs(lep_1_eta)<2.3) l=4;
+ // else l=5;
 
   Sum = Sum+weights;
   if(OSee==1){
@@ -285,8 +302,6 @@ Bool_t FTAna::Process(Long64_t entry)
 
 double FTAna::weight_closure(TLorentzVector l1,TLorentzVector l2)
 {
-  Float_t etaBins[7] = {0,0.6,1.1,1.52,1.7,2.3,2.5};
-  Float_t pTBins[5] = {15,60,90,130,1000};
   // Float_t pt_eta_w[24] = {2.77956E-05, 9.18632E-05, 0.000293832, 0.00122626, 6.23563E-05, 0.000266847, 0.000719646, 0.00257103, 0.000145766, 0.000593666, 0.00190437, 0.00597857, 0.000279288, 0.000928315, 0.00305011, 0.0106833, 0.000512649, 0.00144844, 0.00487751, 0.0156174, 0.0010072, 0.00568093, 0.0161041, 0.0400924};//intial 91+10
 
   // Float_t pt_eta_w[24] = {3.69267E-05, 0.000121321, 0.000340163, 0.00134184, 7.68468E-05, 0.0002751, 0.000753798, 0.00273213, 0.000151832, 0.000618405, 0.00191832, 0.00609876, 0.000299502, 0.00096763, 0.00303735, 0.0103543, 0.000548696, 0.00153442, 0.00496281, 0.0157161, 0.00104143, 0.00566937, 0.0155961, 0.0406812}; // 4sigma
@@ -365,8 +380,6 @@ Int_t FTAna::min_delR(vector<double> deltaR)
 
 void FTAna::BookHistograms()
 {
-  Float_t etaBins[7] = {0,0.6,1.1,1.52,1.7,2.3,2.5};
-  Float_t pTBins[5] = {15,60,90,130,1000};
 
   h.ss_Muons = new TH1F("ss_n_Muons", "", 4, -0.5, 3.5);
   h.ss_Electrons = new TH1F("ss_n_Electrons", "", 4, -0.5, 3.5);
@@ -380,16 +393,16 @@ void FTAna::BookHistograms()
   h.ss_lep_pt[0] = new TH1D("ss_lep_0_pt","",10, 15, 150);
   h.ss_lep_pt[1] = new TH1D("ss_lep_1_pt","",10, 15, 150);
   h.ss_lep_pt[2] = new TH1D("ss_lep_2_pt","",10, 15, 150);
-  h.ss_lep_pt_Q[0] = new TH1D("ss_lep0_pt","",4, pTBins);
-  h.ss_lep_pt_Q[1] = new TH1D("ss_lep1_pt","",4, pTBins);
-  h.ss_lep_pt_Q[2] = new TH1D("ss_lep2_pt","",4, pTBins);
-  h.ss_lep_eta[0] = new TH1D("ss_lep_0_eta","",6, etaBins);
-  h.ss_lep_eta[1] = new TH1D("ss_lep_1_eta","",6, etaBins);
-  h.ss_lep_eta[2] = new TH1D("ss_lep_2_eta","",6, etaBins);
+  h.ss_lep_pt_Q[0] = new TH1D("ss_lep0_pt","",pt_bins, pTBins);
+  h.ss_lep_pt_Q[1] = new TH1D("ss_lep1_pt","",pt_bins, pTBins);
+  h.ss_lep_pt_Q[2] = new TH1D("ss_lep2_pt","",pt_bins, pTBins);
+  h.ss_lep_eta[0] = new TH1D("ss_lep_0_eta","",eta_bins, etaBins);
+  h.ss_lep_eta[1] = new TH1D("ss_lep_1_eta","",eta_bins, etaBins);
+  h.ss_lep_eta[2] = new TH1D("ss_lep_2_eta","",eta_bins, etaBins);
   h.ss_n_Btags = new TH1F("ss_n_btags_77","", 6, -0.5, 5.5);
   h.ss_met = new TH1D("ss_met","", 10, 0,100);
-  h.ss_pt_eta[0] = new TH2D("ss_pt_eta_0","" ,6, etaBins,4, pTBins);
-  h.ss_pt_eta[1] = new TH2D("ss_pt_eta_1","" ,6, etaBins,4, pTBins);
+  h.ss_pt_eta[0] = new TH2D("ss_pt_eta_0","" ,eta_bins, etaBins,pt_bins, pTBins);
+  h.ss_pt_eta[1] = new TH2D("ss_pt_eta_1","" ,eta_bins, etaBins,pt_bins, pTBins);
 
 
   h.os_Muons = new TH1F("os_n_Muons", "", 4, -0.5, 3.5);
@@ -404,16 +417,16 @@ void FTAna::BookHistograms()
   h.os_lep_pt[0] = new TH1D("os_lep_0_pt","",10, 15, 150);
   h.os_lep_pt[1] = new TH1D("os_lep_1_pt","",10, 15, 150);
   h.os_lep_pt[2] = new TH1D("os_lep_2_pt","",10, 15, 150);
-  h.os_lep_pt_Q[0] = new TH1D("os_lep0_pt","",4, pTBins);
-  h.os_lep_pt_Q[1] = new TH1D("os_lep1_pt","",4, pTBins);
-  h.os_lep_pt_Q[2] = new TH1D("os_lep2_pt","",4, pTBins);
-  h.os_lep_eta[0] = new TH1D("os_lep_0_eta","",6, etaBins);
-  h.os_lep_eta[1] = new TH1D("os_lep_1_eta","",6, etaBins);
-  h.os_lep_eta[2] = new TH1D("os_lep_2_eta","",6, etaBins);
+  h.os_lep_pt_Q[0] = new TH1D("os_lep0_pt","",pt_bins, pTBins);
+  h.os_lep_pt_Q[1] = new TH1D("os_lep1_pt","",pt_bins, pTBins);
+  h.os_lep_pt_Q[2] = new TH1D("os_lep2_pt","",pt_bins, pTBins);
+  h.os_lep_eta[0] = new TH1D("os_lep_0_eta","",eta_bins, etaBins);
+  h.os_lep_eta[1] = new TH1D("os_lep_1_eta","",eta_bins, etaBins);
+  h.os_lep_eta[2] = new TH1D("os_lep_2_eta","",eta_bins, etaBins);
   h.os_n_Btags = new TH1F("os_n_btags_77","", 6, -0.5, 5.5);
   h.os_met = new TH1D("os_met","", 10, 0,100);
-  h.os_pt_eta[0] = new TH2D("os_pt_eta_0","" ,6, etaBins,4, pTBins);
-  h.os_pt_eta[1] = new TH2D("os_pt_eta_1","" ,6, etaBins,4, pTBins);
+  h.os_pt_eta[0] = new TH2D("os_pt_eta_0","" ,eta_bins, etaBins,pt_bins, pTBins);
+  h.os_pt_eta[1] = new TH2D("os_pt_eta_1","" ,eta_bins, etaBins,pt_bins, pTBins);
 
 // h.n_Btags = new TH1F("Btags", "",6, -0.5, 5.5);
 

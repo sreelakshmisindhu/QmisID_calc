@@ -41,10 +41,10 @@ void ana(int sample=1)
     //chain->Add("DY50_test.root");
     //can have more chain->Add() lines here.
      
-     hstfilename="new_regions/ttw/data_all.root";//output histogram file
+     hstfilename="test/data_all.root";//output histogram file
 
-     sumfilename1="new_regions/ttw/ss.data_all.txt"; //output text file
-     sumfilename2="new_regions/ttw/os.data_all.txt"; //output text file
+     sumfilename1="test/ss.data_all.txt"; //output text file
+     sumfilename2="test/os.data_all.txt"; //output text file
   // }
 
   std::cout<<"Output files are "<<hstfilename<<" and "<<sumfilename1<<" and "<<sumfilename2<<std::endl;
@@ -52,7 +52,7 @@ void ana(int sample=1)
   m_selec.SetSumFileName1(sumfilename1);
   m_selec.SetSumFileName2(sumfilename2);
   m_selec.SetVerbose(200);//set verbosity level for output.
-  m_selec.SetData(6);//0 is MC, 1 data, 2 ata with BG subtraction, 3 QmisID reweighting, 4 gammastar region, 5 co region, 6 ttw region
+  m_selec.SetData(2);//0 is MC, 1 data, 2 ata with BG subtraction, 3 QmisID reweighting, 4 gammastar region, 5 co region, 6 ttw region
 
   //this calls the Process function for each event in the chain
   //and runs the m_selec code over it.

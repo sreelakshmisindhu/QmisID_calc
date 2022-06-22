@@ -475,6 +475,12 @@ public :
 
    float h_OS[4][6][4][6]= {.0};
    float h_SS[4][6][4][6] ={.0};
+   int pt_bins =4;
+   int eta_bins = 6;
+   Float_t etaBins[7] = {0,0.6,1.1,1.52,1.7,2.3,2.5};
+   Float_t pTBins[5] = {15,60,90,130,1000};
+
+
 
    /* vector<Lepton> goodMu;//,goodEle, goodPho,goodTau,goodJet, goodLep; */
    /* vector<Lepton> goodEle;//(sl) */
