@@ -51,7 +51,7 @@ void ana(int sample=1)
   m_selec.SetSumFileName1(sumfilename1);
   m_selec.SetSumFileName2(sumfilename2);
   m_selec.SetVerbose(200);//set verbosity level for output.
-  m_selec.SetData(3);//0 is MC, 1 data, 2 ata with BG subtraction, 3 QmisID reweighting, 4 gammastar region, 5 co region, 6 ttw region
+  m_selec.SetData(3);//******IMPORTANT***** 0 is MC, 1 data, 2 data with BG subtraction, 3 QmisID reweighting, 4 gammastar region, 5 co region, 6 ttw region
 
   //this calls the Process function for each event in the chain
   //and runs the m_selec code over it.

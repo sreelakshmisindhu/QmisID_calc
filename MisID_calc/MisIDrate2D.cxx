@@ -159,7 +159,9 @@ void MisIDrate2D(std::string sample, std::string path) {
 //  minuit.FixParameter(0);
 
   arglist[0] = 200000;
-  minuit.mnexcm("MINOS",arglist,1,ierflg);
+  // minuit.mnexcm("HESSE",arglist,1,ierflg);
+  minuit.mnexcm("MIGRAD",arglist,1,ierflg);
+  // minuit.mnexcm("MINOS",arglist,1,ierflg);
 
   double p[30]={0.};
   double e[30]={0.};

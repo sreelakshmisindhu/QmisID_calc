@@ -7,30 +7,30 @@
 
 void QmisID_count::Begin(TTree * /*tree*/)
 {
-   // The Begin() function is called at the start of the query.
-   // When running with PROOF Begin() is only called on the client.
-   // The tree argument is deprecated (on PROOF 0 is passed).
-   TString option = GetOption();
+  // The Begin() function is called at the start of the query.
+  // When running with PROOF Begin() is only called on the client.
+  // The tree argument is deprecated (on PROOF 0 is passed).
+  TString option = GetOption();
 }
 void QmisID_count::SlaveBegin(TTree * /*tree*/)
 {
-   // The SlaveBegin() function is called after the Begin() function.
-   // When running with PROOF SlaveBegin() is called on each slave server.
-   // The tree argument is deprecated (on PROOF 0 is passed).
-   TString option = GetOption();
-   //Initialize global variables here.
-   GEV = 1000.;    MEV2GEV = .001;
-   nEvtTotal = 0;
-   //Create the histogram file
-   _HstFile = new TFile(_HstFileName,"recreate");
-   //Call the function to book the histograms we declared in Hists.
-   BookHistograms();
+  // The SlaveBegin() function is called after the Begin() function.
+  // When running with PROOF SlaveBegin() is called on each slave server.
+  // The tree argument is deprecated (on PROOF 0 is passed).
+  TString option = GetOption();
+  //Initialize global variables here.
+  GEV = 1000.;    MEV2GEV = .001;
+  nEvtTotal = 0;
+  //Create the histogram file
+  _HstFile = new TFile(_HstFileName,"recreate");
+  //Call the function to book the histograms we declared in Hists.
+  BookHistograms();
 }
 void QmisID_count::SlaveTerminate()
 {
-   // The SlaveTerminate() function is called after all entries or objects
-   // have been processed. When running with PROOF SlaveTerminate() is called
-   // on each slave server.
+  // The SlaveTerminate() function is called after all entries or objects
+  // have been processed. When running with PROOF SlaveTerminate() is called
+  // on each slave server.
   //Write histograms and close histogram file
   _HstFile->Write();
   _HstFile->Close();
@@ -65,18 +65,14 @@ void QmisID_count::SlaveTerminate()
 }
 void QmisID_count::Terminate()
 {
-   // The Terminate() function is the last function to be called during
-   // a query. It always runs on the client, it can be used to present
-   // the results graphically or save the results to file.
+  // The Terminate() function is the last function to be called during
+  // a query. It always runs on the client, it can be used to present
+  // the results graphically or save the results to file.
 }
 Bool_t QmisID_count::Process(Long64_t entry)
 {
-   //
-   // This function should contain the "body" of the analysis. It can contain
-   // simple or elaborate selection criteria, run algorithms on the data
-   // of the event and typically fill histograms.
-   //
-   // The return value is currently not used.
+  //
+  // The return value is currently not used.
 
   // Decide to read in whole event or just some branches.
   int readevent = ReadLimited(1,entry);
@@ -87,9 +83,6 @@ Bool_t QmisID_count::Process(Long64_t entry)
   if(_verbosity>1000 && nEvtTotal%100==0)cout<<"Processed "<<nEvtTotal<<" event..."<<endl;      
   else if(_verbosity>0 && nEvtTotal%50000==0)cout<<"Processed "<<nEvtTotal<<" event..."<<endl;
   
-  //Your CODE starts here
-  // if (nEvtTotal < 100000) Terminate();
-  // std::cout<<"before loop"<<nEvtTotal<<std::endl;
   double weights = 0;
   // float eventweight = 0;
   // eventweight = 1/_sumWeights;
@@ -109,9 +102,9 @@ Bool_t QmisID_count::Process(Long64_t entry)
   // std::cout<<lep_0_pt<<"  "<<lep_1_pt<<" Mll "<<Mll<<" OSee "<< OSee<<" SSee "<<loose_SSee<<" nJets "<<nJets<<" tight "<<(lep_0_isTight==1)<<(lep_1_isTight==1)<<" n "<<nEvtTotal<<std::endl;
   // if(lep_0_isTight!=1 or lep_1_isTight!=1){std::cout<<nEvtTotal<<" "<<lep_1_isTight<<"  "<<lep_0_isTight<<std::endl;}          
   
-   if(OSee==1 or loose_SSee ==1){               
-     if (OSee == 1){Zmass = 90.64; massWindow = 4.67*sigma;}      // mass window from gauss fit {Zmass = 90.61; massWindow = 3.337*sigma;}
-     else if (loose_SSee == 1){Zmass = 89.56; massWindow = 5.63*sigma; MW_low = 89.56 - 5.63*sigma; MW_high = 89.56 + 5.63*sigma;}// mass windoe from gauss fit {Zmass = 89.48; massWindow = 3.843*sigma; MW_low = 89.48 - 3.843*sigma; MW_high = 89.48 + 3.843*sigma;}
+  if(OSee==1 or loose_SSee ==1){               
+    if (OSee == 1){Zmass = 90.64; massWindow = 4.67*sigma;}      // mass window from gauss fit {Zmass = 90.61; massWindow = 3.337*sigma;}
+    else if (loose_SSee == 1){Zmass = 89.56; massWindow = 5.63*sigma; MW_low = 89.56 - 5.63*sigma; MW_high = 89.56 + 5.63*sigma;}// mass windoe from gauss fit {Zmass = 89.48; massWindow = 3.843*sigma; MW_low = 89.48 - 3.843*sigma; MW_high = 89.48 + 3.843*sigma;}
     if(lep_0_isTight==1 and lep_1_isTight==1){ // remove loose lepton         
       // std::cout<<"pass cuts"<<nEvtTotal<<" "<<lep_1_isTight<<"  "<<lep_0_isTight<<std::endl;
       if(Mll>(Zmass-2*massWindow) and Mll<(Zmass+2*massWindow) ){
@@ -121,24 +114,14 @@ Bool_t QmisID_count::Process(Long64_t entry)
 
 	    if (_data == 0){ 
 	      if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
-		  lumi =36207.7*(runNumber==284500)+44307.4*(runNumber==300000)+(runNumber==310000)*58450.1;
-		  weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}
+		lumi =36207.7*(runNumber==284500)+44307.4*(runNumber==300000)+(runNumber==310000)*58450.1;
+		weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}
 	    else if (_data == 1){
-	      // if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
-		weights = 1;}
+	      weights = 1;}
 	    else if (_data == 2){
 	      if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
 		weights = 1;}
 	      else{weights = -0.5;}}
-	    // else if (_data == 3){
-	    //   if(OSee==1){
-	    //   // if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
-	    // 	weights = weight_closure(lep0.v, lep1.v);}
-	    //   // else{weights = -0.5*weight_closure(lep0.v, lep1.v);}}
-	    //   else if (loose_SSee == 1){
-	    // 	// if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
-	    // 	  weights =1;}
-	    // // else {weights = -0.5;}}}
 	    else if (_data == 3){
 	      if(OSee == 1){
 	    	weights = weight_closure(lep0.v, lep1.v);
@@ -156,7 +139,7 @@ Bool_t QmisID_count::Process(Long64_t entry)
 		else{weights = -0.5;}
 		_sumWeights = _sumWeights+1;
 
-		  std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
+		std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
 		std::cout<<"Ecids "<<SSee_passECIDS<<SSem_passECIDS<<" ambiguity "<<Tlepton_1_DFCommonAddAmbiguity<<Tlepton_0_DFCommonAddAmbiguity<<" Btags " <<nBTags_DL1r_77<<" nJets "<<nJets<<" n "<<nEvtTotal<<std::endl;
 	      }}
 	    else if (_data ==6){
@@ -166,7 +149,7 @@ Bool_t QmisID_count::Process(Long64_t entry)
 		else{weights = -0.5;}
 		_sumWeights = _sumWeights+1;
 
-		  std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
+		std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
 		std::cout<<"Ecids "<<SSee_passECIDS<<SSem_passECIDS<<" ambiguity "<<Tlepton_1_DFCommonAddAmbiguity<<Tlepton_0_DFCommonAddAmbiguity<<" Btags " <<nBTags_DL1r_77<<" nJets "<<nJets<<" n "<<nEvtTotal<<std::endl;
 	      }}
 	    else if (_data ==5){
@@ -176,7 +159,7 @@ Bool_t QmisID_count::Process(Long64_t entry)
 		else{weights = -0.5;}
 		_sumWeights = _sumWeights+1;
 
-		  std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
+		std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
 		std::cout<<"Ecids "<<SSee_passECIDS<<SSem_passECIDS<<" ambiguity "<<Tlepton_1_DFCommonAddAmbiguity<<Tlepton_0_DFCommonAddAmbiguity<<" Btags " <<nBTags_DL1r_77<<" nJets "<<nJets<<" n "<<nEvtTotal<<std::endl;
 	      }}
 	   
@@ -184,92 +167,92 @@ Bool_t QmisID_count::Process(Long64_t entry)
 	    if(_verbosity>0 && nEvtTotal%50000==0)cout<<"lumi"<<lumi<<" weights "<<weights<<" mll "<<Mll<<" OSee " << OSee<<" SSee" <<loose_SSee<<std::endl;
 	  
 
-   int i=0,j=0,k=0,l=0, m=0;
+	    int i=0,j=0,k=0,l=0, m=0;
 
-   for (int bini =0; bini<pt_bins; bini++){
-     if (pTBins[bini]<lep0.v.Pt() and lep0.v.Pt()<pTBins[bini+1]){i=bini; break;}
-     else{i=pt_bins - 1;}}
-     // std::cout<<pTBins[bini]<<" "<<lep0.v.Pt()<<" "<<i<<" "<<pTBins[bini+1]<<std::endl;}
+	    for (int bini =0; bini<pt_bins; bini++){
+	      if (pTBins[bini]<lep0.v.Pt() and lep0.v.Pt()<pTBins[bini+1]){i=bini; break;}
+	      else{i=pt_bins - 1;}}
+	    // std::cout<<pTBins[bini]<<" "<<lep0.v.Pt()<<" "<<i<<" "<<pTBins[bini+1]<<std::endl;}
 
-   for (int bink =0; bink<pt_bins; bink++){
-     if (pTBins[bink]<lep1.v.Pt() and lep1.v.Pt()<pTBins[bink+1]){k=bink; break;}
-     else{k=pt_bins - 1;}}
+	    for (int bink =0; bink<pt_bins; bink++){
+	      if (pTBins[bink]<lep1.v.Pt() and lep1.v.Pt()<pTBins[bink+1]){k=bink; break;}
+	      else{k=pt_bins - 1;}}
 
-   for (int binj =0; binj<eta_bins; binj++){
-     if (etaBins[binj]<fabs(lep0.v.Eta())and fabs(lep0.v.Eta())<etaBins[binj+1]){j=binj; break;}
-     else{j=eta_bins - 1;}}
-
-
-   for (int binl =0; binl<eta_bins; binl++){
-     if (etaBins[binl]<fabs(lep1.v.Eta()) and fabs(lep1.v.Eta())<etaBins[binl+1]){l=binl; break;}
-     else{l=eta_bins - 1;}}
-   // std::cout<<lep0.v.Pt()<<" "<<i<<" "<<lep1.v.Pt()<<" "<<k<<" "<<lep0.v.Eta()<<" "<<j<<" "<<lep1.v.Eta()<<" "<<l<<" "<<std::endl;     
+	    for (int binj =0; binj<eta_bins; binj++){
+	      if (etaBins[binj]<fabs(lep0.v.Eta())and fabs(lep0.v.Eta())<etaBins[binj+1]){j=binj; break;}
+	      else{j=eta_bins - 1;}}
 
 
-  Sum = Sum+weights;
-  if(OSee==1){
+	    for (int binl =0; binl<eta_bins; binl++){
+	      if (etaBins[binl]<fabs(lep1.v.Eta()) and fabs(lep1.v.Eta())<etaBins[binl+1]){l=binl; break;}
+	      else{l=eta_bins - 1;}}
+	    // std::cout<<lep0.v.Pt()<<" "<<i<<" "<<lep1.v.Pt()<<" "<<k<<" "<<lep0.v.Eta()<<" "<<j<<" "<<lep1.v.Eta()<<" "<<l<<" "<<std::endl;     
 
-    h_OS[i][j][k][l] += weights;
 
-  h.os_Jets->Fill(nJets,weights);
-  h.os_Muons->Fill(nMuons,weights);
-  h.os_Electrons->Fill(nElectrons,weights);
-  h.os_HT->Fill(HT_all/1000,weights);
-  h.os_HT_Jets->Fill(HT_jets/1000,weights);
-  h.os_met->Fill(met_met/1000,weights);
-  h.os_lep_pt[0]->Fill(lep0.v.Pt(),weights); 
-  h.os_lep_pt[1]->Fill(lep1.v.Pt(),weights); 
-  h.os_lep_pt[2]->Fill(lep2.v.Pt(),weights); 
-  h.os_lep_pt_Q[0]->Fill(lep0.v.Pt(),weights); 
-  h.os_lep_pt_Q[1]->Fill(lep1.v.Pt(),weights); 
-  h.os_lep_pt_Q[2]->Fill(lep2.v.Pt(),weights); 
-  h.os_lep_eta[0]->Fill(lep0.v.Eta(),weights); 
-  h.os_lep_eta[1]->Fill(lep1.v.Eta(),weights); 
-  h.os_lep_eta[2]->Fill(lep2.v.Eta(),weights); 
-  h.os_pt_eta[0]->Fill(lep0.v.Eta(),lep0.v.Pt(),weights); 
-  h.os_pt_eta[1]->Fill(lep1.v.Eta(),lep1.v.Pt(),weights); 
-  h.os_n_Btags->Fill(nBTags_DL1r_77,weights);
-  h.os_OSee->Fill(OSee,weights);
-  h.os_loose_SSee->Fill(loose_SSee,weights);
-  if(Mll>MW_low and Mll<MW_high ){
+	    Sum = Sum+weights;
+	    if(OSee==1){
 
-  h.os_M_ll[0]->Fill(Mll,weights);
-  h.os_M_ll[1]->Fill(Mll,weights);
-  }
+	      h_OS[i][j][k][l] += weights;
 
-    // std::cout<<" OSee "<<lep_0_charge<<" pdgid "<<lep_0_pdgid<<" 1" << lep_1_charge<<" pdgid "<<lep_1_pdgid<<std::endl;
-}
-  else if (loose_SSee==1){
-    h_SS[i][j][k][l] += weights;
+	      h.os_Jets->Fill(nJets,weights);
+	      h.os_Muons->Fill(nMuons,weights);
+	      h.os_Electrons->Fill(nElectrons,weights);
+	      h.os_HT->Fill(HT_all/1000,weights);
+	      h.os_HT_Jets->Fill(HT_jets/1000,weights);
+	      h.os_met->Fill(met_met/1000,weights);
+	      h.os_lep_pt[0]->Fill(lep0.v.Pt(),weights); 
+	      h.os_lep_pt[1]->Fill(lep1.v.Pt(),weights); 
+	      h.os_lep_pt[2]->Fill(lep2.v.Pt(),weights); 
+	      h.os_lep_pt_Q[0]->Fill(lep0.v.Pt(),weights); 
+	      h.os_lep_pt_Q[1]->Fill(lep1.v.Pt(),weights); 
+	      h.os_lep_pt_Q[2]->Fill(lep2.v.Pt(),weights); 
+	      h.os_lep_eta[0]->Fill(lep0.v.Eta(),weights); 
+	      h.os_lep_eta[1]->Fill(lep1.v.Eta(),weights); 
+	      h.os_lep_eta[2]->Fill(lep2.v.Eta(),weights); 
+	      h.os_pt_eta[0]->Fill(lep0.v.Eta(),lep0.v.Pt(),weights); 
+	      h.os_pt_eta[1]->Fill(lep1.v.Eta(),lep1.v.Pt(),weights); 
+	      h.os_n_Btags->Fill(nBTags_DL1r_77,weights);
+	      h.os_OSee->Fill(OSee,weights);
+	      h.os_loose_SSee->Fill(loose_SSee,weights);
+	      if(Mll>MW_low and Mll<MW_high ){
 
-  h.ss_Jets->Fill(nJets,weights);
-  h.ss_Muons->Fill(nMuons,weights);
-  h.ss_Electrons->Fill(nElectrons,weights);
-  h.ss_HT->Fill(HT_all/1000,weights);
-  h.ss_HT_Jets->Fill(HT_jets/1000,weights);
-  h.ss_met->Fill(met_met/1000,weights);
-  h.ss_lep_pt[0]->Fill(lep0.v.Pt(),weights); 
-  h.ss_lep_pt[1]->Fill(lep1.v.Pt(),weights); 
-  h.ss_lep_pt[2]->Fill(lep2.v.Pt(),weights); 
-  h.ss_lep_pt_Q[0]->Fill(lep0.v.Pt(),weights); 
-  h.ss_lep_pt_Q[1]->Fill(lep1.v.Pt(),weights); 
-  h.ss_lep_pt_Q[2]->Fill(lep2.v.Pt(),weights); 
-  h.ss_lep_eta[0]->Fill(lep0.v.Eta(),weights); 
-  h.ss_lep_eta[1]->Fill(lep1.v.Eta(),weights); 
-  h.ss_lep_eta[2]->Fill(lep2.v.Eta(),weights); 
-  h.ss_pt_eta[0]->Fill(lep0.v.Eta(),lep0.v.Pt(),weights); 
-  h.ss_pt_eta[1]->Fill(lep1.v.Eta(),lep1.v.Pt(),weights); 
-  h.ss_n_Btags->Fill(nBTags_DL1r_77,weights);
-  h.ss_OSee->Fill(OSee,weights);
-  h.ss_loose_SSee->Fill(loose_SSee,weights);
-  if(Mll>MW_low and Mll<MW_high ){
+		h.os_M_ll[0]->Fill(Mll,weights);
+		h.os_M_ll[1]->Fill(Mll,weights);
+	      }
+
+	      // std::cout<<" OSee "<<lep_0_charge<<" pdgid "<<lep_0_pdgid<<" 1" << lep_1_charge<<" pdgid "<<lep_1_pdgid<<std::endl;
+	    }
+	    else if (loose_SSee==1){
+	      h_SS[i][j][k][l] += weights;
+
+	      h.ss_Jets->Fill(nJets,weights);
+	      h.ss_Muons->Fill(nMuons,weights);
+	      h.ss_Electrons->Fill(nElectrons,weights);
+	      h.ss_HT->Fill(HT_all/1000,weights);
+	      h.ss_HT_Jets->Fill(HT_jets/1000,weights);
+	      h.ss_met->Fill(met_met/1000,weights);
+	      h.ss_lep_pt[0]->Fill(lep0.v.Pt(),weights); 
+	      h.ss_lep_pt[1]->Fill(lep1.v.Pt(),weights); 
+	      h.ss_lep_pt[2]->Fill(lep2.v.Pt(),weights); 
+	      h.ss_lep_pt_Q[0]->Fill(lep0.v.Pt(),weights); 
+	      h.ss_lep_pt_Q[1]->Fill(lep1.v.Pt(),weights); 
+	      h.ss_lep_pt_Q[2]->Fill(lep2.v.Pt(),weights); 
+	      h.ss_lep_eta[0]->Fill(lep0.v.Eta(),weights); 
+	      h.ss_lep_eta[1]->Fill(lep1.v.Eta(),weights); 
+	      h.ss_lep_eta[2]->Fill(lep2.v.Eta(),weights); 
+	      h.ss_pt_eta[0]->Fill(lep0.v.Eta(),lep0.v.Pt(),weights); 
+	      h.ss_pt_eta[1]->Fill(lep1.v.Eta(),lep1.v.Pt(),weights); 
+	      h.ss_n_Btags->Fill(nBTags_DL1r_77,weights);
+	      h.ss_OSee->Fill(OSee,weights);
+	      h.ss_loose_SSee->Fill(loose_SSee,weights);
+	      if(Mll>MW_low and Mll<MW_high ){
   
-  h.ss_M_ll[0]->Fill(Mll,weights);
-  h.ss_M_ll[1]->Fill(Mll,weights);
-  }}
+		h.ss_M_ll[0]->Fill(Mll,weights);
+		h.ss_M_ll[1]->Fill(Mll,weights);
+	      }}
   
 
-      //std::cout<<" SSee "<<lep_0_charge<<" pdgid "<<lep_0_pdgid<<" 1" << lep_1_charge<<" pdgid "<<lep_1_pdgid<<std::endl;
+	    //std::cout<<" SSee "<<lep_0_charge<<" pdgid "<<lep_0_pdgid<<" 1" << lep_1_charge<<" pdgid "<<lep_1_pdgid<<std::endl;
 	  }}}}}
 
   return 0;
@@ -334,15 +317,15 @@ double QmisID_count::weight_closure(TLorentzVector l1,TLorentzVector l2)
   // std::cout<<weight2<<weight1<<std::endl;
   // return weight1*( 1-weight2 )+weight2*(1-weight2); 
   return (weight1 + weight2 -2*weight1*weight2)/(1-weight1 -weight2 +2*weight1*weight2); 
- }
+}
   
 
 Double_t QmisID_count::delR(TLorentzVector v1,  TLorentzVector v2)
- { 
-   double del_eta = abs(v1.Eta() - v2.Eta());
-   //cout<< sqrt( pow(del_eta,2) + pow(delta_phi(v1.Phi(),v2.Phi()),2) )<< " "<<v2.Pt()<<endl;
-   return sqrt( pow(del_eta,2) + pow(delta_phi(v1.Phi(),v2.Phi()),2));
- }
+{ 
+  double del_eta = abs(v1.Eta() - v2.Eta());
+  //cout<< sqrt( pow(del_eta,2) + pow(delta_phi(v1.Phi(),v2.Phi()),2) )<< " "<<v2.Pt()<<endl;
+  return sqrt( pow(del_eta,2) + pow(delta_phi(v1.Phi(),v2.Phi()),2));
+}
 
 
 float QmisID_count::delta_phi(float phi1, float phi2)
@@ -355,17 +338,17 @@ float QmisID_count::delta_phi(float phi1, float phi2)
   return dphi;
 }
 Int_t QmisID_count::min_delR(vector<double> deltaR)
- {
+{
  
   double min = deltaR.at(0);
   int location = 0;
   for (int i=0; i <deltaR.size();i++){
-  //cout<<deltaR.at(i)<<endl;
-  if (deltaR.at(i) < min) {min = deltaR.at(i); location = i;}}
+    //cout<<deltaR.at(i)<<endl;
+    if (deltaR.at(i) < min) {min = deltaR.at(i); location = i;}}
   //cout<<deltaR.at(i)<< " min " <<min<<" location "<<location<<endl;
   //cout <<"loc "<< location << endl;
   return location;
-  } 
+} 
 
 void QmisID_count::BookHistograms()
 {
@@ -417,7 +400,7 @@ void QmisID_count::BookHistograms()
   h.os_pt_eta[0] = new TH2D("os_pt_eta_0","" ,eta_bins, etaBins,pt_bins, pTBins);
   h.os_pt_eta[1] = new TH2D("os_pt_eta_1","" ,eta_bins, etaBins,pt_bins, pTBins);
 
-// h.n_Btags = new TH1F("Btags", "",6, -0.5, 5.5);
+  // h.n_Btags = new TH1F("Btags", "",6, -0.5, 5.5);
 
   // lep1_pt = new TH1D("lep_1_pt", "", 4, pTBins);
   // lep0_pt = new TH1D("lep_0_pt", "", 4, pTBins);
