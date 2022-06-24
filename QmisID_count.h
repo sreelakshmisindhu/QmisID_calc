@@ -1,5 +1,5 @@
-#ifndef FTAna_h
-#define FTAna_h
+#ifndef QmisID_count_h
+#define QmisID_count_h
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -17,7 +17,7 @@
 // Header file for the classes stored in the TTree if any.
 using namespace std;
 
-class FTAna : public TSelector {
+class QmisID_count : public TSelector {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
 
@@ -392,8 +392,8 @@ public :
    TBranch        *b_Tlepton_2_DFCommonAddAmbiguity;   
 
 
-   FTAna(TTree * /*tree*/ =0) : fChain(0) { }
-   virtual ~FTAna() { }
+   QmisID_count(TTree * /*tree*/ =0) : fChain(0) { }
+   virtual ~QmisID_count() { }
    virtual Int_t   Version() const { return 2; }
    virtual void    Begin(TTree *tree);
    virtual void    SlaveBegin(TTree *tree);
@@ -473,13 +473,13 @@ public :
    float MW_high;
    float MW_low;
 
-   float h_OS[4][6][4][6]= {.0};
-   float h_SS[4][6][4][6] ={.0};
-   int pt_bins =4;
+   float h_OS[5][6][5][6]= {.0};
+   float h_SS[5][6][5][6] ={.0};
+   int pt_bins =5;
    int eta_bins = 6;
-   Float_t etaBins[7] = {0,0.6,1.1,1.52,1.7,2.3,2.5};
-   Float_t pTBins[5] = {15,60,90,130,1000};
-
+   float etaBins[7] = {0,0.6,1.1,1.52,1.7,2.3,2.5};
+   float pTBins[6] = {15,45,60,90,130,1000};
+   float sigma = 3;
 
 
    /* vector<Lepton> goodMu;//,goodEle, goodPho,goodTau,goodJet, goodLep; */
@@ -490,13 +490,13 @@ public :
 
 
    void Sort(int opt, vector<Lepton> good);
-   ClassDef(FTAna,0);
+   ClassDef(QmisID_count,0);
 };
 
 #endif
 
-#ifdef FTAna_cxx
-void FTAna::Init(TTree *tree)
+#ifdef QmisID_count_cxx
+void QmisID_count::Init(TTree *tree)
 {
 
   mu_pt = 0;
@@ -756,11 +756,11 @@ void FTAna::Init(TTree *tree)
    Notify();
  }
 
-Bool_t FTAna::Notify()
+Bool_t QmisID_count::Notify()
 {
    return kTRUE;
 }
-int FTAna::ReadLimited(int level, Long64_t entry)
+int QmisID_count::ReadLimited(int level, Long64_t entry)
 {
   // This function is meant to speed up your run-time.
   // It does this by not reading in all branches for an event,
@@ -823,5 +823,5 @@ int FTAna::ReadLimited(int level, Long64_t entry)
   
   return 0;
 }
-#endif // #ifdef FTAna_cxx
+#endif // #ifdef QmisID_count_cxx
 

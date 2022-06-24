@@ -3,35 +3,23 @@
 //int N_os[6][8][6][8]={0};
 //int N_ss[6][8][6][8]={0};
 
-float N_os[4][6][4][6]={0.};
-float N_ss[4][6][4][6]={0.};
+
+int pt_bins =5;
+int eta_bins =6;
+float N_os[5][6][5][6]={0.};
+float N_ss[5][6][5][6]={0.};
 
 
 void myfunc(int &npar, double *gin, double &f, double *par, int iflag){
-/*
-  int N_os[6][6]={22161,32316,26888,18645,7094,532,
-                  31716,48320,44928,38046,26180,7159,
-                  27209,46054,46504,44334,38361,18994,
-                  18832,38637,44073,46688,45888,27373,
-                  7138,26538,37939,45053,48388,32407,
-                  339,7244,18745,26958,32723,23555};
-  int N_ss[6][6]={78,73,46,30,11,4,
-                  84,66,46,37,35,11,
-                  50,43,37,26,24,25,
-                  20,35,33,28,41,47,
-                  11,21,27,47,63,83,
-                  5,9,23,46,93,86};
-*/
-
 
   float likelihood = 0.;
 
-  for(int i=0;i<4;i++){
-    for(int j=0;j<6;j++){
-      for(int k=0;k<4;k++){
-        for(int l=0;l<6;l++){
+  for(int i=0;i<pt_bins;i++){
+    for(int j=0;j<eta_bins;j++){
+      for(int k=0;k<pt_bins;k++){
+        for(int l=0;l<eta_bins;l++){
           if((N_ss[i][j][k][l]+N_os[i][j][k][l])>0){
-	    likelihood+=log(1.0*(N_ss[i][j][k][l]+N_os[i][j][k][l])*(par[i+4*j]*(1-par[k+4*l])+par[k+4*l]*(1-par[i+4*j])))*N_ss[i][j][k][l] - 1.0*(N_ss[i][j][k][l]+N_os[i][j][k][l])*(par[i+4*j]*(1-par[k+4*l])+par[k+4*l]*(1-par[i+4*j]));}
+	    likelihood+=log(1.0*(N_ss[i][j][k][l]+N_os[i][j][k][l])*(par[i+pt_bins*j]*(1-par[k+pt_bins*l])+par[k+pt_bins*l]*(1-par[i+pt_bins*j])))*N_ss[i][j][k][l] - 1.0*(N_ss[i][j][k][l]+N_os[i][j][k][l])*(par[i+pt_bins*j]*(1-par[k+pt_bins*l])+par[k+pt_bins*l]*(1-par[i+pt_bins*j]));}
 //          likelihood+=log(1.0*(N_ss[i][j][k][l]+N_os[i][j][k][l])*(par[i+4*j]+par[k+4*l]))*N_ss[i][j][k][l] - 1.0*(N_ss[i][j][k][l]+N_os[i][j][k][l])*(par[i+4*j]+par[k+4*l]);}
         }
       }
@@ -48,8 +36,6 @@ void myfunc(int &npar, double *gin, double &f, double *par, int iflag){
 void MisIDrate2D(std::string sample, std::string path) {
 
   gStyle->SetOptStat(0);
-  gROOT->LoadMacro("AtlasStyle.C");
-  gROOT->ProcessLine("SetAtlasStyle()");
   gStyle->SetErrorX(0.5);
 //  SetAtlasStyle();
 
@@ -73,9 +59,9 @@ void MisIDrate2D(std::string sample, std::string path) {
   while(ss>>Nss){
     N_ss[i][j][k][l]=Nss;
     l++;
-    if(l==6){l=0;k++;}
-    if(k==4){k=0;j++;}
-    if(j==6){j=0;i++;}
+    if(l==eta_bins){l=0;k++;}
+    if(k==pt_bins){k=0;j++;}
+    if(j==eta_bins){j=0;i++;}
   }
 
   i=0;j=0;k=0;l=0;
@@ -83,22 +69,22 @@ void MisIDrate2D(std::string sample, std::string path) {
   while(os>>Nos){
     N_os[i][j][k][l]=Nos;
     l++;
-    if(l==6){l=0;k++;}
-    if(k==4){k=0;j++;}
-    if(j==6){j=0;i++;}
+    if(l==eta_bins){l=0;k++;}
+    if(k==pt_bins){k=0;j++;}
+    if(j==eta_bins){j=0;i++;}
   }
 
+  std::cout<<N_os[2][3][2][3]<<" "<<N_os[0][0][0][0]<<std::endl;
 
-
-  TMinuit minuit(24);
+  TMinuit minuit(30);
 
   minuit.SetFCN(myfunc);
 
-  double vstrt[24]={0};
-  double stp[24]={0};
-  double bmin[24]={0};
-  double bmax[24]={0};
-  for(int i=0;i<24;i++){vstrt[i]=0.01;stp[i]=0.001;bmin[i]=0.;bmax[i]=1.0;}
+  double vstrt[30]={0};
+  double stp[30]={0};
+  double bmin[30]={0};
+  double bmax[30]={0};
+  for(int i=0;i<30;i++){vstrt[i]=0.001;stp[i]=0.0001;bmin[i]=0.;bmax[i]=1.0;}
 
 
   double arglist[10];
@@ -129,7 +115,7 @@ void MisIDrate2D(std::string sample, std::string path) {
   minuit.mnparm(21,"ptetabin22",vstrt[21],stp[21],bmin[21],bmax[21],ierflg);
   minuit.mnparm(22,"ptetabin23",vstrt[22],stp[22],bmin[22],bmax[22],ierflg);
   minuit.mnparm(23,"ptetabin24",vstrt[23],stp[23],bmin[23],bmax[23],ierflg);
-/*
+
   minuit.mnparm(24,"ptetabin25",vstrt[24],stp[24],bmin[24],bmax[24],ierflg);
   minuit.mnparm(25,"ptetabin26",vstrt[25],stp[25],bmin[25],bmax[25],ierflg);
   minuit.mnparm(26,"ptetabin27",vstrt[26],stp[26],bmin[26],bmax[26],ierflg);
@@ -137,7 +123,7 @@ void MisIDrate2D(std::string sample, std::string path) {
   minuit.mnparm(28,"ptetabin29",vstrt[28],stp[28],bmin[28],bmax[28],ierflg);
   minuit.mnparm(29,"ptetabin30",vstrt[29],stp[29],bmin[29],bmax[29],ierflg);
 
-  minuit.mnparm(30,"ptetabin31",vstrt[30],stp[30],bmin[30],bmax[30],ierflg);
+  /*minuit.mnparm(30,"ptetabin31",vstrt[30],stp[30],bmin[30],bmax[30],ierflg);
   minuit.mnparm(31,"ptetabin32",vstrt[31],stp[31],bmin[31],bmax[31],ierflg);
   minuit.mnparm(32,"ptetabin33",vstrt[32],stp[32],bmin[32],bmax[32],ierflg);
   minuit.mnparm(33,"ptetabin34",vstrt[33],stp[33],bmin[33],bmax[33],ierflg);
@@ -173,10 +159,10 @@ void MisIDrate2D(std::string sample, std::string path) {
 //  minuit.FixParameter(0);
 
   arglist[0] = 200000;
-  minuit.mnexcm("MIGRAD",arglist,1,ierflg);
+  minuit.mnexcm("MINOS",arglist,1,ierflg);
 
-  double p[24]={0.};
-  double e[24]={0.};
+  double p[30]={0.};
+  double e[30]={0.};
 
   minuit.GetParameter(0,p[0],e[0]);
   minuit.GetParameter(1,p[1],e[1]);
@@ -202,19 +188,25 @@ void MisIDrate2D(std::string sample, std::string path) {
   minuit.GetParameter(21,p[21],e[21]);
   minuit.GetParameter(22,p[22],e[22]);
   minuit.GetParameter(23,p[23],e[23]);
+  minuit.GetParameter(24,p[24],e[24]);
+  minuit.GetParameter(25,p[25],e[25]);
+  minuit.GetParameter(26,p[26],e[26]);
+  minuit.GetParameter(27,p[27],e[27]);
+  minuit.GetParameter(28,p[28],e[28]);
+  minuit.GetParameter(29,p[29],e[29]);
 
-  for(int i=0;i<24;i++){
+  for(int i=0;i<30;i++){
     std::cout<<p[i]<<endl;}
 
 
 
-  Float_t pTBins[5]={15,60,90,130,1000};
+  Float_t pTBins[6]={15,45,60,90,130,1000};
   Float_t etaBins[7]={0,0.6,1.1,1.52,1.7,2.3,2.5};
 
   TFile* output= new TFile(outputName.c_str(),"recreate");
 
-  TH1F* h1_dummy = new TH1F("h1_dummy","",6,etaBins);
-  TH1F* h2_dummy = new TH1F("h2_dummy","",4,pTBins);
+  TH1F* h1_dummy = new TH1F("h1_dummy","",eta_bins,etaBins);
+  TH1F* h2_dummy = new TH1F("h2_dummy","",pt_bins,pTBins);
 
 //  TH1F* h1_dummy = new TH1F("h1_dummy","QmisID vs el eta",8,etaBins);
   h1_dummy->GetXaxis()->SetTitle("electron |#eta|");
@@ -229,6 +221,7 @@ void MisIDrate2D(std::string sample, std::string path) {
   TH1F* h1_pT2 = (TH1F*)h1_dummy->Clone("h1_pT2");
   TH1F* h1_pT3 = (TH1F*)h1_dummy->Clone("h1_pT3");
   TH1F* h1_pT4 = (TH1F*)h1_dummy->Clone("h1_pT4");
+  TH1F* h1_pT5 = (TH1F*)h1_dummy->Clone("h1_pT5");
 
   TH1F* h2_eta1 = (TH1F*)h2_dummy->Clone("h1_eta1");
   TH1F* h2_eta2 = (TH1F*)h2_dummy->Clone("h1_eta2");
@@ -239,10 +232,11 @@ void MisIDrate2D(std::string sample, std::string path) {
 
 
 
-  h1_pT1->SetLineColor(2);h1_pT1->SetMarkerColor(2);h1_pT1->SetMarkerStyle(20);
-  h1_pT2->SetLineColor(4);h1_pT2->SetMarkerColor(4);h1_pT2->SetMarkerStyle(20);
-  h1_pT3->SetLineColor(6);h1_pT3->SetMarkerColor(6);h1_pT3->SetMarkerStyle(20);
-  h1_pT4->SetLineColor(7);h1_pT4->SetMarkerColor(7);h1_pT4->SetMarkerStyle(20);
+  h1_pT1->SetLineColor(8);h1_pT1->SetMarkerColor(8);h1_pT1->SetMarkerStyle(20);
+  h1_pT2->SetLineColor(3);h1_pT2->SetMarkerColor(3);h1_pT2->SetMarkerStyle(20);
+  h1_pT3->SetLineColor(4);h1_pT3->SetMarkerColor(4);h1_pT3->SetMarkerStyle(20);
+  h1_pT4->SetLineColor(6);h1_pT4->SetMarkerColor(6);h1_pT4->SetMarkerStyle(20);
+  h1_pT5->SetLineColor(7);h1_pT5->SetMarkerColor(7);h1_pT5->SetMarkerStyle(20);
 
   h2_eta1->SetLineColor(2);h2_eta1->SetMarkerColor(2);h2_eta1->SetMarkerStyle(20);
   h2_eta2->SetLineColor(4);h2_eta2->SetMarkerColor(4);h2_eta2->SetMarkerStyle(20);
@@ -252,19 +246,20 @@ void MisIDrate2D(std::string sample, std::string path) {
   h2_eta6->SetLineColor(9);h2_eta6->SetMarkerColor(9);h2_eta6->SetMarkerStyle(20);
 
   for(int i=1;i<7;i++){
-    h1_pT1->SetBinContent(i,p[4*i-4]);h1_pT1->SetBinError(i,e[4*i-4]);
-    h1_pT2->SetBinContent(i,p[4*i-3]);h1_pT2->SetBinError(i,e[4*i-3]);
-    h1_pT3->SetBinContent(i,p[4*i-2]);h1_pT3->SetBinError(i,e[4*i-2]);
-    h1_pT4->SetBinContent(i,p[4*i-1]);h1_pT4->SetBinError(i,e[4*i-1]);
+    h1_pT1->SetBinContent(i,p[pt_bins*i-5]);h1_pT1->SetBinError(i,e[pt_bins*i-5]);
+    h1_pT2->SetBinContent(i,p[pt_bins*i-4]);h1_pT2->SetBinError(i,e[pt_bins*i-4]);
+    h1_pT3->SetBinContent(i,p[pt_bins*i-3]);h1_pT3->SetBinError(i,e[pt_bins*i-3]);
+    h1_pT4->SetBinContent(i,p[pt_bins*i-2]);h1_pT4->SetBinError(i,e[pt_bins*i-2]);
+    h1_pT5->SetBinContent(i,p[pt_bins*i-1]);h1_pT5->SetBinError(i,e[pt_bins*i-1]);
   }
 
-    for(int i=1;i<5;i++){
+    for(int i=1;i<6;i++){
     h2_eta1->SetBinContent(i,p[i-1]);h2_eta1->SetBinError(i,e[i-1]);
-    h2_eta2->SetBinContent(i,p[4+i-1]);h2_eta2->SetBinError(i,e[4+i-1]);
-    h2_eta3->SetBinContent(i,p[8+i-1]);h2_eta3->SetBinError(i,e[8+i-1]);
-    h2_eta4->SetBinContent(i,p[12+i-1]);h2_eta4->SetBinError(i,e[12+i-1]);
-    h2_eta5->SetBinContent(i,p[16+i-1]);h2_eta5->SetBinError(i,e[16+i-1]);
-    h2_eta6->SetBinContent(i,p[20+i-1]);h2_eta6->SetBinError(i,e[20+i-1]);
+    h2_eta2->SetBinContent(i,p[1*pt_bins+i-1]);h2_eta2->SetBinError(i,e[1*pt_bins+i-1]);
+    h2_eta3->SetBinContent(i,p[2*pt_bins+i-1]);h2_eta3->SetBinError(i,e[2*pt_bins+i-1]);
+    h2_eta4->SetBinContent(i,p[3*pt_bins+i-1]);h2_eta4->SetBinError(i,e[3*pt_bins+i-1]);
+    h2_eta5->SetBinContent(i,p[4*pt_bins+i-1]);h2_eta5->SetBinError(i,e[4*pt_bins+i-1]);
+    h2_eta6->SetBinContent(i,p[5*pt_bins+i-1]);h2_eta6->SetBinError(i,e[5*pt_bins+i-1]);
   }
 
 
@@ -276,11 +271,12 @@ void MisIDrate2D(std::string sample, std::string path) {
 //  TLegend* lg = new TLegend(0.3,0.6,0.60,0.9,legend_title.c_str());
 //nominal
 
-  TLegend* lg = new TLegend(0.65,0.1,0.85,0.4,legend_title.c_str());
-  lg->AddEntry(h1_pT1,"pT [15,60] GeV");
-  lg->AddEntry(h1_pT2,"pT [60,90] GeV");
-  lg->AddEntry(h1_pT3,"pT [90,130] GeV");
-  lg->AddEntry(h1_pT4,"pT [130,1000] GeV");
+  TLegend* lg = new TLegend(0.65,0.1,0.85,0.4,"");
+  lg->AddEntry(h1_pT1,"pT [15,45] GeV");
+  lg->AddEntry(h1_pT2,"pT [45,60] GeV");
+  lg->AddEntry(h1_pT3,"pT [60,90] GeV");
+  lg->AddEntry(h1_pT4,"pT [90,130] GeV");
+  lg->AddEntry(h1_pT5,"pT [130,1000] GeV");
 
   lg->SetBorderSize(0);
   lg->SetFillStyle(0);
@@ -290,6 +286,7 @@ void MisIDrate2D(std::string sample, std::string path) {
   h1_pT2->Draw("lp same");
   h1_pT3->Draw("lp same");
   h1_pT4->Draw("lp same");
+  h1_pT5->Draw("lp same");
   lg->Draw("same");
 
   gPad->SetLogy();
@@ -298,10 +295,13 @@ void MisIDrate2D(std::string sample, std::string path) {
   h1_pT2->Write();
   h1_pT3->Write();
   h1_pT4->Write();
+  h1_pT5->Write();
   myCan->Write();
+  myCan->SaveAs("/eos/user/s/ssindhu/4tops/plots/QmisID/QmisID_5_6_eta_axis.pdf");
+
   TCanvas* etaCan = new TCanvas("etaCan","canvas",900,700);
 
-  TLegend* lg2 = new TLegend(0.65,0.1,0.85,0.4,legend_title.c_str());
+  TLegend* lg2 = new TLegend(0.65,0.1,0.85,0.35,legend_title.c_str());
   lg2->AddEntry(h2_eta1,"|#eta| [0,0.6]" );
   lg2->AddEntry(h2_eta2,"|#eta| [0.6,1.1]" );
   lg2->AddEntry(h2_eta3,"|#eta| [1.1,1.52]" );
@@ -330,7 +330,7 @@ void MisIDrate2D(std::string sample, std::string path) {
   h2_eta5->Write();
   h2_eta6->Write();
   etaCan->Write();
-
+  etaCan->SaveAs("/eos/user/s/ssindhu/4tops/plots/QmisID/QmisID_5_6_pt_axis.pdf");
 
 
   output->Close();

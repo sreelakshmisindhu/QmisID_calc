@@ -1,7 +1,7 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
-#include "FTAna.h"
+#include "QmisID_count.h"
 
 //This is the driver script, which becomes our main program
 //Here we set the options which we wish to use, which files
@@ -16,7 +16,7 @@ void ana(int sample=1)
   string name = "data_15_16";
 
   TChain *chain = new TChain("nominal_Loose");
-  FTAna m_selec;//declared an instance of our class.
+  QmisID_count m_selec;//declared an instance of our class.
 
   std::cout<<"Declared chains"<<std::endl;
   
@@ -27,7 +27,6 @@ void ana(int sample=1)
      // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data17.root");
      // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data18.root");
      chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/data/test/data15.root");
-     // chain->Add("/afs/cern.ch/work/s/ssindhu/private/4tops_may22/common-framework/job_data16_data_SM4top-LooseLep_SSML_nominal/data16.root");
      chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/data/test/data16.root");
      chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/data/test/data17.root");
      chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/data/test/data18.root");
@@ -41,10 +40,10 @@ void ana(int sample=1)
     //chain->Add("DY50_test.root");
     //can have more chain->Add() lines here.
      
-     hstfilename="test/data_all.root";//output histogram file
+     hstfilename="new_bins/45_60_90_130/data_all_closure.root";//output histogram file
 
-     sumfilename1="test/ss.data_all.txt"; //output text file
-     sumfilename2="test/os.data_all.txt"; //output text file
+     sumfilename1="new_bins/45_60_90_130/ss.data_all_closure.txt"; //output text file
+     sumfilename2="new_bins/45_60_90_130/os.data_all_closure.txt"; //output text file
   // }
 
   std::cout<<"Output files are "<<hstfilename<<" and "<<sumfilename1<<" and "<<sumfilename2<<std::endl;
@@ -52,7 +51,7 @@ void ana(int sample=1)
   m_selec.SetSumFileName1(sumfilename1);
   m_selec.SetSumFileName2(sumfilename2);
   m_selec.SetVerbose(200);//set verbosity level for output.
-  m_selec.SetData(2);//0 is MC, 1 data, 2 ata with BG subtraction, 3 QmisID reweighting, 4 gammastar region, 5 co region, 6 ttw region
+  m_selec.SetData(3);//0 is MC, 1 data, 2 ata with BG subtraction, 3 QmisID reweighting, 4 gammastar region, 5 co region, 6 ttw region
 
   //this calls the Process function for each event in the chain
   //and runs the m_selec code over it.
