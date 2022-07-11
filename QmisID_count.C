@@ -103,8 +103,10 @@ Bool_t QmisID_count::Process(Long64_t entry)
   // if(lep_0_isTight!=1 or lep_1_isTight!=1){std::cout<<nEvtTotal<<" "<<lep_1_isTight<<"  "<<lep_0_isTight<<std::endl;}          
   
   if(OSee==1 or loose_SSee ==1){               
-    if (OSee == 1){Zmass = 90.64; massWindow = 4.67*sigma;}      // mass window from gauss fit {Zmass = 90.61; massWindow = 3.337*sigma;}
-    else if (loose_SSee == 1){Zmass = 89.56; massWindow = 5.63*sigma; MW_low = 89.56 - 5.63*sigma; MW_high = 89.56 + 5.63*sigma;}// mass windoe from gauss fit {Zmass = 89.48; massWindow = 3.843*sigma; MW_low = 89.48 - 3.843*sigma; MW_high = 89.48 + 3.843*sigma;}
+    if (OSee == 1){if (fit == "BW"){Zmass = 90.64; massWindow = 4.67*_sigma;}
+      else{Zmass = 90.61; massWindow = 3.337*_sigma;}}
+    else if(loose_SSee == 1){if (fit == "BW"){Zmass = 89.56; massWindow = 5.63*_sigma; MW_low = 89.56 - 5.63*_sigma; MW_high = 89.56 + 5.63*_sigma;}
+      else{Zmass = 89.48; massWindow = 3.843*_sigma; MW_low = 89.48 - 3.843*_sigma; MW_high = 89.48 + 3.843*_sigma;}} 
     if(lep_0_isTight==1 and lep_1_isTight==1){ // remove loose lepton         
       // std::cout<<"pass cuts"<<nEvtTotal<<" "<<lep_1_isTight<<"  "<<lep_0_isTight<<std::endl;
       if(Mll>(Zmass-2*massWindow) and Mll<(Zmass+2*massWindow) ){
@@ -112,10 +114,32 @@ Bool_t QmisID_count::Process(Long64_t entry)
 
     	  if(el_ECIDSResult_float->at(0)>-0.337671 and el_ECIDSResult_float->at(1)>-0.337671){
 
+	    lumi =36207.7*(runNumber==284500)+44307.4*(runNumber==300000)+(runNumber==310000)*58450.1;
+
 	    if (_data == 0){ 
-	      if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
-		lumi =36207.7*(runNumber==284500)+44307.4*(runNumber==300000)+(runNumber==310000)*58450.1;
-		weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}
+	      // if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
+		weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;
+		// std::cout<<weights<<std::endl;}}
+	      }
+	    else if (_data == -1){
+	      if(OSee == 1){
+		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+		  
+		  weights = weight_closure(lep0.v, lep1.v)*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
+		  // else{weights = -0.5*weight_closure(lep0.v, lep1.v)*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
+
+		  // std::cout<<"yes weights "<<weights<<" closure "<<weight_closure(lep0.v, lep1.v)<<" mc "<<weight_mc<<" lumi "<<lumi<<"pileup "<<weight_pileup<<" jvt "<<weight_jvt<<" SF "<<weight_leptonSF<<" b "<<weight_bTagSF_DL1r_Continuous<<" norm "<<weight_normalise<<endl;
+
+	      }
+	      else if (loose_SSee == 1){
+		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+		  std::cout<<"ssee"<<endl;
+
+		  weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
+		else{weights = -0.5*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
+
+	      }}
+
 	    else if (_data == 1){
 	      weights = 1;}
 	    else if (_data == 2){
@@ -124,8 +148,9 @@ Bool_t QmisID_count::Process(Long64_t entry)
 	      else{weights = -0.5;}}
 	    else if (_data == 3){
 	      if(OSee == 1){
+		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
 	    	weights = weight_closure(lep0.v, lep1.v);
-	      }
+		}}
 	      else if (loose_SSee == 1){
 		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
 		  weights = 1;}
@@ -214,13 +239,11 @@ Bool_t QmisID_count::Process(Long64_t entry)
 	      h.os_n_Btags->Fill(nBTags_DL1r_77,weights);
 	      h.os_OSee->Fill(OSee,weights);
 	      h.os_loose_SSee->Fill(loose_SSee,weights);
-	      if(Mll>MW_low and Mll<MW_high ){
+	      // if(Mll>MW_low and Mll<MW_high ){
 
-		h.os_M_ll[0]->Fill(Mll,weights);
-		h.os_M_ll[1]->Fill(Mll,weights);
-	      }
-
-	      // std::cout<<" OSee "<<lep_0_charge<<" pdgid "<<lep_0_pdgid<<" 1" << lep_1_charge<<" pdgid "<<lep_1_pdgid<<std::endl;
+	      h.os_M_ll[0]->Fill(Mll,weights);
+	      h.os_M_ll[1]->Fill(Mll,weights);
+	      // }
 	    }
 	    else if (loose_SSee==1){
 	      h_SS[i][j][k][l] += weights;
@@ -245,11 +268,12 @@ Bool_t QmisID_count::Process(Long64_t entry)
 	      h.ss_n_Btags->Fill(nBTags_DL1r_77,weights);
 	      h.ss_OSee->Fill(OSee,weights);
 	      h.ss_loose_SSee->Fill(loose_SSee,weights);
-	      if(Mll>MW_low and Mll<MW_high ){
+	      // if(Mll>MW_low and Mll<MW_high ){
   
-		h.ss_M_ll[0]->Fill(Mll,weights);
-		h.ss_M_ll[1]->Fill(Mll,weights);
-	      }}
+	      h.ss_M_ll[0]->Fill(Mll,weights);
+	      h.ss_M_ll[1]->Fill(Mll,weights);
+	      // }
+	    }
   
 
 	    //std::cout<<" SSee "<<lep_0_charge<<" pdgid "<<lep_0_pdgid<<" 1" << lep_1_charge<<" pdgid "<<lep_1_pdgid<<std::endl;
@@ -276,9 +300,20 @@ double QmisID_count::weight_closure(TLorentzVector l1,TLorentzVector l2)
 
   // Float_t pt_eta_w[24] = { 4.00964E-05, 0.000119475, 0.000348041, 0.00132033, 7.37869E-05, 0.000284054, 0.00078206, 0.0028213, 0.000154673, 0.000625399, 0.00193607, 0.00602472, 0.000309453, 0.00100354, 0.00309048, 0.0102839, 0.00054336, 0.00155762, 0.00497902, 0.015844, 0.00105472, 0.00567701, 0.0156504, 0.0413204};
 
+  // Float_t pt_eta_w[30] = { 5.99409E-05, 4.01166E-05, 0.000120046, 0.000361494, 0.00136421, 7.57453E-05, 9.3999E-05, 0.000285398, 0.000800498, 0.00283498, 0.000132136, 0.000195921, 0.000656507, 0.00195612, 0.00612457, 0.000326051, 0.000352139, 0.00104218, 0.00325986, 0.0104456, 0.000440247, 0.000676033, 0.00164729, 0.00499103, 0.0160503, 0.000719538, 0.00168813, 0.00567277, 0.0155129, 0.0412356}; //40_60_90_130
+  // Float_t pt_eta_w[24] = {3.22999E-05, 6.11721E-05, 0.000227192, 0.000909073, 5.45128E-05, 0.000124778, 0.000480831, 0.00201136, 0.000105132, 0.000273646, 0.00110571, 0.00447957, 0.000263562, 0.000501456, 0.00156266, 0.00778502, 0.000431015, 0.000910359, 0.00252699, 0.011276, 0.000711905, 0.00250193, 0.00907911, 0.0315624}; //45_70_110
 
-  Float_t pt_eta_w[30] = {  3.15892E-05, 5.52362E-05, 0.000130032, 0.000352318, 0.00132356, 5.31886E-05, 0.000101843, 0.000297258, 0.000792673, 0.00282267, 0.000108097, 0.000230009, 0.000644279, 0.00194923, 0.00607394, 0.000260055, 0.000397749, 0.00103593, 0.00314927, 0.0102785, 0.000428761, 0.000788154, 0.00160156, 0.00499668, 0.015797, 0.000715971, 0.0020307, 0.00573371, 0.0156975, 0.0412005};
+  // Float_t pt_eta_w[24] = { 3.57118E-05, 6.4525E-05, 0.000215018, 0.000944594, 7.69832E-05, 0.000129521, 0.000476718, 0.00200027, 0.000132347, 0.000281834, 0.00112603, 0.00451399, 0.000317545, 0.000506374, 0.00160781, 0.00798531, 0.00044556, 0.000932643, 0.00255734, 0.0113794, 0.000763963, 0.00251766, 0.00902789, 0.0317013};//45_70_110 sigma 4
+  Float_t pt_eta_w[24] = {   4.38548E-05, 0.000119611, 0.000362226, 0.00136687, 8.75868E-05, 0.000284814, 0.00079309, 0.00284304, 0.000172475, 0.000647994, 0.00194806, 0.00610096, 0.000348415, 0.00102142, 0.00322987, 0.0104283, 0.0005572, 0.00160706, 0.004962, 0.0160352, 0.0011009, 0.00563761, 0.0155431, 0.0411349};//60_90_130 sigma 4 
 
+
+  // Float_t pt_eta_w[30] = {4.41654E-05, 4.13003E-05, 0.000128252, 0.000352787, 0.00132627, 4.73024E-05, 8.83999E-05, 0.000295687, 0.000792038, 0.00282679, 9.46997E-05, 0.000193965, 0.000644241, 0.00193973, 0.00605357, 0.00026517, 0.000343354, 0.00103373, 0.00313706, 0.0103076, 0.000419093, 0.000670387, 0.0016045, 0.00500559, 0.015828, 0.000638339, 0.00167034, 0.00574065, 0.0156992, 0.0411108};//40_60_90_130 4sigma  
+
+  // Float_t pt_eta_w[30] = {   3.6099E-05, 5.59019E-05, 0.000127039, 0.000367585, 0.00135927, 7.56015E-05, 0.000104377, 0.000293055, 0.00080699, 0.00283104, 0.000133858, 0.000236648, 0.000662638, 0.00195334, 0.0060989, 0.000313983, 0.000399587, 0.00105683, 0.00325777, 0.0104196, 0.000443231, 0.000804649, 0.00164778, 0.00498435, 0.0160316, 0.000768537, 0.00206477, 0.00566177, 0.0154843, 0.0412804}; ////45_60_90_130 4sigma 
+
+  // Float_t pt_eta_w[30] = {  3.15892E-05, 5.52362E-05, 0.000130032, 0.000352318, 0.00132356, 5.31886E-05, 0.000101843, 0.000297258, 0.000792673, 0.00282267, 0.000108097, 0.000230009, 0.000644279, 0.00194923, 0.00607394, 0.000260055, 0.000397749, 0.00103593, 0.00314927, 0.0102785, 0.000428761, 0.000788154, 0.00160156, 0.00499668, 0.015797, 0.000715971, 0.0020307, 0.00573371, 0.0156975, 0.0412005}; //45_60_90_130 3sigma
+
+    // Float_t pt_eta_w[30] = {3.14601E-05, 6.81195E-05, 0.000126774, 0.000353648, 0.00132585, 6.19051E-05, 0.000114799, 0.00029293, 0.000787933, 0.00281501, 0.000127266, 0.000264157, 0.000639493, 0.00193137, 0.00604756, 0.000274485, 0.000466327, 0.00102778, 0.00310587, 0.0102861, 0.000470925, 0.000893183, 0.0015795, 0.00497875, 0.0158037, 0.00085551, 0.00230276, 0.00570979, 0.0156775, 0.041206}; //50_60_90_130
 
   //  Float_t pt_eta_w[24] = {4.40728E-05, 0.000119373, 0.000360996, 0.0013677,8.6988E-05, 0.000283872, 0.0007929, 0.00282845, 0.000172512, 0.000646759, 0.00194257, 0.00612243, 0.000348031, 0.00102347, 0.00323065, 0.0104057, 0.000557384, 0.0016087, 0.00498309, 0.0160015, 0.00110113, 0.00558765, 0.0153383, 0.0411622};//4 sigma BW
 
@@ -314,9 +349,10 @@ double QmisID_count::weight_closure(TLorentzVector l1,TLorentzVector l2)
       }}}
 
   // weights = (weight1 +weight2 -2*weight1*weight2)/((1-weight1-weight2)+2*weight2*weight1);                                                                                                                                              
+  // std::cout<<(weight1 + weight2 -2*weight1*weight2)/(1-weight1 -weight2 +2*weight1*weight2)<<"   "<<weight1*( 1-weight2 )+weight2*(1-weight1)<<std::endl;
   // std::cout<<weight2<<weight1<<std::endl;
-  // return weight1*( 1-weight2 )+weight2*(1-weight2); 
-  return (weight1 + weight2 -2*weight1*weight2)/(1-weight1 -weight2 +2*weight1*weight2); 
+  // return weight1*( 1-weight2 )+weight2*(1-weight1); //weight for OS events 
+  return (weight1 + weight2 -2*weight1*weight2)/(1-weight1 -weight2 +2*weight1*weight2); //weight for all event
 }
   
 
@@ -360,8 +396,8 @@ void QmisID_count::BookHistograms()
   h.ss_loose_SSee = new TH1F("ss_loose_SSee", "", 4, -0.5, 3.5);
   h.ss_HT = new TH1D("ss_HT_all", "", 20, 200, 800);
   h.ss_HT_Jets = new TH1D("ss_HT_jets", "", 16, 200, 800);
-  h.ss_M_ll[0] = new TH1D("ss_Mll", "", 150, 60, 120);
-  h.ss_M_ll[1] = new TH1D("ss_Mll_small", "", 200, 60, 120);
+  h.ss_M_ll[0] = new TH1D("ss_Mll", "", 50, 40, 140);
+  h.ss_M_ll[1] = new TH1D("ss_Mll_small", "", 200, 40, 140);
   h.ss_lep_pt[0] = new TH1D("ss_lep_0_pt","",10, 15, 150);
   h.ss_lep_pt[1] = new TH1D("ss_lep_1_pt","",10, 15, 150);
   h.ss_lep_pt[2] = new TH1D("ss_lep_2_pt","",10, 15, 150);
@@ -384,8 +420,8 @@ void QmisID_count::BookHistograms()
   h.os_loose_SSee = new TH1F("os_loose_SSee", "", 4, -0.5, 3.5);
   h.os_HT = new TH1D("os_HT_all", "", 20, 200, 800);
   h.os_HT_Jets = new TH1D("os_HT_jets", "", 16, 200, 800);
-  h.os_M_ll[0] = new TH1D("os_Mll", "", 150, 60, 120);
-  h.os_M_ll[1] = new TH1D("os_Mll_small", "", 200, 60, 120);
+  h.os_M_ll[0] = new TH1D("os_Mll", "", 150, 40, 140);
+  h.os_M_ll[1] = new TH1D("os_Mll_small", "", 200, 40, 140);
   h.os_lep_pt[0] = new TH1D("os_lep_0_pt","",10, 15, 150);
   h.os_lep_pt[1] = new TH1D("os_lep_1_pt","",10, 15, 150);
   h.os_lep_pt[2] = new TH1D("os_lep_2_pt","",10, 15, 150);

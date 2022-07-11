@@ -4,10 +4,10 @@
 //int N_ss[6][8][6][8]={0};
 
 
-int pt_bins =5;
+int pt_bins =4;
 int eta_bins =6;
-float N_os[5][6][5][6]={0.};
-float N_ss[5][6][5][6]={0.};
+float N_os[4][6][4][6]={0.};
+float N_ss[4][6][4][6]={0.};
 
 
 void myfunc(int &npar, double *gin, double &f, double *par, int iflag){
@@ -33,7 +33,7 @@ void myfunc(int &npar, double *gin, double &f, double *par, int iflag){
 }
 
 
-void MisIDrate2D(std::string sample, std::string path) {
+void MisIDrate2D(std::string sample, std::string path, std::string outpath) {
 
   gStyle->SetOptStat(0);
   gStyle->SetErrorX(0.5);
@@ -49,7 +49,7 @@ void MisIDrate2D(std::string sample, std::string path) {
   os.open((path+"os."+sample+".txt").c_str());
 
   std::string legend_title="data15-18 likelihood";
-  std::string outputName=path+"misID."+sample+".root";
+  std::string outputName=path+"outmisID."+sample+".root";
 
   float Nss;
   float Nos;
@@ -76,15 +76,15 @@ void MisIDrate2D(std::string sample, std::string path) {
 
   std::cout<<N_os[2][3][2][3]<<" "<<N_os[0][0][0][0]<<std::endl;
 
-  TMinuit minuit(30);
+  TMinuit minuit(24);
 
   minuit.SetFCN(myfunc);
 
-  double vstrt[30]={0};
-  double stp[30]={0};
-  double bmin[30]={0};
-  double bmax[30]={0};
-  for(int i=0;i<30;i++){vstrt[i]=0.001;stp[i]=0.0001;bmin[i]=0.;bmax[i]=1.0;}
+  double vstrt[24]={0};
+  double stp[24]={0};
+  double bmin[24]={0};
+  double bmax[24]={0};
+  for(int i=0;i<24;i++){vstrt[i]=0.001;stp[i]=0.0001;bmin[i]=0.;bmax[i]=1.0;}
 
 
   double arglist[10];
@@ -116,12 +116,12 @@ void MisIDrate2D(std::string sample, std::string path) {
   minuit.mnparm(22,"ptetabin23",vstrt[22],stp[22],bmin[22],bmax[22],ierflg);
   minuit.mnparm(23,"ptetabin24",vstrt[23],stp[23],bmin[23],bmax[23],ierflg);
 
-  minuit.mnparm(24,"ptetabin25",vstrt[24],stp[24],bmin[24],bmax[24],ierflg);
-  minuit.mnparm(25,"ptetabin26",vstrt[25],stp[25],bmin[25],bmax[25],ierflg);
-  minuit.mnparm(26,"ptetabin27",vstrt[26],stp[26],bmin[26],bmax[26],ierflg);
-  minuit.mnparm(27,"ptetabin28",vstrt[27],stp[27],bmin[27],bmax[27],ierflg);
-  minuit.mnparm(28,"ptetabin29",vstrt[28],stp[28],bmin[28],bmax[28],ierflg);
-  minuit.mnparm(29,"ptetabin30",vstrt[29],stp[29],bmin[29],bmax[29],ierflg);
+  // minuit.mnparm(24,"ptetabin25",vstrt[24],stp[24],bmin[24],bmax[24],ierflg);
+  // minuit.mnparm(25,"ptetabin26",vstrt[25],stp[25],bmin[25],bmax[25],ierflg);
+  // minuit.mnparm(26,"ptetabin27",vstrt[26],stp[26],bmin[26],bmax[26],ierflg);
+  // minuit.mnparm(27,"ptetabin28",vstrt[27],stp[27],bmin[27],bmax[27],ierflg);
+  // minuit.mnparm(28,"ptetabin29",vstrt[28],stp[28],bmin[28],bmax[28],ierflg);
+  // minuit.mnparm(29,"ptetabin30",vstrt[29],stp[29],bmin[29],bmax[29],ierflg);
 
   /*minuit.mnparm(30,"ptetabin31",vstrt[30],stp[30],bmin[30],bmax[30],ierflg);
   minuit.mnparm(31,"ptetabin32",vstrt[31],stp[31],bmin[31],bmax[31],ierflg);
@@ -159,12 +159,12 @@ void MisIDrate2D(std::string sample, std::string path) {
 //  minuit.FixParameter(0);
 
   arglist[0] = 200000;
-  // minuit.mnexcm("HESSE",arglist,1,ierflg);
+  minuit.mnexcm("HESSE",arglist,1,ierflg);
   minuit.mnexcm("MIGRAD",arglist,1,ierflg);
-  // minuit.mnexcm("MINOS",arglist,1,ierflg);
+  minuit.mnexcm("MINOS",arglist,1,ierflg);
 
-  double p[30]={0.};
-  double e[30]={0.};
+  double p[24]={0.};
+  double e[24]={0.};
 
   minuit.GetParameter(0,p[0],e[0]);
   minuit.GetParameter(1,p[1],e[1]);
@@ -190,19 +190,19 @@ void MisIDrate2D(std::string sample, std::string path) {
   minuit.GetParameter(21,p[21],e[21]);
   minuit.GetParameter(22,p[22],e[22]);
   minuit.GetParameter(23,p[23],e[23]);
-  minuit.GetParameter(24,p[24],e[24]);
-  minuit.GetParameter(25,p[25],e[25]);
-  minuit.GetParameter(26,p[26],e[26]);
-  minuit.GetParameter(27,p[27],e[27]);
-  minuit.GetParameter(28,p[28],e[28]);
-  minuit.GetParameter(29,p[29],e[29]);
+  // minuit.GetParameter(24,p[24],e[24]);
+  // minuit.GetParameter(25,p[25],e[25]);
+  // minuit.GetParameter(26,p[26],e[26]);
+  // minuit.GetParameter(27,p[27],e[27]);
+  // minuit.GetParameter(28,p[28],e[28]);
+  // minuit.GetParameter(29,p[29],e[29]);
 
-  for(int i=0;i<30;i++){
+  for(int i=0;i<24;i++){
     std::cout<<p[i]<<endl;}
 
 
 
-  Float_t pTBins[6]={15,45,60,90,130,1000};
+  Float_t pTBins[5]={15,60,90,130,1000};
   Float_t etaBins[7]={0,0.6,1.1,1.52,1.7,2.3,2.5};
 
   TFile* output= new TFile(outputName.c_str(),"recreate");
@@ -247,15 +247,15 @@ void MisIDrate2D(std::string sample, std::string path) {
   h2_eta5->SetLineColor(8);h2_eta5->SetMarkerColor(8);h2_eta5->SetMarkerStyle(20);
   h2_eta6->SetLineColor(9);h2_eta6->SetMarkerColor(9);h2_eta6->SetMarkerStyle(20);
 
-  for(int i=1;i<7;i++){
-    h1_pT1->SetBinContent(i,p[pt_bins*i-5]);h1_pT1->SetBinError(i,e[pt_bins*i-5]);
+  for(int i=1;i<eta_bins+1;i++){
+    // h1_pT1->SetBinContent(i,p[pt_bins*i-5]);h1_pT1->SetBinError(i,e[pt_bins*i-5]);
     h1_pT2->SetBinContent(i,p[pt_bins*i-4]);h1_pT2->SetBinError(i,e[pt_bins*i-4]);
     h1_pT3->SetBinContent(i,p[pt_bins*i-3]);h1_pT3->SetBinError(i,e[pt_bins*i-3]);
     h1_pT4->SetBinContent(i,p[pt_bins*i-2]);h1_pT4->SetBinError(i,e[pt_bins*i-2]);
     h1_pT5->SetBinContent(i,p[pt_bins*i-1]);h1_pT5->SetBinError(i,e[pt_bins*i-1]);
   }
 
-    for(int i=1;i<6;i++){
+    for(int i=1;i<pt_bins+1;i++){
     h2_eta1->SetBinContent(i,p[i-1]);h2_eta1->SetBinError(i,e[i-1]);
     h2_eta2->SetBinContent(i,p[1*pt_bins+i-1]);h2_eta2->SetBinError(i,e[1*pt_bins+i-1]);
     h2_eta3->SetBinContent(i,p[2*pt_bins+i-1]);h2_eta3->SetBinError(i,e[2*pt_bins+i-1]);
@@ -274,17 +274,17 @@ void MisIDrate2D(std::string sample, std::string path) {
 //nominal
 
   TLegend* lg = new TLegend(0.65,0.1,0.85,0.4,"");
-  lg->AddEntry(h1_pT1,"pT [15,45] GeV");
-  lg->AddEntry(h1_pT2,"pT [45,60] GeV");
-  lg->AddEntry(h1_pT3,"pT [60,90] GeV");
-  lg->AddEntry(h1_pT4,"pT [90,130] GeV");
-  lg->AddEntry(h1_pT5,"pT [130,1000] GeV");
+  // lg->AddEntry(h1_pT1,"pT [15,40] GeV");
+  lg->AddEntry(h1_pT2,"pT [15,40] GeV");
+  lg->AddEntry(h1_pT3,"pT [40,50] GeV");
+  lg->AddEntry(h1_pT4,"pT [50,60] GeV");
+  lg->AddEntry(h1_pT5,"pT [60,1000] GeV");
 
   lg->SetBorderSize(0);
   lg->SetFillStyle(0);
 
   h1_dummy->Draw();
-  h1_pT1->Draw("lp same");
+  // h1_pT1->Draw("lp same");
   h1_pT2->Draw("lp same");
   h1_pT3->Draw("lp same");
   h1_pT4->Draw("lp same");
@@ -293,17 +293,18 @@ void MisIDrate2D(std::string sample, std::string path) {
 
   gPad->SetLogy();
 
-  h1_pT1->Write();
+  // h1_pT1->Write();
   h1_pT2->Write();
   h1_pT3->Write();
   h1_pT4->Write();
   h1_pT5->Write();
   myCan->Write();
-  myCan->SaveAs("/eos/user/s/ssindhu/4tops/plots/QmisID/QmisID_5_6_eta_axis.pdf");
+  myCan->SaveAs((outpath+"misID."+sample+"_etabins.pdf").c_str());
+  myCan->SaveAs((outpath+"misID."+sample+"_etabins.png").c_str());
 
   TCanvas* etaCan = new TCanvas("etaCan","canvas",900,700);
 
-  TLegend* lg2 = new TLegend(0.65,0.1,0.85,0.35,legend_title.c_str());
+  TLegend* lg2 = new TLegend(0.65,0.1,0.85,0.35);
   lg2->AddEntry(h2_eta1,"|#eta| [0,0.6]" );
   lg2->AddEntry(h2_eta2,"|#eta| [0.6,1.1]" );
   lg2->AddEntry(h2_eta3,"|#eta| [1.1,1.52]" );
@@ -325,6 +326,7 @@ void MisIDrate2D(std::string sample, std::string path) {
   lg2->Draw("same");
   gPad->SetLogy();
   gPad->SetLogx();
+
   h2_eta1->Write();
   h2_eta2->Write();
   h2_eta3->Write();
@@ -332,7 +334,8 @@ void MisIDrate2D(std::string sample, std::string path) {
   h2_eta5->Write();
   h2_eta6->Write();
   etaCan->Write();
-  etaCan->SaveAs("/eos/user/s/ssindhu/4tops/plots/QmisID/QmisID_5_6_pt_axis.pdf");
+  etaCan->SaveAs((outpath+"misID."+sample+"_ptbins.pdf").c_str());
+  etaCan->SaveAs((outpath+"misID."+sample+"_ptbins.png").c_str());
 
 
   output->Close();

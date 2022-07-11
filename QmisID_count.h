@@ -417,6 +417,7 @@ public :
    void SetSample(int sample){_sample=sample;}
    void SetVerbose(int verbose){ _verbosity = verbose; }
    void SetData(int data){_data=data;}
+   void SetSigma(float sigma){_sigma=sigma;}
    void SetSumWeights(float SumWeights){_sumWeights = SumWeights;} 
    void BookHistograms();
    Int_t min_delR(vector<double> deltaR);
@@ -473,14 +474,14 @@ public :
    float MW_high;
    float MW_low;
 
-   float h_OS[5][6][5][6]= {.0};
-   float h_SS[5][6][5][6] ={.0};
-   int pt_bins =5;
+   float h_OS[4][6][4][6]= {.0};
+   float h_SS[4][6][4][6] ={.0};
+   int pt_bins =4;
    int eta_bins = 6;
    float etaBins[7] = {0,0.6,1.1,1.52,1.7,2.3,2.5};
-   float pTBins[6] = {15,45,60,90,130,1000};
-   float sigma = 3;
-
+   float pTBins[5] = {15,60,90,130,1000};
+   float _sigma;
+   string fit = "BW";
 
    /* vector<Lepton> goodMu;//,goodEle, goodPho,goodTau,goodJet, goodLep; */
    /* vector<Lepton> goodEle;//(sl) */
@@ -798,17 +799,17 @@ int QmisID_count::ReadLimited(int level, Long64_t entry)
     /* /\* b_el_isTight->GetEntry(entry); *\/ */
     b_lep_0_isTight->GetEntry(entry);
     b_lep_1_isTight->GetEntry(entry);
-    b_nBTags_DL1r_70->GetEntry(entry);
+    /* b_nBTags_DL1r_70->GetEntry(entry); */
     b_nBTags_DL1r_77->GetEntry(entry);
-    b_nBTags_DL1r_60->GetEntry(entry);
-    b_nBTags_DL1r_85->GetEntry(entry);
+    /* b_nBTags_DL1r_60->GetEntry(entry); */
+    /* b_nBTags_DL1r_85->GetEntry(entry); */
     b_met_met->GetEntry(entry);
     b_el_ECIDSResult_float->GetEntry(entry);
     b_SSee_passECIDS->GetEntry(entry);
     b_SSem_passECIDS->GetEntry(entry);
     b_Tlepton_1_DFCommonAddAmbiguity->GetEntry(entry);
     b_Tlepton_0_DFCommonAddAmbiguity->GetEntry(entry);
-    if(_data==0){
+    if(_data<1){
     b_mcChannelNumber->GetEntry(entry);
     b_weight_mc->GetEntry(entry);
     b_weight_normalise->GetEntry(entry);
