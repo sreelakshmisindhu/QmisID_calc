@@ -84,6 +84,13 @@ def uncs(outPath, Type):
     bin60_sigma4_err = [3.42395E-06, 1.16433E-05, 3.75091E-05, 8.70861E-05, 4.36027E-06, 1.89989E-05, 6.13062E-05, 0.000126094, 1.02646E-05, 3.29979E-05, 0.000120984, 0.000398379, 1.97136E-05, 7.49132E-05, 0.000261755, 4.70958E-05, 1.37999E-05, 5.97509E-05, 0.00021206, 0.00066028, 4.61127E-05, 0.000280962, 0.000950498, 0.00282727]
     bin60_sigma5 = [5.17407E-05, 0.000120178, 0.000364648, 0.00142673, 9.31192E-05, 0.000296185, 0.000821749, 0.00278521, 0.000199643, 0.000655254, 0.00187741, 0.00604648, 0.000379834, 0.00103031, 0.00309896, 0.0104888, 0.000577968, 0.00159438, 0.00494052, 0.0160076, 0.00116852, 0.00550729, 0.0158939, 0.0411522]
     
+
+    #bin60_90_130 MC
+    MC_sigma4 = [4.15424E-05, 8.79464E-05, 0.00030811, 0.00145814, 7.35485E-05, 0.000295363, 0.000868689, 0.0027452, 0.000177548, 0.000626385, 0.00223972, 0.00572267, 0.000329539, 0.00120505, 0.00367249, 0.0110194, 0.000577094, 0.00172826, 0.0050733, 0.014977, 0.00141866, 0.00511777, 0.0148894, 0.0392558]
+    MC_sigma4_err = [3.01349E-06, 1.01381E-05, 3.58266E-05, 0.000118953, 4.62114E-06, 1.89316E-05, 6.68152E-05, 0.000190885, 1.01755E-05, 3.98032E-05, 0.000153574, 0.000405645, 1.86517E-05, 8.12159E-05, 0.000289258, 0.000826236, 1.32102E-05, 4.87539E-05, 0.000219501, 0.000659853, 4.29357E-05, 0.000249515, 0.000925517, 0.00284308]
+    MC_sigma3 = [3.91945E-05, 8.89019E-05, 0.00030964, 0.00146404, 6.91801E-05, 0.000293468, 0.000868964, 0.00276061, 0.00017088, 0.000644902, 0.00225259, 0.00575085, 0.00033043, 0.00121384, 0.00370093, 0.0110146, 0.000563668, 0.00171267, 0.00507244, 0.0150225, 0.00144459, 0.00508294, 0.0150259, 0.0394175]
+    MC_sigma5 = [4.25982E-05, 8.50831E-05, 0.000302586, 0.00145859, 7.59795E-05, 0.000297286, 0.000865603, 0.00273599, 0.000188518, 0.000631922, 0.00223908, 0.00569184, 0.000331118, 0.001217, 0.00363746, 0.0110548, 0.000576238, 0.00172762, 0.00507995, 0.0150054, 0.00141, 0.005094, 0.0149362, 0.0394125]
+
     #bin40 = 40_60_90_130
     # bin40 = [4.41654E-05, 4.13003E-05, 0.000128252, 0.000352787, 0.00132627, 4.73024E-05, 8.83999E-05, 0.000295687, 0.000792038, 0.00282679, 9.46997E-05, 0.000193965, 0.000644241, 0.00193973, 0.00605357, 0.00026517, 0.000343354, 0.00103373, 0.00313706, 0.0103076, 0.000419093, 0.000670387, 0.0016045, 0.00500559, 0.015828, 0.000638339, 0.00167034, 0.00574065, 0.0156992, 0.0411108]
     # bin40_err = [4.17949E-05, 4.9294E-06, 4.6709E-05, 3.55493E-05, 2.76803E-05, 3.63915E-05, 1.30103E-05, 1.69789E-05, 0.000103279, 0.000182962, 2.31603E-05, 1.52051E-05, 0.000205803, 0.000463932, 0.000567531, 0.000124952, 0.000168864, 0.000255384, 0.000109325, 0.00160428, 0.00012962, 6.54288E-05, 3.91452E-05, 0.000398075, 0.00104341, 7.68608E-05, 0.000346308, 0.00241542, 0.00329967, 0.00228552]
@@ -143,12 +150,14 @@ def uncs(outPath, Type):
     CO_sigma5 =[0.00135496, 0.00124758, 0.00281957, 0.00126468, 0.0017313, 0.0088691, 0.00185492, 0.00357243, 0.0106224, 0.00223915, 0.00538483, 0.0299425, 0.00233965, 0.00687049, 0.0315008, 0.00394825, 0.0149573, 0.0649412]
     CO_sigma3 =[0.0010711, 0.00159381, 0.00518073, 0.00107392, 0.00218523, 0.010353, 0.00174015, 0.00407843, 0.013131, 0.0020487, 0.00526759, 0.0285444, 0.00242183, 0.00706989, 0.0316517, 0.00402425, 0.0161558, 0.0606795]
 
+    
+
 
     # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/50_60_90_130/data_all_closure.root")
     # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_130/ttw/data_all_closure_4sigma.root")
-    infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/mc16a2_closure_4sigma.root")
-    infile2 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/mc16d2_closure_4sigma.root")
-    infile3 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/mc16e2_closure_4sigma.root")
+    infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/MC/mc_closure_4sigma.root")
+    infile2 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/MC/mc_closure_4sigma.root")
+    infile3 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/MC/mc_closure_4sigma.root")
     # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/all_cuts/closure.root")                                                                                                                                                
     output= TFile(outPath+"QmisiD_total_uncs.root","recreate") 
     pT_bins = 4
@@ -205,14 +214,14 @@ def uncs(outPath, Type):
     hist_ss1 = infile.Get("ss_pt_eta_0")
     hist_ss2 = infile.Get("ss_pt_eta_1")
 
-    hist_osd1 = infile2.Get("os_pt_eta_0")
-    hist_osd2 = infile2.Get("os_pt_eta_1")
-    hist_ssd1 = infile2.Get("ss_pt_eta_0")
-    hist_ssd2 = infile2.Get("ss_pt_eta_1")
-    hist_ose1 = infile3.Get("os_pt_eta_0")
-    hist_ose2 = infile3.Get("os_pt_eta_1")
-    hist_sse1 = infile3.Get("ss_pt_eta_0")
-    hist_sse2 = infile3.Get("ss_pt_eta_1")
+    # hist_osd1 = infile2.Get("os_pt_eta_0")
+    # hist_osd2 = infile2.Get("os_pt_eta_1")
+    # hist_ssd1 = infile2.Get("ss_pt_eta_0")
+    # hist_ssd2 = infile2.Get("ss_pt_eta_1")
+    # hist_ose1 = infile3.Get("os_pt_eta_0")
+    # hist_ose2 = infile3.Get("os_pt_eta_1")
+    # hist_sse1 = infile3.Get("ss_pt_eta_0")
+    # hist_sse2 = infile3.Get("ss_pt_eta_1")
 
 
     hist_os = hist_os1.Clone("os_pt_eta_0 + os_pt_eta_1")
@@ -220,19 +229,19 @@ def uncs(outPath, Type):
     hist_ss = hist_ss1.Clone("ss_pt_eta_0 + ss_pt_eta_1")
     hist_ss.Add(hist_ss2)
 
-    hist_osd = hist_osd1.Clone("os_pt_eta_0 + os_pt_eta_1")
-    hist_osd.Add(hist_osd2)
-    hist_ssd = hist_ssd1.Clone("ss_pt_eta_0 + ss_pt_eta_1")
-    hist_ssd.Add(hist_ssd2)
-    hist_ose = hist_ose1.Clone("os_pt_eta_0 + os_pt_eta_1")
-    hist_ose.Add(hist_ose2)
-    hist_sse = hist_sse1.Clone("ss_pt_eta_0 + ss_pt_eta_1")
-    hist_sse.Add(hist_sse2)
+    # hist_osd = hist_osd1.Clone("os_pt_eta_0 + os_pt_eta_1")
+    # hist_osd.Add(hist_osd2)
+    # hist_ssd = hist_ssd1.Clone("ss_pt_eta_0 + ss_pt_eta_1")
+    # hist_ssd.Add(hist_ssd2)
+    # hist_ose = hist_ose1.Clone("os_pt_eta_0 + os_pt_eta_1")
+    # hist_ose.Add(hist_ose2)
+    # hist_sse = hist_sse1.Clone("ss_pt_eta_0 + ss_pt_eta_1")
+    # hist_sse.Add(hist_sse2)
 
-    hist_os.Add(hist_osd)
-    hist_os.Add(hist_ose)
-    hist_ss.Add(hist_ssd)
-    hist_ss.Add(hist_sse)
+    # hist_os.Add(hist_osd)
+    # hist_os.Add(hist_ose)
+    # hist_ss.Add(hist_ssd)
+    # hist_ss.Add(hist_sse)
     closure_hist = hist_os.Clone("diff")
  
     for j in range (1,pT_bins+1):
@@ -247,25 +256,25 @@ def uncs(outPath, Type):
     for j in range (1,pT_bins+1):
         for i in range(1,eta_bins+1):
 
-            # print(i,j, hist.GetBinContent(i,j), ttw_err[j-1+pT_bins*(i-1)], ttw[j-1+pT_bins*(i-1)])
+            # print(i,j, hist.GetBinContent(i,j), MC_err[j-1+pT_bins*(i-1)], MC[j-1+pT_bins*(i-1)])
             if Type == "fit": 
-                hist.SetBinContent(i,j, ttw_sigma4_err[j-1+pT_bins*(i-1)]/ttw_sigma4[j-1+pT_bins*(i-1)])
+                hist.SetBinContent(i,j, MC_sigma4_err[j-1+pT_bins*(i-1)]/MC_sigma4[j-1+pT_bins*(i-1)])
             elif Type == "fcn":
-                hist.SetBinContent(i,j, abs(ttw_sigma4_gauss[j-1+pT_bins*(i-1)] - ttw_sigma4[j-1+pT_bins*(i-1)])/ttw_sigma4[j-1+pT_bins*(i-1)])
+                hist.SetBinContent(i,j, abs(MC_sigma4_gauss[j-1+pT_bins*(i-1)] - MC_sigma4[j-1+pT_bins*(i-1)])/MC_sigma4[j-1+pT_bins*(i-1)])
             elif Type == "width":
-                hist.SetBinContent(i,j, abs(ttw_sigma5[j-1+pT_bins*(i-1)] - ttw_sigma3[j-1+pT_bins*(i-1)])/ttw_sigma4[j-1+pT_bins*(i-1)])
+                hist.SetBinContent(i,j, abs(MC_sigma5[j-1+pT_bins*(i-1)] - MC_sigma3[j-1+pT_bins*(i-1)])/MC_sigma4[j-1+pT_bins*(i-1)])
             elif Type == "total":
-                # fcn_unc = abs(ttw_gauss[j-1+pT_bins*(i-1)] - ttw[j-1+pT_bins*(i-1)])/ttw[j-1+pT_bins*(i-1)]
-                width_unc = abs(ttw_sigma5[j-1+pT_bins*(i-1)] - ttw_sigma3[j-1+pT_bins*(i-1)])/ttw_sigma4[j-1+pT_bins*(i-1)]
-                fit_unc = ttw_sigma4_err[j-1+pT_bins*(i-1)]/ttw_sigma4[j-1+pT_bins*(i-1)]
+                # fcn_unc = abs(MC_gauss[j-1+pT_bins*(i-1)] - MC[j-1+pT_bins*(i-1)])/MC[j-1+pT_bins*(i-1)]
+                width_unc = abs(MC_sigma5[j-1+pT_bins*(i-1)] - MC_sigma3[j-1+pT_bins*(i-1)])/MC_sigma4[j-1+pT_bins*(i-1)]
+                fit_unc = MC_sigma4_err[j-1+pT_bins*(i-1)]/MC_sigma4[j-1+pT_bins*(i-1)]
                 closure_unc = closure_hist.GetBinContent(i,j)
                 total = np.sqrt(width_unc*width_unc+ fit_unc*fit_unc+ closure_unc*closure_unc)
                 # print(width_unc, closure_unc, fit_unc, fcn_unc, total)
                 hist.SetBinContent(i,j,total)
-                pT_hists[j-1].SetBinContent(i,ttw_sigma4[pT_bins*(i-1)+j-1])
-                pT_hists[j-1].SetBinError(i,total*ttw_sigma4[pT_bins*(i-1)+j-1])
-                eta_hists[i-1].SetBinContent(j,ttw_sigma4[pT_bins*(i-1)+j-1])
-                eta_hists[i-1].SetBinError(j,total*ttw_sigma4[pT_bins*(i-1)+j-1])
+                pT_hists[j-1].SetBinContent(i,MC_sigma4[pT_bins*(i-1)+j-1])
+                pT_hists[j-1].SetBinError(i,total*MC_sigma4[pT_bins*(i-1)+j-1])
+                eta_hists[i-1].SetBinContent(j,MC_sigma4[pT_bins*(i-1)+j-1])
+                eta_hists[i-1].SetBinError(j,total*MC_sigma4[pT_bins*(i-1)+j-1])
 
 
     if Type == "closure":
@@ -298,7 +307,7 @@ def uncs(outPath, Type):
     hist.Draw("colz text same")
     print("here yes")
     # Save the plot as a PDF
-    c.SaveAs(outPath+"ttw_4sigma_"+Type+"_syst.png")
+    c.SaveAs(outPath+"MC_4sigma_"+Type+"_syst.png")
 
     # etaaxis, gPad= createCanvasPads()
     if (Type =="total"):
@@ -353,13 +362,13 @@ def uncs(outPath, Type):
 
 if __name__ == '__main__':
     root.gROOT.SetBatch()
-    outPath = "/eos/user/s/ssindhu/4tops/plots/final_showdown/60_90_130/"
+    outPath = "/eos/user/s/ssindhu/4tops/plots/final_showdown/60_90_130/MC/"
     # closure_uncs(outPath)
     uncs(outPath, "closure")
-    # uncs(outPath, "width")
-    # uncs(outPath, "fit")
-    # # uncs(outPath, "fcn")
-    # uncs(outPath, "total")
+    uncs(outPath, "width")
+    uncs(outPath, "fit")
+    # uncs(outPath, "fcn")
+    uncs(outPath, "total")
 
 
 

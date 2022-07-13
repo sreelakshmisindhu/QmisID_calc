@@ -26,10 +26,10 @@ void ana(int signal=0)
      // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data16.root");
      // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data17.root");
      // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data18.root");
-     // chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16a.root");
-     // chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16d_700320.root");
-     // chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16d_700321.root");
-     // chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16d_700322.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16a.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16d_700320.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16d_700321.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16d_700322.root");
      chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16e_700320.root");
      chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16e_700321.root");
      chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16e_700322_1.root");
@@ -49,10 +49,10 @@ void ana(int signal=0)
     //chain->Add("DY50_test.root");
     //can have more chain->Add() lines here.
      
-     hstfilename="60_90_130/mc16e2_closure_4sigma.root";//output histogram file
+     hstfilename="60_90_130/MC/mc_closure_4sigma.root";//output histogram file
 
-     sumfilename1="60_90_130/ss.mc16e2_closure_4sigma.txt"; //output text file
-     sumfilename2="60_90_130/os.mc16e2_closure_4sigma.txt"; //output text file
+     sumfilename1="60_90_130/MC/ss.mc_closure_4sigma.txt"; //output text file
+     sumfilename2="60_90_130/MC/os.mc_closure_4sigma.txt"; //output text file
   // }
 
   std::cout<<"Output files are "<<hstfilename<<" and "<<sumfilename1<<" and "<<sumfilename2<<std::endl;
@@ -60,7 +60,7 @@ void ana(int signal=0)
   m_selec.SetSumFileName1(sumfilename1);
   m_selec.SetSumFileName2(sumfilename2);
   m_selec.SetVerbose(200);//set verbosity level for output.
-  m_selec.SetData(-1);//******IMPORTANT***** 0 is MC, 1 data, 2 data with BG subtraction, 3 QmisID reweighting, 4 gammastar region, 5 co region, 6 ttw region
+  m_selec.SetData(-1);//******IMPORTANT***** 0 is MC, -1 MC QmisID reweighting, 1 data, 2 data with BG subtraction, 3 QmisID reweighting, 4 gammastar region, 5 co region, 6 ttw region
   m_selec.SetSigma(4);
   //this calls the Process function for each event in the chain
   //and runs the m_selec code over it.

@@ -117,16 +117,16 @@ Bool_t QmisID_count::Process(Long64_t entry)
 	    lumi =36207.7*(runNumber==284500)+44307.4*(runNumber==300000)+(runNumber==310000)*58450.1;
 
 	    if (_data == 0){ 
-	      // if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
-		weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;
+	      if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
+		weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
+		  else{weights = -0.5*weight_closure(lep0.v, lep1.v)*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
 		// std::cout<<weights<<std::endl;}}
-	      }
+	    }
 	    else if (_data == -1){
 	      if(OSee == 1){
 		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
 		  
 		  weights = weight_closure(lep0.v, lep1.v)*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
-		  // else{weights = -0.5*weight_closure(lep0.v, lep1.v)*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
 
 		  // std::cout<<"yes weights "<<weights<<" closure "<<weight_closure(lep0.v, lep1.v)<<" mc "<<weight_mc<<" lumi "<<lumi<<"pileup "<<weight_pileup<<" jvt "<<weight_jvt<<" SF "<<weight_leptonSF<<" b "<<weight_bTagSF_DL1r_Continuous<<" norm "<<weight_normalise<<endl;
 
@@ -304,7 +304,12 @@ double QmisID_count::weight_closure(TLorentzVector l1,TLorentzVector l2)
   // Float_t pt_eta_w[24] = {3.22999E-05, 6.11721E-05, 0.000227192, 0.000909073, 5.45128E-05, 0.000124778, 0.000480831, 0.00201136, 0.000105132, 0.000273646, 0.00110571, 0.00447957, 0.000263562, 0.000501456, 0.00156266, 0.00778502, 0.000431015, 0.000910359, 0.00252699, 0.011276, 0.000711905, 0.00250193, 0.00907911, 0.0315624}; //45_70_110
 
   // Float_t pt_eta_w[24] = { 3.57118E-05, 6.4525E-05, 0.000215018, 0.000944594, 7.69832E-05, 0.000129521, 0.000476718, 0.00200027, 0.000132347, 0.000281834, 0.00112603, 0.00451399, 0.000317545, 0.000506374, 0.00160781, 0.00798531, 0.00044556, 0.000932643, 0.00255734, 0.0113794, 0.000763963, 0.00251766, 0.00902789, 0.0317013};//45_70_110 sigma 4
-  Float_t pt_eta_w[24] = {   4.38548E-05, 0.000119611, 0.000362226, 0.00136687, 8.75868E-05, 0.000284814, 0.00079309, 0.00284304, 0.000172475, 0.000647994, 0.00194806, 0.00610096, 0.000348415, 0.00102142, 0.00322987, 0.0104283, 0.0005572, 0.00160706, 0.004962, 0.0160352, 0.0011009, 0.00563761, 0.0155431, 0.0411349};//60_90_130 sigma 4 
+  // Float_t pt_eta_w[24] = {   4.38548E-05, 0.000119611, 0.000362226, 0.00136687, 8.75868E-05, 0.000284814, 0.00079309, 0.00284304, 0.000172475, 0.000647994, 0.00194806, 0.00610096, 0.000348415, 0.00102142, 0.00322987, 0.0104283, 0.0005572, 0.00160706, 0.004962, 0.0160352, 0.0011009, 0.00563761, 0.0155431, 0.0411349};//60_90_130 sigma 4 
+
+  Float_t pt_eta_w[24] = {4.15424E-05, 8.79464E-05, 0.00030811, 0.00145814, 7.35485E-05, 0.000295363, 0.000868689, 0.0027452, 0.000177548, 0.000626385, 0.00223972, 0.00572267, 0.000329539, 0.00120505, 0.00367249, 0.0110194, 0.000577094, 0.00172826, 0.0050733, 0.014977, 0.00141866, 0.00511777, 0.0148894, 0.0392558}; //60_90_130 sigma 4 MC
+
+
+
 
 
   // Float_t pt_eta_w[30] = {4.41654E-05, 4.13003E-05, 0.000128252, 0.000352787, 0.00132627, 4.73024E-05, 8.83999E-05, 0.000295687, 0.000792038, 0.00282679, 9.46997E-05, 0.000193965, 0.000644241, 0.00193973, 0.00605357, 0.00026517, 0.000343354, 0.00103373, 0.00313706, 0.0103076, 0.000419093, 0.000670387, 0.0016045, 0.00500559, 0.015828, 0.000638339, 0.00167034, 0.00574065, 0.0156992, 0.0411108};//40_60_90_130 4sigma  

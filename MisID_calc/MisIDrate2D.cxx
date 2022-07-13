@@ -275,10 +275,10 @@ void MisIDrate2D(std::string sample, std::string path, std::string outpath) {
 
   TLegend* lg = new TLegend(0.65,0.1,0.85,0.4,"");
   // lg->AddEntry(h1_pT1,"pT [15,40] GeV");
-  lg->AddEntry(h1_pT2,"pT [15,40] GeV");
-  lg->AddEntry(h1_pT3,"pT [40,50] GeV");
-  lg->AddEntry(h1_pT4,"pT [50,60] GeV");
-  lg->AddEntry(h1_pT5,"pT [60,1000] GeV");
+  lg->AddEntry(h1_pT2,"pT [15,60] GeV");
+  lg->AddEntry(h1_pT3,"pT [60,90] GeV");
+  lg->AddEntry(h1_pT4,"pT [90,130] GeV");
+  lg->AddEntry(h1_pT5,"pT [130,1000] GeV");
 
   lg->SetBorderSize(0);
   lg->SetFillStyle(0);
