@@ -27,12 +27,12 @@ void ana(int signal=0)
      // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data17.root");
      // chain->Add("/eos/home-s/ssindhu/4tops/post_prodQmisID/ECIDS/data18.root");
      chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16a.root");
-     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16d_700320.root");
-     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16d_700321.root");
-     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16d_700322.root");
-     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16e_700320.root");
-     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16e_700321.root");
-     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16e_700322_1.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/new_mc16d_700320.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/new_mc16d_700321.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/new_mc16d_700322.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/new_mc16e_700320.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/new_mc16e_700321.root");
+     chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/new_mc16e_700322.root");
      // chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/MC/mc16e_700322_2.root");
 
      // chain->Add("/eos/home-s/ssindhu/4tops/new_QmisID/SSML/data/test/data15.root");
@@ -49,10 +49,10 @@ void ana(int signal=0)
     //chain->Add("DY50_test.root");
     //can have more chain->Add() lines here.
      
-     hstfilename="60_90_130/MC/mc_closure_4sigma.root";//output histogram file
+     hstfilename="60_90_130/MC/truth_mc_closure_4sigma.root";//output histogram file
 
-     sumfilename1="60_90_130/MC/ss.mc_closure_4sigma.txt"; //output text file
-     sumfilename2="60_90_130/MC/os.mc_closure_4sigma.txt"; //output text file
+     sumfilename1="60_90_130/MC/ss.truth_mc_closure_4sigma.txt"; //output text file
+     sumfilename2="60_90_130/MC/os.truth_mc_closure_4sigma.txt"; //output text file
   // }
 
   std::cout<<"Output files are "<<hstfilename<<" and "<<sumfilename1<<" and "<<sumfilename2<<std::endl;

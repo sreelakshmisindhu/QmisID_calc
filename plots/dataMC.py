@@ -162,20 +162,21 @@ if __name__ == '__main__':
     # signalFile = TFile("/eos/home-s/ssindhu/4tops/finaltest_noCS.root")
     # signalFile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/mc16a.root")
     # signalFile1 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/no_cuts/mc16a.root")
-    dataFile1 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/no_cuts/data_15_16.root")
-    signalFile1 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/mc16a.root")
-    dataFile1 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/data_15_16_nocut.root")
-    signalFile2 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/mc16d.root")
-    dataFile2 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/data_17_nocut.root")
-    signalFile3 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/mc16e.root")
-    dataFile3 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/data_18_nocut.root")
-    # signalFile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/mc_all.root")
-    # dataFile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/data_all.root")
+    # dataFile1 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/no_cuts/data_15_16.root")
+    # signalFile1 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/mc16a.root")
+    # dataFile1 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/data_15_16_nocut.root")
+    # signalFile2 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/mc16d.root")
+    # dataFile2 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/data_17_nocut.root")
+    # signalFile3 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/mc16e.root")
+    # dataFile3 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_90_130/data_18_nocut.root")
+    signalFile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/MC/mc_4sigma.root")
+    dataFile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/data_all_4sigma.root")
     
-    outPath = "/eos/home-s/ssindhu/4tops/plots/final_showdown/"
+    # outPath = "/eos/home-s/ssindhu/4tops/plots/final_showdown/test/"
+    outPath = ""
     # for event in DataFile.nominal_Loose:
-    # variables= ["ss_n_Muons", "ss_n_Electrons", "ss_n_Jets", "ss_lep_0_pt", "ss_lep_1_pt", "ss_HT_all", "ss_Mll", "ss_Mll_small", "ss_met", "ss_n_btags_77"]
-    variables= ["os_n_Muons", "os_n_Electrons", "os_n_Jets", "os_lep_0_pt", "os_lep_1_pt", "os_HT_all", "os_Mll", "os_Mll_small", "os_met", "os_n_btags_77"]
+    variables= ["ss_n_Muons", "ss_n_Electrons", "ss_n_Jets", "ss_lep_0_pt", "ss_lep_1_pt", "ss_HT_all", "ss_Mll", "ss_Mll_small", "ss_met", "ss_n_btags_77"]
+    # variables= ["os_n_Muons", "os_n_Electrons", "os_n_Jets", "os_lep_0_pt", "os_lep_1_pt", "os_HT_all", "os_Mll", "os_Mll_small", "os_met", "os_n_btags_77"]
     label = ["n Muons", "n Electrons", "n Jets", "leading lepton p_{T} [GeV]", "Subleading lepton p_{T} [GeV]", "H_{T} all [GeV]","M(l,l) [GeV]" ,"M(l,l) [GeV]", "met [GeV]", "n Btags @ 77"]
     # variables = ["ss_Mll", "ss_Mll_small"]
     # label = ["M(l,l) [GeV]", "M(l,l) [GeV]"]
@@ -185,16 +186,16 @@ if __name__ == '__main__':
         # dataHist = dataFile.Get("Data16/"+var)
         # dataHist2 = dataFile2.Get("Data15/"+var)
         # signalHist = signalFile.Get("Signal/"+var)
-        dataHist3 = dataFile3.Get(var)
-        signalHist3 = signalFile3.Get(var)
-        dataHist1 = dataFile1.Get(var)
-        signalHist1 = signalFile1.Get(var)
-        dataHist2 = dataFile2.Get(var)
-        signalHist2 = signalFile2.Get(var)
-        dataHist = dataHist1+dataHist2+signalHist3
-        signalHist = signalHist1+signalHist2+signalHist3
-        # dataHist = dataFile.Get(var)
-        # signalHist = signalFile.Get(var)
+        # dataHist3 = dataFile3.Get(var)
+        # signalHist3 = signalFile3.Get(var)
+        # dataHist1 = dataFile1.Get(var)
+        # signalHist1 = signalFile1.Get(var)
+        # dataHist2 = dataFile2.Get(var)
+        # signalHist2 = signalFile2.Get(var)
+        # dataHist = dataHist1+dataHist2+signalHist3
+        # signalHist = signalHist1+signalHist2+signalHist3
+        dataHist = dataFile.Get(var)
+        signalHist = signalFile.Get(var)
         # SignalHist.Scale(138965.16)
         # SignalHist.Scale(10000)
         # dataHist.Add(dataHist2)

@@ -4,6 +4,30 @@ from ROOT import TFile
 from ROOT import TH1
 from ROOT import TMath
 
+def DoubleSidedCrystalballFunction(x, par):
+
+   alpha_l = par[0]
+   alpha_h = par[1]
+   n_l     = par[2]
+   n_h     = par[3]
+   mean= par[4]
+   sigma= par[5]
+   N= par[6]
+   # float = (x[0]-mean)/sigma
+   fact1TLessMinosAlphaL = alpha_l/n_l
+   fact2TLessMinosAlphaL = (n_l/alpha_l) - alpha_l -t
+   fact1THihgerAlphaH = alpha_h/n_h
+   fact2THigherAlphaH = (n_h/alpha_h) - alpha_h +t
+
+   if (-alpha_l <= t and alpha_h >= t):
+      result = exp(-0.5*t*t)
+   elif (t < -alpha_l):
+      result = exp(-0.5*alpha_l*alpha_l)*pow(fact1TLessMinosAlphaL*fact2TLessMinosAlphaL, -n_l)
+   elif (t > alpha_h):
+      result = exp(-0.5*alpha_h*alpha_h)*pow(fact1THihgerAlphaH*fact2THigherAlphaH, -n_h)
+   return N*result
+
+
 def BreitWigner(x, mean, gamma):
 
    bw = gamma/((x-mean)*(x-mean) + gamma*gamma/4)
@@ -23,7 +47,11 @@ def fit(hist, outPath, name, label):
     # mean = 90.6 #hist.GetMean()
     # sigma = 3.337 #hist.GetRMS()
     # sqroot = root.TF1("sqroot",  "[1]/2*3.14*((x-[0])*(x-[0]) + [1]*[1]/4*2*3.14)", 60, 120)
-    sqroot = root.TF1( "sqroot", "breitwigner", 60, 120)
+    # sqroot = root.TF1( "sqroot", "breitwigner", 60, 120)
+    sqroot = root.TF1( "sqroot", "DoubleSidedCrystalballFunction", 60, 120)
+    sqroot.SetParameters(1, 2, 2, 1, hist.GetMean(), hist.GetRMS(),hist.Integral(60, 120))
+    sqroot.SetParNames ("alpha_{low}","alpha_{high}","n_{low}", "n_{high}", "mean", "sigma", "Norm")
+ 
     sqroot.SetParameters(hist.GetMaximum(),hist.GetMean(),hist.GetRMS())
     # sqroot.SetParameters(1, hist.GetMean())
     # sqroot.SetParameters(2 ,hist.GetRMS()()
@@ -67,11 +95,11 @@ def fit(hist, outPath, name, label):
 
     # Add the ATLAS Label
     aplt.atlas_label(text="Internal", loc="upper left")
-    ax1.text(0.2, 0.84, "#sqrt{s} = 13 TeV, 139 fb^{-1}", size=22, align=13)
-    ax1.text(0.2 ,0.79 , " Mean =  "+ str(round(sqroot.GetParameter(1),2))+ " GeV", size=22, align=13 )
-    ax1.text(0.2 ,0.74 , " Width =  " + str(round(sqroot.GetParameter(2),2))+ " GeV", size=22, align=13)
-    ax1.text(0.2 ,0.69 , " chi2 / ndof = " +str(round(sqroot.GetChisquare(),2))+"/"+str(round(sqroot.GetNDF(),2)), size=22, align=13 )
-    ax1.text(0.3 ,0.64, " = "+str(round(sqroot.GetChisquare()/sqroot.GetNDF(),2)), size=22, align=13 )
+    # ax1.text(0.2, 0.84, "#sqrt{s} = 13 TeV, 139 fb^{-1}", size=22, align=13)
+    # ax1.text(0.2 ,0.79 , " Mean =  "+ str(round(sqroot.GetParameter(1),2))+ " GeV", size=22, align=13 )
+    # ax1.text(0.2 ,0.74 , " Width =  " + str(round(sqroot.GetParameter(2),2))+ " GeV", size=22, align=13)
+    # ax1.text(0.2 ,0.69 , " chi2 / ndof = " +str(round(sqroot.GetChisquare(),2))+"/"+str(round(sqroot.GetNDF(),2)), size=22, align=13 )
+    # ax1.text(0.3 ,0.64, " = "+str(round(sqroot.GetChisquare()/sqroot.GetNDF(),2)), size=22, align=13 )
     # Add legend
     ax1.legend(loc=(0.65, 0.78, 0.92, 0.90))
 

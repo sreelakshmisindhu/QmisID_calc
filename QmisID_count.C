@@ -91,27 +91,29 @@ Bool_t QmisID_count::Process(Long64_t entry)
   double lumi = 0;
   double Zmass =0;                                                                                                                                                        
   double massWindow=0;                                                                                                                                                   
-
+  double ee =0;
   // cs = 55.5413852*(mcChannelNumber==700320)+286.392209*(mcChannelNumber==700321)+1879.375291*(mcChannelNumber==700322);
 
   Lepton lep0; lep0.v.SetPtEtaPhiE(lep_0_pt/1000, lep_0_eta, lep_0_phi, lep_0_e/1000);
   Lepton lep1; lep1.v.SetPtEtaPhiE(lep_1_pt/1000, lep_1_eta, lep_1_phi, lep_1_e/1000);
   Lepton lep2; lep2.v.SetPtEtaPhiE(lep_2_pt/1000, lep_2_eta, lep_2_phi, lep_2_e/1000);
   Mll = (lep0.v+lep1.v).M();
- 
+  if (el_truthPdgId->size()>1){
+    ee = el_truthPdgId->at(0)*el_truthPdgId->at(1);}
+  else{ee = 0; }
   // std::cout<<lep_0_pt<<"  "<<lep_1_pt<<" Mll "<<Mll<<" OSee "<< OSee<<" SSee "<<loose_SSee<<" nJets "<<nJets<<" tight "<<(lep_0_isTight==1)<<(lep_1_isTight==1)<<" n "<<nEvtTotal<<std::endl;
   // if(lep_0_isTight!=1 or lep_1_isTight!=1){std::cout<<nEvtTotal<<" "<<lep_1_isTight<<"  "<<lep_0_isTight<<std::endl;}          
   
-  if(OSee==1 or loose_SSee ==1){               
-    if (OSee == 1){if (fit == "BW"){Zmass = 90.64; massWindow = 4.67*_sigma;}
+  if(ee==-121 or ee ==121){               
+    if (ee == -121){if (fit == "BW"){Zmass = 90.64; massWindow = 4.67*_sigma;}
       else{Zmass = 90.61; massWindow = 3.337*_sigma;}}
-    else if(loose_SSee == 1){if (fit == "BW"){Zmass = 89.56; massWindow = 5.63*_sigma; MW_low = 89.56 - 5.63*_sigma; MW_high = 89.56 + 5.63*_sigma;}
+    else if(ee == 121){if (fit == "BW"){Zmass = 89.56; massWindow = 5.63*_sigma; MW_low = 89.56 - 5.63*_sigma; MW_high = 89.56 + 5.63*_sigma;}
       else{Zmass = 89.48; massWindow = 3.843*_sigma; MW_low = 89.48 - 3.843*_sigma; MW_high = 89.48 + 3.843*_sigma;}} 
-    if(lep_0_isTight==1 and lep_1_isTight==1){ // remove loose lepton         
+    //    if(lep_0_isTight==1 and lep_1_isTight==1){ // remove loose lepton         
       // std::cout<<"pass cuts"<<nEvtTotal<<" "<<lep_1_isTight<<"  "<<lep_0_isTight<<std::endl;
       if(Mll>(Zmass-2*massWindow) and Mll<(Zmass+2*massWindow) ){
     	if( nJets>0 ){
-
+	  //	  std::cout<<ee<<" "<<OSee<<" "<<loose_SSee<<std::endl;
     	  if(el_ECIDSResult_float->at(0)>-0.337671 and el_ECIDSResult_float->at(1)>-0.337671){
 
 	    lumi =36207.7*(runNumber==284500)+44307.4*(runNumber==300000)+(runNumber==310000)*58450.1;
@@ -123,7 +125,7 @@ Bool_t QmisID_count::Process(Long64_t entry)
 		// std::cout<<weights<<std::endl;}}
 	    }
 	    else if (_data == -1){
-	      if(OSee == 1){
+	      if(ee == -121){
 		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
 		  
 		  weights = weight_closure(lep0.v, lep1.v)*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
@@ -131,7 +133,7 @@ Bool_t QmisID_count::Process(Long64_t entry)
 		  // std::cout<<"yes weights "<<weights<<" closure "<<weight_closure(lep0.v, lep1.v)<<" mc "<<weight_mc<<" lumi "<<lumi<<"pileup "<<weight_pileup<<" jvt "<<weight_jvt<<" SF "<<weight_leptonSF<<" b "<<weight_bTagSF_DL1r_Continuous<<" norm "<<weight_normalise<<endl;
 
 	      }
-	      else if (loose_SSee == 1){
+	      else if (ee == 121){
 		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
 		  std::cout<<"ssee"<<endl;
 
@@ -147,11 +149,11 @@ Bool_t QmisID_count::Process(Long64_t entry)
 		weights = 1;}
 	      else{weights = -0.5;}}
 	    else if (_data == 3){
-	      if(OSee == 1){
+	      if(ee == -121){
 		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
 	    	weights = weight_closure(lep0.v, lep1.v);
 		}}
-	      else if (loose_SSee == 1){
+	      else if (ee == 121){
 		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
 		  weights = 1;}
 		else{weights = -0.5;}
@@ -189,7 +191,7 @@ Bool_t QmisID_count::Process(Long64_t entry)
 	      }}
 	   
 
-	    if(_verbosity>0 && nEvtTotal%50000==0)cout<<"lumi"<<lumi<<" weights "<<weights<<" mll "<<Mll<<" OSee " << OSee<<" SSee" <<loose_SSee<<std::endl;
+	    //	    if(_verbosity>0 && nEvtTotal%50000==0)cout<<"lumi"<<lumi<<" weights "<<weights<<" mll "<<Mll<<" OSee " << OSee<<" SSee" <<loose_SSee<<std::endl;
 	  
 
 	    int i=0,j=0,k=0,l=0, m=0;
@@ -215,7 +217,7 @@ Bool_t QmisID_count::Process(Long64_t entry)
 
 
 	    Sum = Sum+weights;
-	    if(OSee==1){
+	    if(ee==-121){
 
 	      h_OS[i][j][k][l] += weights;
 
@@ -237,15 +239,15 @@ Bool_t QmisID_count::Process(Long64_t entry)
 	      h.os_pt_eta[0]->Fill(lep0.v.Eta(),lep0.v.Pt(),weights); 
 	      h.os_pt_eta[1]->Fill(lep1.v.Eta(),lep1.v.Pt(),weights); 
 	      h.os_n_Btags->Fill(nBTags_DL1r_77,weights);
-	      h.os_OSee->Fill(OSee,weights);
-	      h.os_loose_SSee->Fill(loose_SSee,weights);
+	      //	      h.os_OSee->Fill(OSee,weights);
+	      //h.os_loose_SSee->Fill(loose_SSee,weights);
 	      // if(Mll>MW_low and Mll<MW_high ){
 
 	      h.os_M_ll[0]->Fill(Mll,weights);
 	      h.os_M_ll[1]->Fill(Mll,weights);
 	      // }
 	    }
-	    else if (loose_SSee==1){
+	    else if (ee==121){
 	      h_SS[i][j][k][l] += weights;
 
 	      h.ss_Jets->Fill(nJets,weights);
@@ -266,8 +268,8 @@ Bool_t QmisID_count::Process(Long64_t entry)
 	      h.ss_pt_eta[0]->Fill(lep0.v.Eta(),lep0.v.Pt(),weights); 
 	      h.ss_pt_eta[1]->Fill(lep1.v.Eta(),lep1.v.Pt(),weights); 
 	      h.ss_n_Btags->Fill(nBTags_DL1r_77,weights);
-	      h.ss_OSee->Fill(OSee,weights);
-	      h.ss_loose_SSee->Fill(loose_SSee,weights);
+	      //h.ss_OSee->Fill(OSee,weights);
+	      //h.ss_loose_SSee->Fill(loose_SSee,weights);
 	      // if(Mll>MW_low and Mll<MW_high ){
   
 	      h.ss_M_ll[0]->Fill(Mll,weights);
@@ -277,7 +279,7 @@ Bool_t QmisID_count::Process(Long64_t entry)
   
 
 	    //std::cout<<" SSee "<<lep_0_charge<<" pdgid "<<lep_0_pdgid<<" 1" << lep_1_charge<<" pdgid "<<lep_1_pdgid<<std::endl;
-	  }}}}}
+	  }}}}
 
   return 0;
 
@@ -306,7 +308,7 @@ double QmisID_count::weight_closure(TLorentzVector l1,TLorentzVector l2)
   // Float_t pt_eta_w[24] = { 3.57118E-05, 6.4525E-05, 0.000215018, 0.000944594, 7.69832E-05, 0.000129521, 0.000476718, 0.00200027, 0.000132347, 0.000281834, 0.00112603, 0.00451399, 0.000317545, 0.000506374, 0.00160781, 0.00798531, 0.00044556, 0.000932643, 0.00255734, 0.0113794, 0.000763963, 0.00251766, 0.00902789, 0.0317013};//45_70_110 sigma 4
   // Float_t pt_eta_w[24] = {   4.38548E-05, 0.000119611, 0.000362226, 0.00136687, 8.75868E-05, 0.000284814, 0.00079309, 0.00284304, 0.000172475, 0.000647994, 0.00194806, 0.00610096, 0.000348415, 0.00102142, 0.00322987, 0.0104283, 0.0005572, 0.00160706, 0.004962, 0.0160352, 0.0011009, 0.00563761, 0.0155431, 0.0411349};//60_90_130 sigma 4 
 
-  Float_t pt_eta_w[24] = {4.15424E-05, 8.79464E-05, 0.00030811, 0.00145814, 7.35485E-05, 0.000295363, 0.000868689, 0.0027452, 0.000177548, 0.000626385, 0.00223972, 0.00572267, 0.000329539, 0.00120505, 0.00367249, 0.0110194, 0.000577094, 0.00172826, 0.0050733, 0.014977, 0.00141866, 0.00511777, 0.0148894, 0.0392558}; //60_90_130 sigma 4 MC
+  Float_t pt_eta_w[24] = {3.8057E-05, 8.64942E-05, 0.00024718, 0.000844019, 8.60671E-05, 0.000198917, 0.000488654, 0.00138802, 0.000248136, 0.000562237, 0.00134883, 0.00309248, 0.00129032, 0.00233299, 0.00434177, 0.00897532, 0.0014588, 0.00298105, 0.0051417, 0.0106171, 0.00261485, 0.00411759, 0.00546528, 0.0113483};
 
 
 

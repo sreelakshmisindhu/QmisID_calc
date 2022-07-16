@@ -818,6 +818,7 @@ int QmisID_count::ReadLimited(int level, Long64_t entry)
     b_weight_leptonSF->GetEntry(entry);
     b_weight_jvt->GetEntry(entry);
     b_weight_bTagSF_DL1r_Continuous->GetEntry(entry);
+    b_el_truthPdgId->GetEntry(entry);
     }
     return 1;
   }

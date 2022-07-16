@@ -91,6 +91,13 @@ def uncs(outPath, Type):
     MC_sigma3 = [3.91945E-05, 8.89019E-05, 0.00030964, 0.00146404, 6.91801E-05, 0.000293468, 0.000868964, 0.00276061, 0.00017088, 0.000644902, 0.00225259, 0.00575085, 0.00033043, 0.00121384, 0.00370093, 0.0110146, 0.000563668, 0.00171267, 0.00507244, 0.0150225, 0.00144459, 0.00508294, 0.0150259, 0.0394175]
     MC_sigma5 = [4.25982E-05, 8.50831E-05, 0.000302586, 0.00145859, 7.59795E-05, 0.000297286, 0.000865603, 0.00273599, 0.000188518, 0.000631922, 0.00223908, 0.00569184, 0.000331118, 0.001217, 0.00363746, 0.0110548, 0.000576238, 0.00172762, 0.00507995, 0.0150054, 0.00141, 0.005094, 0.0149362, 0.0394125]
 
+    #bin 60_90_130 MC truth
+    truth_sigma4 = [3.8057E-05, 8.64942E-05, 0.00024718, 0.000844019, 8.60671E-05, 0.000198917, 0.000488654, 0.00138802, 0.000248136, 0.000562237, 0.00134883, 0.00309248, 0.00129032, 0.00233299, 0.00434177, 0.00897532, 0.0014588, 0.00298105, 0.0051417, 0.0106171, 0.00261485, 0.00411759, 0.00546528, 0.0113483]
+    truth_sigma4_err = [3.04417E-06, 1.03013E-05, 3.30498E-05, 9.21942E-05, 4.82961E-06, 1.6682E-05, 4.38016E-05, 0.000140419, 8.15767E-06, 3.96954E-05, 0.000188704, 0.000312251, 3.26524E-05, 0.000112011, 0.00032166, 0.000761851, 2.01584E-05, 8.19202E-05, 0.000295223, 0.000569552, 5.67746E-05, 0.000191401, 0.000737519, 0.00161775]
+    truth_sigma3 = [3.41083E-05, 8.97135E-05, 0.000250143, 0.000838308, 7.98673E-05, 0.00020028, 0.000497809, 0.00140783, 0.000238291, 0.000582515, 0.00134421, 0.00310617, 0.0013006, 0.00234652, 0.00437467, 0.00896138, 0.00145589, 0.00298252, 0.00512971, 0.010858, 0.00264114, 0.00415773, 0.00550955, 0.0112512]
+    truth_sigma5 = [4.00324E-05, 8.28971E-05, 0.000243968, 0.000844238, 8.7457E-05, 0.00020151, 0.000482241, 0.00137453, 0.00025826, 0.000564702, 0.00134045, 0.00310649, 0.00130491, 0.0023483, 0.00434769, 0.00895589, 0.00146294, 0.0029738, 0.00513774, 0.010689, 0.00258527, 0.00412016, 0.00550345, 0.0114619]
+
+
     #bin40 = 40_60_90_130
     # bin40 = [4.41654E-05, 4.13003E-05, 0.000128252, 0.000352787, 0.00132627, 4.73024E-05, 8.83999E-05, 0.000295687, 0.000792038, 0.00282679, 9.46997E-05, 0.000193965, 0.000644241, 0.00193973, 0.00605357, 0.00026517, 0.000343354, 0.00103373, 0.00313706, 0.0103076, 0.000419093, 0.000670387, 0.0016045, 0.00500559, 0.015828, 0.000638339, 0.00167034, 0.00574065, 0.0156992, 0.0411108]
     # bin40_err = [4.17949E-05, 4.9294E-06, 4.6709E-05, 3.55493E-05, 2.76803E-05, 3.63915E-05, 1.30103E-05, 1.69789E-05, 0.000103279, 0.000182962, 2.31603E-05, 1.52051E-05, 0.000205803, 0.000463932, 0.000567531, 0.000124952, 0.000168864, 0.000255384, 0.000109325, 0.00160428, 0.00012962, 6.54288E-05, 3.91452E-05, 0.000398075, 0.00104341, 7.68608E-05, 0.000346308, 0.00241542, 0.00329967, 0.00228552]
@@ -155,7 +162,7 @@ def uncs(outPath, Type):
 
     # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/50_60_90_130/data_all_closure.root")
     # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_130/ttw/data_all_closure_4sigma.root")
-    infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/MC/mc_closure_4sigma.root")
+    infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/MC/truth_mc_closure_4sigma.root")
     infile2 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/MC/mc_closure_4sigma.root")
     infile3 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/MC/mc_closure_4sigma.root")
     # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/all_cuts/closure.root")                                                                                                                                                
@@ -247,34 +254,34 @@ def uncs(outPath, Type):
     for j in range (1,pT_bins+1):
         for i in range(1,eta_bins+1):
             closure_hist.SetBinContent(i,j, abs(hist_os.GetBinContent(i,j) - hist_ss.GetBinContent(i,j) ))
-            # print("os", i,j, hist_os1.GetBinContent(i,j), hist_os2.GetBinContent(i,j),  hist_os.GetBinContent(i,j) )
-            # print("ss", i,j, hist_ss1.GetBinContent(i,j), hist_ss2.GetBinContent(i,j),  hist_ss.GetBinContent(i,j) )
-            # print("df", i,j, hist.GetBinContent(i,j))
+            print("os", i,j, hist_os1.GetBinContent(i,j), hist_os2.GetBinContent(i,j),  hist_os.GetBinContent(i,j) )
+            print("ss", i,j, hist_ss1.GetBinContent(i,j), hist_ss2.GetBinContent(i,j),  hist_ss.GetBinContent(i,j) )
+            print("df", i,j, hist.GetBinContent(i,j))
 
     closure_hist.Divide(hist_ss)
 
     for j in range (1,pT_bins+1):
         for i in range(1,eta_bins+1):
 
-            # print(i,j, hist.GetBinContent(i,j), MC_err[j-1+pT_bins*(i-1)], MC[j-1+pT_bins*(i-1)])
+            # print(i,j, hist.GetBinContent(i,j), bin60_err[j-1+pT_bins*(i-1)], bin60[j-1+pT_bins*(i-1)])
             if Type == "fit": 
-                hist.SetBinContent(i,j, MC_sigma4_err[j-1+pT_bins*(i-1)]/MC_sigma4[j-1+pT_bins*(i-1)])
+                hist.SetBinContent(i,j, bin60_sigma4_err[j-1+pT_bins*(i-1)]/bin60_sigma4[j-1+pT_bins*(i-1)])
             elif Type == "fcn":
-                hist.SetBinContent(i,j, abs(MC_sigma4_gauss[j-1+pT_bins*(i-1)] - MC_sigma4[j-1+pT_bins*(i-1)])/MC_sigma4[j-1+pT_bins*(i-1)])
+                hist.SetBinContent(i,j, abs(bin60_sigma4_gauss[j-1+pT_bins*(i-1)] - bin60_sigma4[j-1+pT_bins*(i-1)])/bin60_sigma4[j-1+pT_bins*(i-1)])
             elif Type == "width":
-                hist.SetBinContent(i,j, abs(MC_sigma5[j-1+pT_bins*(i-1)] - MC_sigma3[j-1+pT_bins*(i-1)])/MC_sigma4[j-1+pT_bins*(i-1)])
+                hist.SetBinContent(i,j, abs(bin60_sigma5[j-1+pT_bins*(i-1)] - bin60_sigma3[j-1+pT_bins*(i-1)])/bin60_sigma4[j-1+pT_bins*(i-1)])
             elif Type == "total":
-                # fcn_unc = abs(MC_gauss[j-1+pT_bins*(i-1)] - MC[j-1+pT_bins*(i-1)])/MC[j-1+pT_bins*(i-1)]
-                width_unc = abs(MC_sigma5[j-1+pT_bins*(i-1)] - MC_sigma3[j-1+pT_bins*(i-1)])/MC_sigma4[j-1+pT_bins*(i-1)]
-                fit_unc = MC_sigma4_err[j-1+pT_bins*(i-1)]/MC_sigma4[j-1+pT_bins*(i-1)]
+                # fcn_unc = abs(bin60_gauss[j-1+pT_bins*(i-1)] - bin60[j-1+pT_bins*(i-1)])/bin60[j-1+pT_bins*(i-1)]
+                width_unc = abs(bin60_sigma5[j-1+pT_bins*(i-1)] - bin60_sigma3[j-1+pT_bins*(i-1)])/bin60_sigma4[j-1+pT_bins*(i-1)]
+                fit_unc = bin60_sigma4_err[j-1+pT_bins*(i-1)]/bin60_sigma4[j-1+pT_bins*(i-1)]
                 closure_unc = closure_hist.GetBinContent(i,j)
                 total = np.sqrt(width_unc*width_unc+ fit_unc*fit_unc+ closure_unc*closure_unc)
-                # print(width_unc, closure_unc, fit_unc, fcn_unc, total)
+                print(i, j,closure_hist.GetBinContent(i,j), width_unc, closure_unc, fit_unc, total)
                 hist.SetBinContent(i,j,total)
-                pT_hists[j-1].SetBinContent(i,MC_sigma4[pT_bins*(i-1)+j-1])
-                pT_hists[j-1].SetBinError(i,total*MC_sigma4[pT_bins*(i-1)+j-1])
-                eta_hists[i-1].SetBinContent(j,MC_sigma4[pT_bins*(i-1)+j-1])
-                eta_hists[i-1].SetBinError(j,total*MC_sigma4[pT_bins*(i-1)+j-1])
+                pT_hists[j-1].SetBinContent(i,bin60_sigma4[pT_bins*(i-1)+j-1])
+                pT_hists[j-1].SetBinError(i,total*bin60_sigma4[pT_bins*(i-1)+j-1])
+                eta_hists[i-1].SetBinContent(j,bin60_sigma4[pT_bins*(i-1)+j-1])
+                eta_hists[i-1].SetBinError(j,total*bin60_sigma4[pT_bins*(i-1)+j-1])
 
 
     if Type == "closure":
@@ -307,7 +314,7 @@ def uncs(outPath, Type):
     hist.Draw("colz text same")
     print("here yes")
     # Save the plot as a PDF
-    c.SaveAs(outPath+"MC_4sigma_"+Type+"_syst.png")
+    c.SaveAs(outPath+"bin60_4sigma_"+Type+"_syst.png")
 
     # etaaxis, gPad= createCanvasPads()
     if (Type =="total"):
@@ -362,7 +369,7 @@ def uncs(outPath, Type):
 
 if __name__ == '__main__':
     root.gROOT.SetBatch()
-    outPath = "/eos/user/s/ssindhu/4tops/plots/final_showdown/60_90_130/MC/"
+    outPath = "/eos/user/s/ssindhu/4tops/plots/final_showdown/60_90_130/final_dataall_closure_truth/"
     # closure_uncs(outPath)
     uncs(outPath, "closure")
     uncs(outPath, "width")
