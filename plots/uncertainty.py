@@ -132,30 +132,72 @@ def uncs(outPath, Type):
     bin70_sigma5 = [4.25697E-05, 7.20531E-05, 0.000215062, 0.000977575, 8.42005E-05, 0.000137207, 0.000483231, 0.00198824, 0.000172577, 0.000295268, 0.00108904, 0.00446176, 0.000360646, 0.0005122, 0.00158542, 0.00791558, 0.00047404, 0.000935808, 0.00251948, 0.011306, 0.000857968, 0.00250566, 0.00896556, 0.0316866]
 
 
-    ttw_sigma4 = [5.86651E-06, 9.53953E-05, 0.000654041, 4.35317E-05, 0.000257106, 0.00113462, 9.93481E-05, 0.000615142, 0.00500343, 0.000182026, 0.000893879, 0.0072779, 0.000272419, 0.00120675, 0.0115266, 0.000635482, 0.00573078, 0.0346595]
-    ttw_sigma4_err = [1.82654E-06, 1.00984E-05, 5.22233E-05, 2.15627E-06, 1.23739E-05, 0.000152016, 8.06933E-06, 3.34069E-05, 0.00031327, 1.73813E-05, 7.44734E-05, 0.000664876, 1.05087E-05, 3.89922E-05, 0.000513699, 3.5065E-05, 0.000399645, 0.00393214]
-    ttw_sigma5 = [2.0384E-05, 0.000104772, 0.00071444, 5.35404E-05, 0.000274701, 0.00120578, 0.000131444, 0.000636135, 0.00494979, 0.000211975, 0.000865166, 0.00732097, 0.000300104, 0.00119633, 0.0116233, 0.000687972, 0.00574534, 0.0350558]
-    ttw_sigma3 = [2.36222E-05, 0.00013606, 0.0011871, 4.81985E-05, 0.000315117, 0.0022888, 9.49632E-05, 0.000696725, 0.00538371, 0.00018314, 0.00100421, 0.00778756, 0.00030421, 0.00137283, 0.0121267, 0.000695718, 0.00601181, 0.0332939]
+
+    # ttw_sigma4 = [5.86651E-06, 9.53953E-05, 0.000654041, 4.35317E-05, 0.000257106, 0.00113462, 9.93481E-05, 0.000615142, 0.00500343, 0.000182026, 0.000893879, 0.0072779, 0.000272419, 0.00120675, 0.0115266, 0.000635482, 0.00573078, 0.0346595]
+    # ttw_sigma4_err = [1.82654E-06, 1.00984E-05, 5.22233E-05, 2.15627E-06, 1.23739E-05, 0.000152016, 8.06933E-06, 3.34069E-05, 0.00031327, 1.73813E-05, 7.44734E-05, 0.000664876, 1.05087E-05, 3.89922E-05, 0.000513699, 3.5065E-05, 0.000399645, 0.00393214]
+    # ttw_sigma5 = [2.0384E-05, 0.000104772, 0.00071444, 5.35404E-05, 0.000274701, 0.00120578, 0.000131444, 0.000636135, 0.00494979, 0.000211975, 0.000865166, 0.00732097, 0.000300104, 0.00119633, 0.0116233, 0.000687972, 0.00574534, 0.0350558]
+    # ttw_sigma3 = [2.36222E-05, 0.00013606, 0.0011871, 4.81985E-05, 0.000315117, 0.0022888, 9.49632E-05, 0.000696725, 0.00538371, 0.00018314, 0.00100421, 0.00778756, 0.00030421, 0.00137283, 0.0121267, 0.000695718, 0.00601181, 0.0332939]
 
 
-    CO_sigma4 =[0.00121033, 0.00102281, 0.00161475, 0.00111936, 0.00146746, 0.00901341, 0.00169111, 0.00344815, 0.0104928, 0.00202613, 0.00530173, 0.02968, 0.00227245, 0.00687081, 0.0311676, 0.00378998, 0.0147009, 0.0643698]
-    CO_sigma4_err =[8.41798E-05, 0.000150257, 0.000480565, 0.000122411, 0.000271027, 0.00172389, 0.00013257, 0.000432421, 0.00219899, 0.000229103, 0.000567688, 0.00392001, 0.000108739, 0.00033601, 0.00241847, 0.000308614, 0.000741609, 0.00756404]
-    CO_sigma5 =[0.00135496, 0.00124758, 0.00281957, 0.00126468, 0.0017313, 0.0088691, 0.00185492, 0.00357243, 0.0106224, 0.00223915, 0.00538483, 0.0299425, 0.00233965, 0.00687049, 0.0315008, 0.00394825, 0.0149573, 0.0649412]
-    CO_sigma3 =[0.0010711, 0.00159381, 0.00518073, 0.00107392, 0.00218523, 0.010353, 0.00174015, 0.00407843, 0.013131, 0.0020487, 0.00526759, 0.0285444, 0.00242183, 0.00706989, 0.0316517, 0.00402425, 0.0161558, 0.0606795]
+    #eta12 60_90 ttw
+    # ttw_sigma4 = [0.00003679, 0.00015136, 0.00079125, 0.00010888, 0.00051923, 0.00265219, 0.00020889, 0.00073158, 0.00381162, 0.00031788, 0.00095021, 0.00545707, 0.00074101, 0.00447185, 0.01760390]
+    # ttw_sigma4_err = [0.00001299, 0.00001041, 0.00004222, 0.00006148, 0.00025697, 0.00028624, 0.00007226, 0.00102726, 0.00064585, 0.00005606, 0.00006931, 0.00086481, 0.00006360, 0.00099367, 0.00388065]
+    # ttw_sigma3 = [0.00003386, 0.00014979, 0.00076496, 0.00009620, 0.00048517, 0.00265760, 0.00018706, 0.00071493, 0.00369672, 0.00030587, 0.00092885, 0.00541726, 0.00070170, 0.00457554, 0.01750590]
+    # ttw_sigma5 = [0.00004187, 0.00015383, 0.00079507, 0.00013672, 0.00052730, 0.00258680, 0.00023130, 0.00071348, 0.00367194, 0.00033105, 0.00091920, 0.00543906, 0.00077416, 0.00432093, 0.01810130]
+
+
+    #eta12_34 60_90 ttw
+
+    # ttw_sigma4 = [ 0.000037, 0.000152, 0.000791, 0.000140, 0.000587, 0.003009, 0.000319, 0.000950, 0.005482, 0.000743, 0.004480, 0.017623]
+    # ttw_sigma4_err = [ 0.000002, 0.000010, 0.000038, 0.000009, 0.000037, 0.000072, 0.000013, 0.000056, 0.000237, 0.000045, 0.000292, 0.001107]
+    # ttw_sigma3 = [ 0.000034, 0.000150, 0.000763, 0.000124, 0.000560, 0.002976, 0.000308, 0.000930, 0.005429, 0.000705, 0.004574, 0.017532]
+    # ttw_sigma5 = [0.000042, 0.000154, 0.000794, 0.000166, 0.000587, 0.002919, 0.000332, 0.000921, 0.005441, 0.000774, 0.004329, 0.018121]
+
+    ttw_sigma4 = [    0.00003659, 0.00015161, 0.00079051, 0.00014002, 0.00058691, 0.00300867, 0.00031914, 0.00094987, 0.00548185, 0.00074259, 0.00447989, 0.01762330]
+    ttw_sigma4_err = [    0.00000235, 0.00001048, 0.00003805, 0.00000907, 0.00003671, 0.00007246, 0.00001261, 0.00005573, 0.00023684, 0.00004468, 0.00029226, 0.00110677]
+    ttw_sigma3 = [    0.00003383, 0.00015021, 0.00076297, 0.00012364, 0.00056000, 0.00297604, 0.00030815, 0.00092963, 0.00542918, 0.00070460, 0.00457408, 0.01753220]
+    ttw_sigma5 = [    0.00004178, 0.00015378, 0.00079363, 0.00016594, 0.00058695, 0.00291879, 0.00033154, 0.00092090, 0.00544063, 0.00077407, 0.00432892, 0.01812100]
+
+    #eta12_34 60_90 CO
+    CO_sigma4 = [0.001215, 0.001314, 0.004840, 0.001981, 0.003571, 0.011867, 0.002401, 0.005643, 0.018352, 0.003946, 0.012267, 0.036884]
+    CO_sigma4_err = [0.000078, 0.000207, 0.000532, 0.000113, 0.000614, 0.000778, 0.000110, 0.000345, 0.000925, 0.000263, 0.001291, 0.002906]
+    CO_sigma3 = [0.001072, 0.001441, 0.004904, 0.001873, 0.003710, 0.011517, 0.002435, 0.005400, 0.018208, 0.004041, 0.012574, 0.037506]
+    CO_sigma5 = [0.001329, 0.001499, 0.004879, 0.002126, 0.003641, 0.011942, 0.002429, 0.005589, 0.018259, 0.004088, 0.012181, 0.037724]
+    #eta12_34 60_90 gammastr
+
+    # gammastr_sigma4 =[0.003907, 0.006177, 0.009051, 0.003927, 0.005210, 0.019289, 0.005699, 0.008875, 0.018464, 0.003845, 0.012621, 0.033173]
+    # gammastr_sigma4_err =[0.000429, 0.001959, 0.004120, 0.001153, 0.002918, 0.008081, 0.001010, 0.003351, 0.008172, 0.001884, 0.008077, 0.022073]
+    # gammastr_sigma3 =[ 0.002986, 0.005914, 0.005439, 0.002425, 0.005497, 0.020355, 0.005832, 0.006335, 0.020967, 0.004452, 0.008287, 0.015737]
+    # gammastr_sigma5 =[ 0.004262, 0.007325, 0.005784, 0.004526, 0.003423, 0.015953, 0.006051, 0.007415, 0.017622, 0.007190, 0.008505, 0.032049]
+
+
+    # gammastr_sigma4 =[3.90E-03, 5.88E-03, 1.24E-02, 5.37E-03, 9.50E-03, 2.10E-02]
+    # gammastr_sigma4_err =[4.48E-04, 1.64E-03, 3.78E-03, 8.70E-04, 3.42E-03, 7.82E-03 ]
+    # gammastr_sigma3 =[2.86E-03, 5.75E-03, 1.01E-02, 5.56E-03, 6.56E-03, 1.98E-02]
+    # gammastr_sigma5 =[4.36E-03, 5.90E-03, 9.42E-03, 6.30E-03, 7.44E-03, 2.03E-02]
+    gammastr_sigma4 =[5.02929e-03]
+    gammastr_sigma4_err =[3.39856e-04 ]
+    gammastr_sigma3 =[4.28177e-03]
+    gammastr_sigma5 =[5.37735e-03]
+
+    # CO_sigma4 =[0.00121033, 0.00102281, 0.00161475, 0.00111936, 0.00146746, 0.00901341, 0.00169111, 0.00344815, 0.0104928, 0.00202613, 0.00530173, 0.02968, 0.00227245, 0.00687081, 0.0311676, 0.00378998, 0.0147009, 0.0643698]
+    # CO_sigma4_err =[8.41798E-05, 0.000150257, 0.000480565, 0.000122411, 0.000271027, 0.00172389, 0.00013257, 0.000432421, 0.00219899, 0.000229103, 0.000567688, 0.00392001, 0.000108739, 0.00033601, 0.00241847, 0.000308614, 0.000741609, 0.00756404]
+    # CO_sigma5 =[0.00135496, 0.00124758, 0.00281957, 0.00126468, 0.0017313, 0.0088691, 0.00185492, 0.00357243, 0.0106224, 0.00223915, 0.00538483, 0.0299425, 0.00233965, 0.00687049, 0.0315008, 0.00394825, 0.0149573, 0.0649412]
+    # CO_sigma3 =[0.0010711, 0.00159381, 0.00518073, 0.00107392, 0.00218523, 0.010353, 0.00174015, 0.00407843, 0.013131, 0.0020487, 0.00526759, 0.0285444, 0.00242183, 0.00706989, 0.0316517, 0.00402425, 0.0161558, 0.0606795]
 
 
     # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/50_60_90_130/data_all_closure.root")
     # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_130/ttw/data_all_closure_4sigma.root")
-    infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/mc16a2_closure_4sigma.root")
-    infile2 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/mc16d2_closure_4sigma.root")
-    infile3 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/mc16e2_closure_4sigma.root")
+    infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/etabins12/60_90/gammastr0/data_all_closure_4sigma.root")
+    # infile2 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/mc16d2_closure_4sigma.root")
+    # infile3 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/mc16e2_closure_4sigma.root")
     # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/all_cuts/closure.root")                                                                                                                                                
     output= TFile(outPath+"QmisiD_total_uncs.root","recreate") 
-    pT_bins = 4
-    eta_bins = 6
+    pT_bins = 1
+    eta_bins = 1
 
-    pTBins=np.array([15,60,90,130,1000], dtype='float64')
-    etaBins=np.array([0,0.6,1.1,1.52,1.7,2.3,2.5], dtype='float64')
+    pTBins=np.array([15,1000], dtype='float64')
+    etaBins=np.array([0,2.5], dtype='float64')
 
     h1_dummy = TH1F("","",eta_bins, etaBins)
     h2_dummy = TH1F("","",pT_bins, pTBins)
@@ -205,14 +247,14 @@ def uncs(outPath, Type):
     hist_ss1 = infile.Get("ss_pt_eta_0")
     hist_ss2 = infile.Get("ss_pt_eta_1")
 
-    hist_osd1 = infile2.Get("os_pt_eta_0")
-    hist_osd2 = infile2.Get("os_pt_eta_1")
-    hist_ssd1 = infile2.Get("ss_pt_eta_0")
-    hist_ssd2 = infile2.Get("ss_pt_eta_1")
-    hist_ose1 = infile3.Get("os_pt_eta_0")
-    hist_ose2 = infile3.Get("os_pt_eta_1")
-    hist_sse1 = infile3.Get("ss_pt_eta_0")
-    hist_sse2 = infile3.Get("ss_pt_eta_1")
+    # hist_osd1 = infile2.Get("os_pt_eta_0")
+    # hist_osd2 = infile2.Get("os_pt_eta_1")
+    # hist_ssd1 = infile2.Get("ss_pt_eta_0")
+    # hist_ssd2 = infile2.Get("ss_pt_eta_1")
+    # hist_ose1 = infile3.Get("os_pt_eta_0")
+    # hist_ose2 = infile3.Get("os_pt_eta_1")
+    # hist_sse1 = infile3.Get("ss_pt_eta_0")
+    # hist_sse2 = infile3.Get("ss_pt_eta_1")
 
 
     hist_os = hist_os1.Clone("os_pt_eta_0 + os_pt_eta_1")
@@ -220,19 +262,19 @@ def uncs(outPath, Type):
     hist_ss = hist_ss1.Clone("ss_pt_eta_0 + ss_pt_eta_1")
     hist_ss.Add(hist_ss2)
 
-    hist_osd = hist_osd1.Clone("os_pt_eta_0 + os_pt_eta_1")
-    hist_osd.Add(hist_osd2)
-    hist_ssd = hist_ssd1.Clone("ss_pt_eta_0 + ss_pt_eta_1")
-    hist_ssd.Add(hist_ssd2)
-    hist_ose = hist_ose1.Clone("os_pt_eta_0 + os_pt_eta_1")
-    hist_ose.Add(hist_ose2)
-    hist_sse = hist_sse1.Clone("ss_pt_eta_0 + ss_pt_eta_1")
-    hist_sse.Add(hist_sse2)
+    # hist_osd = hist_osd1.Clone("os_pt_eta_0 + os_pt_eta_1")
+    # hist_osd.Add(hist_osd2)
+    # hist_ssd = hist_ssd1.Clone("ss_pt_eta_0 + ss_pt_eta_1")
+    # hist_ssd.Add(hist_ssd2)
+    # hist_ose = hist_ose1.Clone("os_pt_eta_0 + os_pt_eta_1")
+    # hist_ose.Add(hist_ose2)
+    # hist_sse = hist_sse1.Clone("ss_pt_eta_0 + ss_pt_eta_1")
+    # hist_sse.Add(hist_sse2)
 
-    hist_os.Add(hist_osd)
-    hist_os.Add(hist_ose)
-    hist_ss.Add(hist_ssd)
-    hist_ss.Add(hist_sse)
+    # hist_os.Add(hist_osd)
+    # hist_os.Add(hist_ose)
+    # hist_ss.Add(hist_ssd)
+    # hist_ss.Add(hist_sse)
     closure_hist = hist_os.Clone("diff")
  
     for j in range (1,pT_bins+1):
@@ -247,25 +289,25 @@ def uncs(outPath, Type):
     for j in range (1,pT_bins+1):
         for i in range(1,eta_bins+1):
 
-            # print(i,j, hist.GetBinContent(i,j), ttw_err[j-1+pT_bins*(i-1)], ttw[j-1+pT_bins*(i-1)])
+            # print(i,j, hist.GetBinContent(i,j), gammastr_err[j-1+pT_bins*(i-1)], gammastr[j-1+pT_bins*(i-1)])
             if Type == "fit": 
-                hist.SetBinContent(i,j, ttw_sigma4_err[j-1+pT_bins*(i-1)]/ttw_sigma4[j-1+pT_bins*(i-1)])
+                hist.SetBinContent(i,j, gammastr_sigma4_err[j-1+pT_bins*(i-1)]/gammastr_sigma4[j-1+pT_bins*(i-1)])
             elif Type == "fcn":
-                hist.SetBinContent(i,j, abs(ttw_sigma4_gauss[j-1+pT_bins*(i-1)] - ttw_sigma4[j-1+pT_bins*(i-1)])/ttw_sigma4[j-1+pT_bins*(i-1)])
+                hist.SetBinContent(i,j, abs(gammastr_sigma4_gauss[j-1+pT_bins*(i-1)] - gammastr_sigma4[j-1+pT_bins*(i-1)])/gammastr_sigma4[j-1+pT_bins*(i-1)])
             elif Type == "width":
-                hist.SetBinContent(i,j, abs(ttw_sigma5[j-1+pT_bins*(i-1)] - ttw_sigma3[j-1+pT_bins*(i-1)])/ttw_sigma4[j-1+pT_bins*(i-1)])
+                hist.SetBinContent(i,j, abs(gammastr_sigma5[j-1+pT_bins*(i-1)] - gammastr_sigma3[j-1+pT_bins*(i-1)])/gammastr_sigma4[j-1+pT_bins*(i-1)])
             elif Type == "total":
-                # fcn_unc = abs(ttw_gauss[j-1+pT_bins*(i-1)] - ttw[j-1+pT_bins*(i-1)])/ttw[j-1+pT_bins*(i-1)]
-                width_unc = abs(ttw_sigma5[j-1+pT_bins*(i-1)] - ttw_sigma3[j-1+pT_bins*(i-1)])/ttw_sigma4[j-1+pT_bins*(i-1)]
-                fit_unc = ttw_sigma4_err[j-1+pT_bins*(i-1)]/ttw_sigma4[j-1+pT_bins*(i-1)]
+                # fcn_unc = abs(gammastr_gauss[j-1+pT_bins*(i-1)] - gammastr[j-1+pT_bins*(i-1)])/gammastr[j-1+pT_bins*(i-1)]
+                width_unc = abs(gammastr_sigma5[j-1+pT_bins*(i-1)] - gammastr_sigma3[j-1+pT_bins*(i-1)])/gammastr_sigma4[j-1+pT_bins*(i-1)]
+                fit_unc = gammastr_sigma4_err[j-1+pT_bins*(i-1)]/gammastr_sigma4[j-1+pT_bins*(i-1)]
                 closure_unc = closure_hist.GetBinContent(i,j)
                 total = np.sqrt(width_unc*width_unc+ fit_unc*fit_unc+ closure_unc*closure_unc)
                 # print(width_unc, closure_unc, fit_unc, fcn_unc, total)
                 hist.SetBinContent(i,j,total)
-                pT_hists[j-1].SetBinContent(i,ttw_sigma4[pT_bins*(i-1)+j-1])
-                pT_hists[j-1].SetBinError(i,total*ttw_sigma4[pT_bins*(i-1)+j-1])
-                eta_hists[i-1].SetBinContent(j,ttw_sigma4[pT_bins*(i-1)+j-1])
-                eta_hists[i-1].SetBinError(j,total*ttw_sigma4[pT_bins*(i-1)+j-1])
+                pT_hists[j-1].SetBinContent(i,gammastr_sigma4[pT_bins*(i-1)+j-1])
+                pT_hists[j-1].SetBinError(i,total*gammastr_sigma4[pT_bins*(i-1)+j-1])
+                eta_hists[i-1].SetBinContent(j,gammastr_sigma4[pT_bins*(i-1)+j-1])
+                eta_hists[i-1].SetBinError(j,total*gammastr_sigma4[pT_bins*(i-1)+j-1])
 
 
     if Type == "closure":
@@ -298,7 +340,7 @@ def uncs(outPath, Type):
     hist.Draw("colz text same")
     print("here yes")
     # Save the plot as a PDF
-    c.SaveAs(outPath+"ttw_4sigma_"+Type+"_syst.png")
+    c.SaveAs(outPath+"gammastr_4sigma_"+Type+"_syst.png")
 
     # etaaxis, gPad= createCanvasPads()
     if (Type =="total"):
@@ -353,13 +395,13 @@ def uncs(outPath, Type):
 
 if __name__ == '__main__':
     root.gROOT.SetBatch()
-    outPath = "/eos/user/s/ssindhu/4tops/plots/final_showdown/60_90_130/"
+    outPath = "/eos/user/s/ssindhu/4tops/plots/final_showdown/60_90/gammastr0/"
     # closure_uncs(outPath)
     uncs(outPath, "closure")
-    # uncs(outPath, "width")
-    # uncs(outPath, "fit")
-    # # uncs(outPath, "fcn")
-    # uncs(outPath, "total")
+    uncs(outPath, "width")
+    uncs(outPath, "fit")
+    # uncs(outPath, "fcn")
+    uncs(outPath, "total")
 
 
 

@@ -36,6 +36,12 @@ def uncs(outPath):
 
     initial_err = [3.73267E-06, 1.02802E-05, 3.80722E-05, 0.000152155, 3.13463E-06, 2.37791E-05, 0.000182927, 0.000169867, 8.35917E-06, 4.10496E-05, 7.8764E-05, 0.00044802, 2.64194E-05, 8.87423E-05, 0.000314245, 0.000650364, 1.67966E-05, 5.88483E-05, 0.000229615, 0.000606669, 3.33957E-05, 0.000363123, 0.000758974, 0.00342056]
 
+
+    bin60_sigma4 = [4.38548E-05, 0.000119611, 0.000362226, 0.00136687, 8.75868E-05, 0.000284814, 0.00079309, 0.00284304, 0.000172475, 0.000647994, 0.00194806, 0.00610096, 0.000348415, 0.00102142, 0.00322987, 0.0104283, 0.0005572, 0.00160706, 0.004962, 0.0160352, 0.0011009, 0.00563761, 0.0155431, 0.0411349]
+    bin60_sigma4_err = [3.42395E-06, 1.16433E-05, 3.75091E-05, 8.70861E-05, 4.36027E-06, 1.89989E-05, 6.13062E-05, 0.000126094, 1.02646E-05, 3.29979E-05, 0.000120984, 0.000398379, 1.97136E-05, 7.49132E-05, 0.000261755, 4.70958E-05, 1.37999E-05, 5.97509E-05, 0.00021206, 0.00066028, 4.61127E-05, 0.000280962, 0.000950498, 0.00282727]
+    truth_sigma4 = [3.8057E-05, 8.64942E-05, 0.00024718, 0.000844019, 8.60671E-05, 0.000198917, 0.000488654, 0.00138802, 0.000248136, 0.000562237, 0.00134883, 0.00309248, 0.00129032, 0.00233299, 0.00434177, 0.00897532, 0.0014588, 0.00298105, 0.0051417, 0.0106171, 0.00261485, 0.00411759, 0.00546528, 0.0113483]
+    truth_sigma4_err = [3.04417E-06, 1.03013E-05, 3.30498E-05, 9.21942E-05, 4.82961E-06, 1.6682E-05, 4.38016E-05, 0.000140419, 8.15767E-06, 3.96954E-05, 0.000188704, 0.000312251, 3.26524E-05, 0.000112011, 0.00032166, 0.000761851, 2.01584E-05, 8.19202E-05, 0.000295223, 0.000569552, 5.67746E-05, 0.000191401, 0.000737519, 0.00161775]
+
     h1 = root.TH1D("h1","",24,-0.5,23.5)
     h2 = root.TH1D("h2","",24,-0.5,23.5)
     h3 = root.TH1D("h2","",24,-0.5,23.5)
@@ -46,11 +52,11 @@ def uncs(outPath):
     for i in range(1,25):
         print(i,sigma3_bw[i-1],sigma3[i-1])
         # h1.SetBinContent(i,initial[i-1])
-        h1.SetBinContent(i,sigma3_bw[i-1])
-        h3.SetBinContent(i,sigma4_bw[i-1])
-        h2.SetBinContent(i,sigma2_bw[i-1])
-        h1.SetBinError(i,s3_err_bw[i-1])
-        ratio_hist1.SetBinContent(i, abs(h2.GetBinContent(i) - h3.GetBinContent(i)))
+        h1.SetBinContent(i,bin60_sigma4[i-1])
+        h2.SetBinContent(i,truth_sigma4[i-1])
+        h1.SetBinError(i,bin60_sigma4_err[i-1])
+        h2.SetBinError(i,truth_sigma4_err[i-1])
+        # ratio_hist1.SetBinContent(i, h2.GetBinContent(i)h3.GetBinContent(i)))
         
         # h3.SetBinError(i,s3_err_bw[i-1])
         # h2.SetBinError(i,s3_err[i-1])
@@ -63,10 +69,10 @@ def uncs(outPath):
     # ax1.plot(h1_dummy, "E1 Same", markerstyle =1)
 
     # ax1.plot(h1, "E1", markerstyle =1, label="No fit 91[81, 101]", labelfmt="L")
-    ax1.plot(h1, "HIST", markerstyle =1 , linecolor=root.kBlack, label="3#sigma BW", labelfmt="L")
-    ax1.plot(h3, "HIST", markerstyle =1 , linecolor=root.kBlue+1, label="4#sigma BW", labelfmt="L")
-    ax1.plot(h2, "HIST", markerstyle =1 ,linecolor=root.kRed+1, label="2#sigma BW", labelfmt="L")
-    line = root.TLine(ax1.get_xlim()[0], 0, ax1.get_xlim()[1], 0)
+    ax1.plot(h1, "E1", markerstyle =1 , linecolor=root.kBlack, label="From data", labelfmt="L")
+    ax1.plot(h2, "HIST", markerstyle =1 , linecolor=root.kBlue+1, label="From truth", labelfmt="L")
+    # ax1.plot(h2, "HIST", markerstyle =1 ,linecolor=root.kRed+1, label="2#sigma BW", labelfmt="L")
+    line = root.TLine(ax1.get_xlim()[0], 1, ax1.get_xlim()[1], 1)
     
     line1 = root.TLine(3.5, 0.00001,3.5, ax1.get_ylim()[1])
     line2 = root.TLine(7.5,  0.00001,7.5, ax1.get_ylim()[1])
@@ -86,7 +92,8 @@ def uncs(outPath):
 
     # Calculate and draw the ratio                                                                                                                                                                                                            
     # ratio_hist1 = h2 - h3
-    ratio_hist1.Divide(h1)
+    ratio_hist1 = h1.Clone()
+    ratio_hist1.Divide(h2)
     ax2.plot(ratio_hist1,"HIST")
 
     # Add extra space at top of plot to make room for labels                                                                                                                                                                                  
@@ -97,7 +104,7 @@ def uncs(outPath):
     # ax2.set_ylim(0.5, 1.5)
     ax2.set_xlabel("|#eta|")
     ax1.set_ylabel("Charge mis ID rate")
-    ax2.set_ylabel("relative unc.", loc="centre")
+    ax2.set_ylabel("ratio (Data/MC)", loc="centre")
 
     # Add extra space at top and bottom of ratio panel
     ax2.add_margins(top=0.1, bottom=0.1)
@@ -118,12 +125,12 @@ def uncs(outPath):
     
     # Add legend
     ax1.legend(loc=(0.2, 0.68, 0.4, 0.84))
-    fig.savefig(outPath+"bw_2_3_4_sigma.png")
+    fig.savefig(outPath+"truth_MC_compare.png")
 
 
 if __name__ == '__main__':
     root.gROOT.SetBatch()
-    outPath = "/eos/home-s/ssindhu/4tops/plots/final_uncs/"
+    outPath = "/eos/home-s/ssindhu/4tops/plots/final_showdown/"
     uncs(outPath)
 
 

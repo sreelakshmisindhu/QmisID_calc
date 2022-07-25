@@ -167,16 +167,6 @@ Bool_t QmisID_count::Process(Long64_t entry)
 		std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
 		std::cout<<"Ecids "<<SSee_passECIDS<<SSem_passECIDS<<" ambiguity "<<Tlepton_1_DFCommonAddAmbiguity<<Tlepton_0_DFCommonAddAmbiguity<<" Btags " <<nBTags_DL1r_77<<" nJets "<<nJets<<" n "<<nEvtTotal<<std::endl;
 	      }}
-	    else if (_data ==6){
-	      if (Tlepton_1_DFCommonAddAmbiguity<0&&Tlepton_0_DFCommonAddAmbiguity<0){	    
-		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-		  weights = 1;}
-		else{weights = -0.5;}
-		_sumWeights = _sumWeights+1;
-
-		std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
-		std::cout<<"Ecids "<<SSee_passECIDS<<SSem_passECIDS<<" ambiguity "<<Tlepton_1_DFCommonAddAmbiguity<<Tlepton_0_DFCommonAddAmbiguity<<" Btags " <<nBTags_DL1r_77<<" nJets "<<nJets<<" n "<<nEvtTotal<<std::endl;
-	      }}
 	    else if (_data ==5){
 	      if (Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2){	    
 		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
@@ -187,6 +177,53 @@ Bool_t QmisID_count::Process(Long64_t entry)
 		std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
 		std::cout<<"Ecids "<<SSee_passECIDS<<SSem_passECIDS<<" ambiguity "<<Tlepton_1_DFCommonAddAmbiguity<<Tlepton_0_DFCommonAddAmbiguity<<" Btags " <<nBTags_DL1r_77<<" nJets "<<nJets<<" n "<<nEvtTotal<<std::endl;
 	      }}
+	    else if (_data ==6){
+	      if (Tlepton_1_DFCommonAddAmbiguity<0&&Tlepton_0_DFCommonAddAmbiguity<0){	    
+		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+		  weights = 1;}
+		else{weights = -0.5;}
+		_sumWeights = _sumWeights+1;
+
+		std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
+		std::cout<<"Ecids "<<SSee_passECIDS<<SSem_passECIDS<<" ambiguity "<<Tlepton_1_DFCommonAddAmbiguity<<Tlepton_0_DFCommonAddAmbiguity<<" Btags " <<nBTags_DL1r_77<<" nJets "<<nJets<<" n "<<nEvtTotal<<std::endl;
+	      }}
+	    else if (_data ==7){
+              if ((Tlepton_1_DFCommonAddAmbiguity==1||Tlepton_0_DFCommonAddAmbiguity==1)&& !(Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2)){
+		if(OSee == 1){
+		  if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+		    weights = weight_closure(lep0.v, lep1.v);}}
+		else if (loose_SSee == 1){
+                  if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+                    weights = 1;}
+
+                else{weights = -0.5;}
+		}}}
+ 
+	    else if (_data ==8){
+	      if (Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2){	    
+		if(OSee == 1){
+		  if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+		    weights = weight_closure(lep0.v, lep1.v);}}
+		else if (loose_SSee == 1){
+		  if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+		    weights = 1;}
+		  else{weights =-0.5;}
+		}}}
+            else if (_data ==9){
+              if (Tlepton_1_DFCommonAddAmbiguity<0&&Tlepton_0_DFCommonAddAmbiguity<0){
+                if(OSee == 1){
+                  if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+                    weights = weight_closure(lep0.v, lep1.v);}
+                }
+                else if (loose_SSee == 1){
+                  if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+                    weights = 1;}
+                  else{weights = -0.5;}
+
+                }
+              }}
+
+
 	   
 
 	    if(_verbosity>0 && nEvtTotal%50000==0)cout<<"lumi"<<lumi<<" weights "<<weights<<" mll "<<Mll<<" OSee " << OSee<<" SSee" <<loose_SSee<<std::endl;
@@ -304,10 +341,18 @@ double QmisID_count::weight_closure(TLorentzVector l1,TLorentzVector l2)
   // Float_t pt_eta_w[24] = {3.22999E-05, 6.11721E-05, 0.000227192, 0.000909073, 5.45128E-05, 0.000124778, 0.000480831, 0.00201136, 0.000105132, 0.000273646, 0.00110571, 0.00447957, 0.000263562, 0.000501456, 0.00156266, 0.00778502, 0.000431015, 0.000910359, 0.00252699, 0.011276, 0.000711905, 0.00250193, 0.00907911, 0.0315624}; //45_70_110
 
   // Float_t pt_eta_w[24] = { 3.57118E-05, 6.4525E-05, 0.000215018, 0.000944594, 7.69832E-05, 0.000129521, 0.000476718, 0.00200027, 0.000132347, 0.000281834, 0.00112603, 0.00451399, 0.000317545, 0.000506374, 0.00160781, 0.00798531, 0.00044556, 0.000932643, 0.00255734, 0.0113794, 0.000763963, 0.00251766, 0.00902789, 0.0317013};//45_70_110 sigma 4
-  Float_t pt_eta_w[24] = {   4.38548E-05, 0.000119611, 0.000362226, 0.00136687, 8.75868E-05, 0.000284814, 0.00079309, 0.00284304, 0.000172475, 0.000647994, 0.00194806, 0.00610096, 0.000348415, 0.00102142, 0.00322987, 0.0104283, 0.0005572, 0.00160706, 0.004962, 0.0160352, 0.0011009, 0.00563761, 0.0155431, 0.0411349};//60_90_130 sigma 4 
+  //  Float_t pt_eta_w[24] = {   4.38548E-05, 0.000119611, 0.000362226, 0.00136687, 8.75868E-05, 0.000284814, 0.00079309, 0.00284304, 0.000172475, 0.000647994, 0.00194806, 0.00610096, 0.000348415, 0.00102142, 0.00322987, 0.0104283, 0.0005572, 0.00160706, 0.004962, 0.0160352, 0.0011009, 0.00563761, 0.0155431, 0.0411349};//60_90_130 sigma 4 
 
+  //Float_t pt_eta_w[15] = {3.68E-05, 1.51E-04 ,7.91E-04 ,1.09E-04 ,5.19E-04 ,2.65E-03, 2.09E-04 ,7.32E-04 ,3.81E-03, 3.18E-04 ,9.50E-04 ,5.46E-03, 7.41E-04, 4.47E-03, 1.76E-02};//eta12, 60_90 ttw 4sigma
 
-  // Float_t pt_eta_w[30] = {4.41654E-05, 4.13003E-05, 0.000128252, 0.000352787, 0.00132627, 4.73024E-05, 8.83999E-05, 0.000295687, 0.000792038, 0.00282679, 9.46997E-05, 0.000193965, 0.000644241, 0.00193973, 0.00605357, 0.00026517, 0.000343354, 0.00103373, 0.00313706, 0.0103076, 0.000419093, 0.000670387, 0.0016045, 0.00500559, 0.015828, 0.000638339, 0.00167034, 0.00574065, 0.0156992, 0.0411108};//40_60_90_130 4sigma  
+  //  Float_t pt_eta_w[12] = { 0.000037, 0.000152, 0.000791, 0.000140, 0.000587, 0.003009, 0.000319, 0.000950, 0.005482, 0.000743, 0.004480, 0.017623}; //eta12_34 60_90 ttw4 sigma
+ 
+  //  Float_t pt_eta_w[12] = { 0.001215, 0.001314, 0.004840, 0.001981, 0.003571, 0.011867, 0.002401, 0.005643, 0.018352, 0.003946, 0.012267, 0.036884};//CO eta12_34 60_90 4sigma
+  //Float_t pt_eta_w[12] = { 0.003907, 0.006177, 0.009051, 0.003927, 0.005210, 0.019289, 0.005699, 0.008875, 0.018464, 0.003845, 0.012621, 0.033173};//gammastr eta12_34 60_90 4sigma
+  //Float_t pt_eta_w[6] = {3.90E-03, 5.88E-03, 1.24E-02, 5.37E-03, 9.50E-03, 2.10E-02}; //gammastar
+  // Float_t pt_eta_w[6] = {4.34E-03, 6.85E-03, 1.47E-02};//gammastar 1eta bin 60_90
+  Float_t pt_eta_w[1] = {5.02929e-03}; 
+ // Float_t pt_eta_w[30] = {4.41654E-05, 4.13003E-05, 0.000128252, 0.000352787, 0.00132627, 4.73024E-05, 8.83999E-05, 0.000295687, 0.000792038, 0.00282679, 9.46997E-05, 0.000193965, 0.000644241, 0.00193973, 0.00605357, 0.00026517, 0.000343354, 0.00103373, 0.00313706, 0.0103076, 0.000419093, 0.000670387, 0.0016045, 0.00500559, 0.015828, 0.000638339, 0.00167034, 0.00574065, 0.0156992, 0.0411108};//40_60_90_130 4sigma  
 
   // Float_t pt_eta_w[30] = {   3.6099E-05, 5.59019E-05, 0.000127039, 0.000367585, 0.00135927, 7.56015E-05, 0.000104377, 0.000293055, 0.00080699, 0.00283104, 0.000133858, 0.000236648, 0.000662638, 0.00195334, 0.0060989, 0.000313983, 0.000399587, 0.00105683, 0.00325777, 0.0104196, 0.000443231, 0.000804649, 0.00164778, 0.00498435, 0.0160316, 0.000768537, 0.00206477, 0.00566177, 0.0154843, 0.0412804}; ////45_60_90_130 4sigma 
 

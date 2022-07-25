@@ -473,13 +473,12 @@ public :
    float Sum;
    float MW_high;
    float MW_low;
-
-   float h_OS[4][6][4][6]= {.0};
-   float h_SS[4][6][4][6] ={.0};
-   int pt_bins =4;
-   int eta_bins = 6;
-   float etaBins[7] = {0,0.6,1.1,1.52,1.7,2.3,2.5};
-   float pTBins[5] = {15,60,90,130,1000};
+   float h_OS[1][1][1][1]= {.0};
+   float h_SS[1][1][1][1] ={.0};
+   int pt_bins =1;
+   int eta_bins = 1;
+   float etaBins[2] = {0,2.5};
+   float pTBins[2] = {15,1000};
    float _sigma;
    string fit = "BW";
 
