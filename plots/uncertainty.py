@@ -3,7 +3,7 @@ import numpy as np
 from ROOT import TFile, TCanvas, TPad, TColor
 from ROOT import kBlack, kBlue, kRed, kGreen
 from ROOT import TH1, TH1F,TLegend
-from ROOT import TH2
+from ROOT import TH2, TH2F
 
 
 def _drawATLASLabel(x, y, text, doNDC = True, fontsize = 0.07):
@@ -188,17 +188,20 @@ def uncs(outPath, Type):
 
     # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/50_60_90_130/data_all_closure.root")
     # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/new_bins/60_130/ttw/data_all_closure_4sigma.root")
-    infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/etabins12/60_90/gammastr0/data_all_closure_4sigma.root")
+    # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/etabins12/60_90/gammastr0/data_all_closure_4sigma.root")
+    # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/approved_binning/gammastr/MC_all_closure_4sigma.root")
     # infile2 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/mc16d2_closure_4sigma.root")
     # infile3 = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/mc16e2_closure_4sigma.root")
-    # infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/all_cuts/closure.root")                                                                                                                                                
+    infile = TFile("/afs/cern.ch/work/s/ssindhu/private/qmisid_calc/60_90_130/MC/truth_mc_closure_4sigma.root")                                                                                                                                                
     output= TFile(outPath+"QmisiD_total_uncs.root","recreate") 
-    pT_bins = 1
-    eta_bins = 1
+    pT_bins = 4
+    eta_bins = 6
 
-    pTBins=np.array([15,1000], dtype='float64')
-    etaBins=np.array([0,2.5], dtype='float64')
-
+    pTBins=np.array([15,60,90,130,1000], dtype='float64')
+    etaBins=np.array([0,0.6,1.1,1.51,1.7,2.3,2.5], dtype='float64')
+    # pTBins=np.array([15,60,90,1000], dtype='float64')
+    # etaBins=np.array([0,1.1,1.7,2.3,2.5], dtype='float64')
+    outhist = TH2F("QmisID_rate_and_uncertainty","QmisID_rate_and_uncertainty",eta_bins, etaBins,pT_bins, pTBins)
     h1_dummy = TH1F("","",eta_bins, etaBins)
     h2_dummy = TH1F("","",pT_bins, pTBins)
     h1_dummy.SetStats(0)
@@ -289,26 +292,27 @@ def uncs(outPath, Type):
     for j in range (1,pT_bins+1):
         for i in range(1,eta_bins+1):
 
-            # print(i,j, hist.GetBinContent(i,j), gammastr_err[j-1+pT_bins*(i-1)], gammastr[j-1+pT_bins*(i-1)])
+            # print(i,j, hist.GetBinContent(i,j), bin60_err[j-1+pT_bins*(i-1)], bin60[j-1+pT_bins*(i-1)])
             if Type == "fit": 
-                hist.SetBinContent(i,j, gammastr_sigma4_err[j-1+pT_bins*(i-1)]/gammastr_sigma4[j-1+pT_bins*(i-1)])
+                hist.SetBinContent(i,j, bin60_sigma4_err[j-1+pT_bins*(i-1)]/bin60_sigma4[j-1+pT_bins*(i-1)])
             elif Type == "fcn":
-                hist.SetBinContent(i,j, abs(gammastr_sigma4_gauss[j-1+pT_bins*(i-1)] - gammastr_sigma4[j-1+pT_bins*(i-1)])/gammastr_sigma4[j-1+pT_bins*(i-1)])
+                hist.SetBinContent(i,j, abs(bin60_sigma4_gauss[j-1+pT_bins*(i-1)] - bin60_sigma4[j-1+pT_bins*(i-1)])/bin60_sigma4[j-1+pT_bins*(i-1)])
             elif Type == "width":
-                hist.SetBinContent(i,j, abs(gammastr_sigma5[j-1+pT_bins*(i-1)] - gammastr_sigma3[j-1+pT_bins*(i-1)])/gammastr_sigma4[j-1+pT_bins*(i-1)])
+                hist.SetBinContent(i,j, abs(bin60_sigma5[j-1+pT_bins*(i-1)] - bin60_sigma3[j-1+pT_bins*(i-1)])/bin60_sigma4[j-1+pT_bins*(i-1)])
             elif Type == "total":
-                # fcn_unc = abs(gammastr_gauss[j-1+pT_bins*(i-1)] - gammastr[j-1+pT_bins*(i-1)])/gammastr[j-1+pT_bins*(i-1)]
-                width_unc = abs(gammastr_sigma5[j-1+pT_bins*(i-1)] - gammastr_sigma3[j-1+pT_bins*(i-1)])/gammastr_sigma4[j-1+pT_bins*(i-1)]
-                fit_unc = gammastr_sigma4_err[j-1+pT_bins*(i-1)]/gammastr_sigma4[j-1+pT_bins*(i-1)]
+                # fcn_unc = abs(bin60_gauss[j-1+pT_bins*(i-1)] - bin60[j-1+pT_bins*(i-1)])/bin60[j-1+pT_bins*(i-1)]
+                width_unc = abs(bin60_sigma5[j-1+pT_bins*(i-1)] - bin60_sigma3[j-1+pT_bins*(i-1)])/bin60_sigma4[j-1+pT_bins*(i-1)]
+                fit_unc = bin60_sigma4_err[j-1+pT_bins*(i-1)]/bin60_sigma4[j-1+pT_bins*(i-1)]
                 closure_unc = closure_hist.GetBinContent(i,j)
                 total = np.sqrt(width_unc*width_unc+ fit_unc*fit_unc+ closure_unc*closure_unc)
                 # print(width_unc, closure_unc, fit_unc, fcn_unc, total)
                 hist.SetBinContent(i,j,total)
-                pT_hists[j-1].SetBinContent(i,gammastr_sigma4[pT_bins*(i-1)+j-1])
-                pT_hists[j-1].SetBinError(i,total*gammastr_sigma4[pT_bins*(i-1)+j-1])
-                eta_hists[i-1].SetBinContent(j,gammastr_sigma4[pT_bins*(i-1)+j-1])
-                eta_hists[i-1].SetBinError(j,total*gammastr_sigma4[pT_bins*(i-1)+j-1])
-
+                pT_hists[j-1].SetBinContent(i,bin60_sigma4[pT_bins*(i-1)+j-1])
+                pT_hists[j-1].SetBinError(i,total*bin60_sigma4[pT_bins*(i-1)+j-1])
+                eta_hists[i-1].SetBinContent(j,bin60_sigma4[pT_bins*(i-1)+j-1])
+                eta_hists[i-1].SetBinError(j,total*bin60_sigma4[pT_bins*(i-1)+j-1])
+                outhist.SetBinContent(i,j,bin60_sigma4[pT_bins*(i-1)+j-1])
+                outhist.SetBinError(i,j,total)
 
     if Type == "closure":
         hist = closure_hist
@@ -340,7 +344,7 @@ def uncs(outPath, Type):
     hist.Draw("colz text same")
     print("here yes")
     # Save the plot as a PDF
-    c.SaveAs(outPath+"gammastr_4sigma_"+Type+"_syst.png")
+    c.SaveAs(outPath+"bin60_4sigma_"+Type+"_syst.png")
 
     # etaaxis, gPad= createCanvasPads()
     if (Type =="total"):
@@ -390,12 +394,12 @@ def uncs(outPath, Type):
         pTaxis.Write()
         pTaxis.SaveAs(outPath+"misID_totaluncs_pTbins.pdf")
         pTaxis.SaveAs(outPath+"misID_totaluncs_pTbins.png")
-        
+        outhist.SaveAs(outPath+"misID_totaluncs_pTbins.root")
 
 
 if __name__ == '__main__':
     root.gROOT.SetBatch()
-    outPath = "/eos/user/s/ssindhu/4tops/plots/final_showdown/60_90/gammastr0/"
+    outPath = "/eos/user/s/ssindhu/4tops/plots/approved_binning/signal/"
     # closure_uncs(outPath)
     uncs(outPath, "closure")
     uncs(outPath, "width")

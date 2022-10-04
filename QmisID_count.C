@@ -1,3 +1,4 @@
+
 #define QmisID_count_cxx
 
 #include "QmisID_count.h"
@@ -103,130 +104,90 @@ Bool_t QmisID_count::Process(Long64_t entry)
   // if(lep_0_isTight!=1 or lep_1_isTight!=1){std::cout<<nEvtTotal<<" "<<lep_1_isTight<<"  "<<lep_0_isTight<<std::endl;}          
   
   if(OSee==1 or loose_SSee ==1){               
-    if (OSee == 1){if (fit == "BW"){Zmass = 90.64; massWindow = 4.67*_sigma;}
-      else{Zmass = 90.61; massWindow = 3.337*_sigma;}}
-    else if(loose_SSee == 1){if (fit == "BW"){Zmass = 89.56; massWindow = 5.63*_sigma; MW_low = 89.56 - 5.63*_sigma; MW_high = 89.56 + 5.63*_sigma;}
-      else{Zmass = 89.48; massWindow = 3.843*_sigma; MW_low = 89.48 - 3.843*_sigma; MW_high = 89.48 + 3.843*_sigma;}} 
+    if (OSee == 1){if (fit == "BW"){Zmass = 90.64; massWindow = 4.67*_sigma;}else{Zmass = 90.61; massWindow = 3.337*_sigma;}}
+    else if(loose_SSee == 1){if (fit == "BW"){Zmass = 89.56; massWindow = 5.63*_sigma; MW_low = 89.56 - 5.63*_sigma; MW_high = 89.56 + 5.63*_sigma;}else{Zmass = 89.48; massWindow = 3.843*_sigma; MW_low = 89.48 - 3.843*_sigma; MW_high = 89.48 + 3.843*_sigma;}} 
     if(lep_0_isTight==1 and lep_1_isTight==1){ // remove loose lepton         
       // std::cout<<"pass cuts"<<nEvtTotal<<" "<<lep_1_isTight<<"  "<<lep_0_isTight<<std::endl;
       if(Mll>(Zmass-2*massWindow) and Mll<(Zmass+2*massWindow) ){
     	if( nJets>0 ){
+	  if(el_ECIDSResult_float->at(0)>-0.337671 and el_ECIDSResult_float->at(1)>-0.337671){lumi =36207.7*(runNumber==284500)+44307.4*(runNumber==300000)+(runNumber==310000)*58450.1;
 
-    	  if(el_ECIDSResult_float->at(0)>-0.337671 and el_ECIDSResult_float->at(1)>-0.337671){
-
-	    lumi =36207.7*(runNumber==284500)+44307.4*(runNumber==300000)+(runNumber==310000)*58450.1;
-
-	    if (_data == 0){ 
-	      // if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) {
-		weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;
-		// std::cout<<weights<<std::endl;}}
-	      }
-	    else if (_data == -1){
-	      if(OSee == 1){
-		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-		  
-		  weights = weight_closure(lep0.v, lep1.v)*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
-		  // else{weights = -0.5*weight_closure(lep0.v, lep1.v)*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
-
-		  // std::cout<<"yes weights "<<weights<<" closure "<<weight_closure(lep0.v, lep1.v)<<" mc "<<weight_mc<<" lumi "<<lumi<<"pileup "<<weight_pileup<<" jvt "<<weight_jvt<<" SF "<<weight_leptonSF<<" b "<<weight_bTagSF_DL1r_Continuous<<" norm "<<weight_normalise<<endl;
-
-	      }
-	      else if (loose_SSee == 1){
-		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-		  std::cout<<"ssee"<<endl;
-
-		  weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
-		else{weights = -0.5*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
-
-	      }}
-
-	    else if (_data == 1){
+	    // std::cout<<_data<<" "<<weights<<"  "<<loose_SSee<<"  "<<OSee<<" "<<Tlepton_1_DFCommonAddAmbiguity<<" "<<Tlepton_0_DFCommonAddAmbiguity<<"  "<<((Tlepton_1_DFCommonAddAmbiguity==1||Tlepton_0_DFCommonAddAmbiguity==1)&& !(Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2))<<std::endl;
+	    if (_data == 1){
 	      weights = 1;}
+	    else if (_data == -1){
+	      weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
+
 	    else if (_data == 2){
-	      if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-		weights = 1;}
-	      else{weights = -0.5;}}
+	      if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = 1;}else{weights = -0.5;}}
+
+	    else if (_data == -2){
+	      if ( Mll>(Zmass - massWindow) and Mll < (Zmass+massWindow)) { weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
+	      else{weights = -0.5*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}
+
 	    else if (_data == 3){
-	      if(OSee == 1){
-		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-	    	weights = weight_closure(lep0.v, lep1.v);
-		}}
-	      else if (loose_SSee == 1){
-		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-		  weights = 1;}
-		else{weights = -0.5;}
+	      if(OSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_closure(lep0.v, lep1.v);}}
+	      else if (loose_SSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = 1;}else{weights = -0.5;}}}
 
-	      }}
-	    else if (_data ==4){
+	    else if (_data == -3){
+	      if(OSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_closure(lep0.v, lep1.v)*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}
+	      else if (loose_SSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
+		else{weights = -0.5*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}}
+
+	    else if (fabs(_data) == 4){
 	      if ((Tlepton_1_DFCommonAddAmbiguity==1||Tlepton_0_DFCommonAddAmbiguity==1)&& !(Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2)){	    
-		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-		  weights = 1;}
-		else{weights = -0.5;}
-		_sumWeights = _sumWeights+1;
+		if (_data == 4){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = 1;}else{weights = -0.5;}}
+		else if (_data == -4){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}else{weights = -0.5*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}}}
 
-		std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
-		std::cout<<"Ecids "<<SSee_passECIDS<<SSem_passECIDS<<" ambiguity "<<Tlepton_1_DFCommonAddAmbiguity<<Tlepton_0_DFCommonAddAmbiguity<<" Btags " <<nBTags_DL1r_77<<" nJets "<<nJets<<" n "<<nEvtTotal<<std::endl;
-	      }}
-	    else if (_data ==5){
-	      if (Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2){	    
-		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-		  weights = 1;}
-		else{weights = -0.5;}
-		_sumWeights = _sumWeights+1;
+	    else if(fabs(_data) == 5){  
 
-		std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
-		std::cout<<"Ecids "<<SSee_passECIDS<<SSem_passECIDS<<" ambiguity "<<Tlepton_1_DFCommonAddAmbiguity<<Tlepton_0_DFCommonAddAmbiguity<<" Btags " <<nBTags_DL1r_77<<" nJets "<<nJets<<" n "<<nEvtTotal<<std::endl;
-	      }}
-	    else if (_data ==6){
+	      if (Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2){
+		if (_data == 5){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = 1;}else{weights = -0.5;}}
+		else if (_data == -5){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}else{weights = -0.5*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}}}
+
+	    else if (fabs(_data) ==6){
 	      if (Tlepton_1_DFCommonAddAmbiguity<0&&Tlepton_0_DFCommonAddAmbiguity<0){	    
-		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-		  weights = 1;}
-		else{weights = -0.5;}
-		_sumWeights = _sumWeights+1;
+		if (_data == 6){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = 1;}else{weights = -0.5;}}
+		else if (_data == -6){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}else{weights = -0.5*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}}}
 
-		std::cout<<_sumWeights<<" out of "<<nEvtTotal<<std::endl;
-		std::cout<<"Ecids "<<SSee_passECIDS<<SSem_passECIDS<<" ambiguity "<<Tlepton_1_DFCommonAddAmbiguity<<Tlepton_0_DFCommonAddAmbiguity<<" Btags " <<nBTags_DL1r_77<<" nJets "<<nJets<<" n "<<nEvtTotal<<std::endl;
-	      }}
 	    else if (_data ==7){
               if ((Tlepton_1_DFCommonAddAmbiguity==1||Tlepton_0_DFCommonAddAmbiguity==1)&& !(Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2)){
-		if(OSee == 1){
-		  if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-		    weights = weight_closure(lep0.v, lep1.v);}}
-		else if (loose_SSee == 1){
-                  if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-                    weights = 1;}
+		if(OSee == 1){ if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_closure(lep0.v, lep1.v);}}
+		else if (loose_SSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = 1;}else{weights = -0.5;}}}}
 
-                else{weights = -0.5;}
+	    else if (_data == -7){
+              if ((Tlepton_1_DFCommonAddAmbiguity==1||Tlepton_0_DFCommonAddAmbiguity==1)&& !(Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2)){
+		if(OSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_closure(lep0.v, lep1.v)*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}
+		else if (loose_SSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
+		  else{weights = -0.5*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}}
+	    }
+	    else if (_data ==8){if (Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2){	    
+		if(OSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){ weights = weight_closure(lep0.v, lep1.v);}}
+		else if (loose_SSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = 1;}else{weights =-0.5;}}}}
+
+            else if (_data == -8){
+              if (Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2){
+		if(OSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_closure(lep0.v, lep1.v)*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}
+		else if (loose_SSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
+		  else{weights = -0.5*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
 		}}}
- 
-	    else if (_data ==8){
-	      if (Tlepton_1_DFCommonAddAmbiguity==2||Tlepton_0_DFCommonAddAmbiguity==2){	    
-		if(OSee == 1){
-		  if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-		    weights = weight_closure(lep0.v, lep1.v);}}
-		else if (loose_SSee == 1){
-		  if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-		    weights = 1;}
-		  else{weights =-0.5;}
-		}}}
+
             else if (_data ==9){
               if (Tlepton_1_DFCommonAddAmbiguity<0&&Tlepton_0_DFCommonAddAmbiguity<0){
-                if(OSee == 1){
-                  if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-                    weights = weight_closure(lep0.v, lep1.v);}
-                }
-                else if (loose_SSee == 1){
-                  if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
-                    weights = 1;}
-                  else{weights = -0.5;}
-
-                }
+                if(OSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_closure(lep0.v, lep1.v);}}
+                else if (loose_SSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = 1;}else{weights = -0.5;}}
               }}
 
+            else if (_data == -9){
+              if (Tlepton_1_DFCommonAddAmbiguity<0&&Tlepton_0_DFCommonAddAmbiguity<0){
+		if(OSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_closure(lep0.v, lep1.v)*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}}
+		else if (loose_SSee == 1){if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
+		  else{weights = -0.5*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
+		}}}
 
 	   
 
-	    if(_verbosity>0 && nEvtTotal%50000==0)cout<<"lumi"<<lumi<<" weights "<<weights<<" mll "<<Mll<<" OSee " << OSee<<" SSee" <<loose_SSee<<std::endl;
+	    // if(_verbosity>0 && nEvtTotal%50000==0)cout<<"lumi"<<lumi<<" weights "<<weights<<" mll "<<Mll<<" OSee " << OSee<<" SSee" <<loose_SSee<<std::endl;
 	  
 
 	    int i=0,j=0,k=0,l=0, m=0;
@@ -255,7 +216,7 @@ Bool_t QmisID_count::Process(Long64_t entry)
 	    if(OSee==1){
 
 	      h_OS[i][j][k][l] += weights;
-
+	      // std::cout<<"h_OS "<<h_OS<<std::endl;
 	      h.os_Jets->Fill(nJets,weights);
 	      h.os_Muons->Fill(nMuons,weights);
 	      h.os_Electrons->Fill(nElectrons,weights);
@@ -284,6 +245,7 @@ Bool_t QmisID_count::Process(Long64_t entry)
 	    }
 	    else if (loose_SSee==1){
 	      h_SS[i][j][k][l] += weights;
+	      // std::cout<<"h_SS "<<h_SS<<std::endl;
 
 	      h.ss_Jets->Fill(nJets,weights);
 	      h.ss_Muons->Fill(nMuons,weights);
@@ -351,7 +313,12 @@ double QmisID_count::weight_closure(TLorentzVector l1,TLorentzVector l2)
   //Float_t pt_eta_w[12] = { 0.003907, 0.006177, 0.009051, 0.003927, 0.005210, 0.019289, 0.005699, 0.008875, 0.018464, 0.003845, 0.012621, 0.033173};//gammastr eta12_34 60_90 4sigma
   //Float_t pt_eta_w[6] = {3.90E-03, 5.88E-03, 1.24E-02, 5.37E-03, 9.50E-03, 2.10E-02}; //gammastar
   // Float_t pt_eta_w[6] = {4.34E-03, 6.85E-03, 1.47E-02};//gammastar 1eta bin 60_90
-  Float_t pt_eta_w[1] = {5.02929e-03}; 
+  //Float_t pt_eta_w[1] = {5.02929e-03}; 
+  Float_t pt_eta_w[1] = { 2.64769e-03}; 
+
+
+  // Float_t pt_eta_w[12] = {5.10564E-05, 0.000155287, 0.00087717, 0.000208547, 0.000725033, 0.00371027, 0.000518956, 0.00155743, 0.00687607, 0.00130886, 0.00498348, 0.0189266};//ttw eta12_34 60_90 4sigma MC
+  // Float_t pt_eta_w[12] = {0.000228759, 0.00222905, 0.00481965, 0.00179418, 0.00504936, 0.0130429, 0.00269625, 0.0062516, 0.0177349, 0.00627102, 0.00904724, 0.0338543};//CO eta12_34 60_90 4sigma MC
  // Float_t pt_eta_w[30] = {4.41654E-05, 4.13003E-05, 0.000128252, 0.000352787, 0.00132627, 4.73024E-05, 8.83999E-05, 0.000295687, 0.000792038, 0.00282679, 9.46997E-05, 0.000193965, 0.000644241, 0.00193973, 0.00605357, 0.00026517, 0.000343354, 0.00103373, 0.00313706, 0.0103076, 0.000419093, 0.000670387, 0.0016045, 0.00500559, 0.015828, 0.000638339, 0.00167034, 0.00574065, 0.0156992, 0.0411108};//40_60_90_130 4sigma  
 
   // Float_t pt_eta_w[30] = {   3.6099E-05, 5.59019E-05, 0.000127039, 0.000367585, 0.00135927, 7.56015E-05, 0.000104377, 0.000293055, 0.00080699, 0.00283104, 0.000133858, 0.000236648, 0.000662638, 0.00195334, 0.0060989, 0.000313983, 0.000399587, 0.00105683, 0.00325777, 0.0104196, 0.000443231, 0.000804649, 0.00164778, 0.00498435, 0.0160316, 0.000768537, 0.00206477, 0.00566177, 0.0154843, 0.0412804}; ////45_60_90_130 4sigma 

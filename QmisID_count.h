@@ -473,6 +473,12 @@ public :
    float Sum;
    float MW_high;
    float MW_low;
+   /* float h_OS[3][4][3][4]= {.0}; */
+   /* float h_SS[3][4][3][4] ={.0}; */
+   /* int pt_bins =3; */
+   /* int eta_bins = 4; */
+   /* float etaBins[5] = {0,1.1,1.7,2.3,2.5}; */
+   /* float pTBins[4] = {15,60,90,1000}; */
    float h_OS[1][1][1][1]= {.0};
    float h_SS[1][1][1][1] ={.0};
    int pt_bins =1;
