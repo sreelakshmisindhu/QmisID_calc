@@ -624,8 +624,8 @@ void QmisID_count::Init(TTree *tree)
    fChain->SetBranchAddress("nBTags_DL1r_77", &nBTags_DL1r_77, &b_nBTags_DL1r_77);
    fChain->SetBranchAddress("randomRunNumber", &randomRunNumber, &b_randomRunNumber);
    fChain->SetBranchAddress("passedOfflineBoostedSelection", &passedOfflineBoostedSelection, &b_passedOfflineBoostedSelection);
-   fChain->SetBranchAddress("lep_1_isTight", &lep_1_isTight, &b_lep_1_isTight);
-   fChain->SetBranchAddress("lep_0_isTight", &lep_0_isTight, &b_lep_0_isTight);
+   fChain->SetBranchAddress("lepton_1_isTight", &lep_1_isTight, &b_lep_1_isTight);
+   fChain->SetBranchAddress("lepton_0_isTight", &lep_0_isTight, &b_lep_0_isTight);
    fChain->SetBranchAddress("eventNumber", &eventNumber, &b_eventNumber);
    fChain->SetBranchAddress("mcChannelNumber", &mcChannelNumber, &b_mcChannelNumber);
    fChain->SetBranchAddress("runNumber", &runNumber, &b_runNumber);
@@ -796,7 +796,6 @@ int QmisID_count::ReadLimited(int level, Long64_t entry)
     b_runNumber->GetEntry(entry);
     b_OSee->GetEntry(entry);
     b_loose_SSee->GetEntry(entry);
-    /* /\* b_el_isTight->GetEntry(entry); *\/ */
     b_lep_0_isTight->GetEntry(entry);
     b_lep_1_isTight->GetEntry(entry);
     /* b_nBTags_DL1r_70->GetEntry(entry); */
@@ -805,8 +804,8 @@ int QmisID_count::ReadLimited(int level, Long64_t entry)
     /* b_nBTags_DL1r_85->GetEntry(entry); */
     b_met_met->GetEntry(entry);
     b_el_ECIDSResult_float->GetEntry(entry);
-    b_SSee_passECIDS->GetEntry(entry);
-    b_SSem_passECIDS->GetEntry(entry);
+/*    b_SSee_passECIDS->GetEntry(entry);
+    b_SSem_passECIDS->GetEntry(entry);*/
     b_Tlepton_1_DFCommonAddAmbiguity->GetEntry(entry);
     b_Tlepton_0_DFCommonAddAmbiguity->GetEntry(entry);
     if(_data<1){
@@ -819,6 +818,10 @@ int QmisID_count::ReadLimited(int level, Long64_t entry)
     b_weight_jvt->GetEntry(entry);
     b_weight_bTagSF_DL1r_Continuous->GetEntry(entry);
     b_el_truthPdgId->GetEntry(entry);
+    b_lep_0_charge->GetEntry(entry);
+    b_lep_1_charge->GetEntry(entry);
+     b_lepton_0_ID->GetEntry(entry);
+    b_lepton_1_ID->GetEntry(entry);
     }
     return 1;
   }

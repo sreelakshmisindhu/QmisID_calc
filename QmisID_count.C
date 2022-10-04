@@ -98,23 +98,24 @@ Bool_t QmisID_count::Process(Long64_t entry)
   Lepton lep1; lep1.v.SetPtEtaPhiE(lep_1_pt/1000, lep_1_eta, lep_1_phi, lep_1_e/1000);
   Lepton lep2; lep2.v.SetPtEtaPhiE(lep_2_pt/1000, lep_2_eta, lep_2_phi, lep_2_e/1000);
   Mll = (lep0.v+lep1.v).M();
-  if (el_truthPdgId->size()>1){
-    ee = el_truthPdgId->at(0)*el_truthPdgId->at(1);}
-  else{ee = 0; }
+  //if (el_truthPdgId->size()>1){
+  ee = lep_0_charge*lep_1_charge*lepton_0_ID*lepton_1_ID;
+  //else{ee = 0; }
   // std::cout<<lep_0_pt<<"  "<<lep_1_pt<<" Mll "<<Mll<<" OSee "<< OSee<<" SSee "<<loose_SSee<<" nJets "<<nJets<<" tight "<<(lep_0_isTight==1)<<(lep_1_isTight==1)<<" n "<<nEvtTotal<<std::endl;
   // if(lep_0_isTight!=1 or lep_1_isTight!=1){std::cout<<nEvtTotal<<" "<<lep_1_isTight<<"  "<<lep_0_isTight<<std::endl;}          
   
-  if(ee==-121 or ee ==121){               
-    if (ee == -121){if (fit == "BW"){Zmass = 90.64; massWindow = 4.67*_sigma;}
-      else{Zmass = 90.61; massWindow = 3.337*_sigma;}}
-    else if(ee == 121){if (fit == "BW"){Zmass = 89.56; massWindow = 5.63*_sigma; MW_low = 89.56 - 5.63*_sigma; MW_high = 89.56 + 5.63*_sigma;}
-      else{Zmass = 89.48; massWindow = 3.843*_sigma; MW_low = 89.48 - 3.843*_sigma; MW_high = 89.48 + 3.843*_sigma;}} 
-    //    if(lep_0_isTight==1 and lep_1_isTight==1){ // remove loose lepton         
+  //if(ee==-121 or ee ==121){               
+  //  if (ee == -121){if (fit == "BW"){Zmass = 90.64; massWindow = 4.67*_sigma;}
+      //else{Zmass = 90.61; massWindow = 3.337*_sigma;}}
+  //  else if(ee == 121){//if (fit == "BW"){Zmass = 89.56; massWindow = 5.63*_sigma; MW_low = 89.56 - 5.63*_sigma; MW_high = 89.56 + 5.63*_sigma;}
+  //    else{Zmass = 89.48; massWindow = 3.843*_sigma; MW_low = 89.48 - 3.843*_sigma; MW_high = 89.48 + 3.843*_sigma;}} 
+       if(lep_0_isTight==1 and lep_1_isTight==1){ // remove loose lepton         
       // std::cout<<"pass cuts"<<nEvtTotal<<" "<<lep_1_isTight<<"  "<<lep_0_isTight<<std::endl;
-      if(Mll>(Zmass-2*massWindow) and Mll<(Zmass+2*massWindow) ){
-    	if( nJets>0 ){
-	  //	  std::cout<<ee<<" "<<OSee<<" "<<loose_SSee<<std::endl;
-    	  if(el_ECIDSResult_float->at(0)>-0.337671 and el_ECIDSResult_float->at(1)>-0.337671){
+    //  if(Mll>(Zmass-2*massWindow) and Mll<(Zmass+2*massWindow) ){
+//    	if( nJets>0 ){
+	if( nElectrons>1 ){
+	  std::cout<<ee<<" "<<lep_0_charge<<" "<<lep_1_charge<<std::endl;
+    	 // if(el_ECIDSResult_float->at(0)>-0.337671 and el_ECIDSResult_float->at(1)>-0.337671){
 
 	    lumi =36207.7*(runNumber==284500)+44307.4*(runNumber==300000)+(runNumber==310000)*58450.1;
 
@@ -125,22 +126,22 @@ Bool_t QmisID_count::Process(Long64_t entry)
 		// std::cout<<weights<<std::endl;}}
 	    }
 	    else if (_data == -1){
-	      if(ee == -121){
-		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+	      if(ee == 121){
+	//	if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
 		  
 		  weights = weight_closure(lep0.v, lep1.v)*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
 
 		  // std::cout<<"yes weights "<<weights<<" closure "<<weight_closure(lep0.v, lep1.v)<<" mc "<<weight_mc<<" lumi "<<lumi<<"pileup "<<weight_pileup<<" jvt "<<weight_jvt<<" SF "<<weight_leptonSF<<" b "<<weight_bTagSF_DL1r_Continuous<<" norm "<<weight_normalise<<endl;
 
-	      }
-	      else if (ee == 121){
-		if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
+	  //    }
+	      else if (ee == -121){
+	//	if(Mll>(Zmass-massWindow) and Mll<(Zmass+massWindow) ){
 		  std::cout<<"ssee"<<endl;
 
 		  weights = weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
-		else{weights = -0.5*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
+	//	else{weights = -0.5*weight_mc*weight_pileup*weight_jvt*weight_leptonSF*weight_bTagSF_DL1r_Continuous*weight_normalise*lumi;}
 
-	      }}
+	      }
 
 	    else if (_data == 1){
 	      weights = 1;}
@@ -279,7 +280,7 @@ Bool_t QmisID_count::Process(Long64_t entry)
   
 
 	    //std::cout<<" SSee "<<lep_0_charge<<" pdgid "<<lep_0_pdgid<<" 1" << lep_1_charge<<" pdgid "<<lep_1_pdgid<<std::endl;
-	  }}}}
+	  }}
 
   return 0;
 
@@ -308,7 +309,7 @@ double QmisID_count::weight_closure(TLorentzVector l1,TLorentzVector l2)
   // Float_t pt_eta_w[24] = { 3.57118E-05, 6.4525E-05, 0.000215018, 0.000944594, 7.69832E-05, 0.000129521, 0.000476718, 0.00200027, 0.000132347, 0.000281834, 0.00112603, 0.00451399, 0.000317545, 0.000506374, 0.00160781, 0.00798531, 0.00044556, 0.000932643, 0.00255734, 0.0113794, 0.000763963, 0.00251766, 0.00902789, 0.0317013};//45_70_110 sigma 4
   // Float_t pt_eta_w[24] = {   4.38548E-05, 0.000119611, 0.000362226, 0.00136687, 8.75868E-05, 0.000284814, 0.00079309, 0.00284304, 0.000172475, 0.000647994, 0.00194806, 0.00610096, 0.000348415, 0.00102142, 0.00322987, 0.0104283, 0.0005572, 0.00160706, 0.004962, 0.0160352, 0.0011009, 0.00563761, 0.0155431, 0.0411349};//60_90_130 sigma 4 
 
-  Float_t pt_eta_w[24] = {3.8057E-05, 8.64942E-05, 0.00024718, 0.000844019, 8.60671E-05, 0.000198917, 0.000488654, 0.00138802, 0.000248136, 0.000562237, 0.00134883, 0.00309248, 0.00129032, 0.00233299, 0.00434177, 0.00897532, 0.0014588, 0.00298105, 0.0051417, 0.0106171, 0.00261485, 0.00411759, 0.00546528, 0.0113483};
+    Float_t pt_eta_w[24] = {3.8057E-05, 8.64942E-05, 0.00024718, 0.000844019, 8.60671E-05, 0.000198917, 0.000488654, 0.00138802, 0.000248136, 0.000562237, 0.00134883, 0.00309248, 0.00129032, 0.00233299, 0.00434177, 0.00897532, 0.0014588, 0.00298105, 0.0051417, 0.0106171, 0.00261485, 0.00411759, 0.00546528, 0.0113483};// 60_90_130 MC QmisID
 
 
 
